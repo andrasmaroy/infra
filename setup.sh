@@ -7,8 +7,8 @@ readonly SSH_PUBLIC_KEY=''
 
 apt update && apt install -y sudo python3 python3-apt python3-pip
 
-/sbin/adduser --system --shell /bin/bash ansible
-/sbin/adduser ansible sudo
+/usr/sbin/adduser --system --shell /bin/bash ansible
+/usr/sbin/adduser ansible sudo
 echo 'ansible ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/ansible
 chmod 0440 /etc/sudoers.d/ansible
 
