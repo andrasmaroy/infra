@@ -7,3 +7,10 @@
 - hosts: raspberry_pi
   roles:
     - raspberry_pi
+
+- hosts: iot_ac
+  collections:
+    - andrasmaroy.iot_ac
+  tasks:
+    - import_role:
+        name: iot_ac
