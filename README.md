@@ -8,7 +8,7 @@ On the local machine:
 
 0. Optionally create a virtualenv
 1. Run `pip install -r requirements.txt` to install dependencies
-2. Fill in the `hosts` file
+2. Fill in the `hosts` file along the [example](hosts.example)
 
 ## Usage
 
