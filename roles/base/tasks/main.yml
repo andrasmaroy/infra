@@ -3,7 +3,6 @@
 - name: Update apt cache
   apt:
     cache_valid_time: 86400
-  become: yes
   ignore_errors: yes
 
 - name: Configure SSH config.
@@ -19,12 +18,10 @@
       line: 'PermitEmptyPasswords no'
     - regexp: '^#?PasswordAuthentication'
       line: 'PasswordAuthentication no'
-  become: yes
   register: sshd_config_changed
 
 - name: Restart SSHD if needed
   systemd:
     name: ssh
     state: restarted
-  become: yes
   when: sshd_config_changed.changed
