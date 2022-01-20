@@ -1,33 +1,7 @@
 ---
 
-- name: Check pip3
-  stat:
-    path: /usr/local/bin/pip3
-  register: pip3_exists
-
-- name: Fetch get-pip.py
-  get_url:
-    url: https://bootstrap.pypa.io/get-pip.py
-    dest: /tmp/get-pip.py
-  when: pip3_exists.stat.exists == false
-
-- name: Install pip3
-  command: python3 /tmp/get-pip.py
-  args:
-    creates: /usr/local/bin/pip3
-  become: yes
-
-- name: Remove get-pip.py
-  file:
-    path: /tmp/get-pip.py
-    state: absent
-
-- name: Install python-apt
-  pip:
-    name: python-apt
-    executable: /usr/local/bin/pip3
-
 - name: Update apt cache
   apt:
     cache_valid_time: 86400
+  become: yes
   ignore_errors: yes
