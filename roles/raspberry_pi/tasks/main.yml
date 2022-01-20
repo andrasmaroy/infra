@@ -1,0 +1,4 @@
+---
+
+- import_tasks: setup.yml
+- import_tasks: log2ram.yml

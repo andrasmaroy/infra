@@ -1,0 +1,39 @@
+---
+
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname | replace('_', '-') }}"
+  become: yes
+
+- name: Remove initial setup wizard
+  file:
+    path: /etc/xdg/autostart/piwiz.desktop
+    state: absent
+  become: yes
+
+- name: Set timezone
+  timezone:
+    name: Europe/Budapest
+  become: yes
+
+- name: Ensure the locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: yes
+
+- name: Check default locale
+  shell: localectl status | grep 'LANG=en_US.UTF-8'
+  changed_when: False
+  ignore_errors: True
+  register: locale_status
+
+- name: Set as default locale
+  command: localectl set-locale LANG=en_US.UTF-8
+  when: not ansible_check_mode and locale_status.rc != 0
+  become: yes
+
+- name: Set user password
+  user:
+    name: pi
+    password: "{{ pi_password | password_hash('sha512', 65534 | random(seed=inventory_hostname) | string) }}"
