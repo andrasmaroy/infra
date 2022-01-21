@@ -1,0 +1,20 @@
+---
+
+- name: Check for wpa_supplicant.conf
+  stat:
+    path: /etc/wpa_supplicant/wpa_supplicant.conf
+  register: wpa_conf_stat
+
+- name: wpa_supplicant configuration
+  template:
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf
+    src: templates/wpa_supplicant.conf.j2
+    owner: root
+    group: root
+    mode: 0600
+  register: wpa_conf
+  when: wpa_conf_stat.stat.exists
+
+- name: Reboot the Raspberry for changes to apply
+  reboot:
+  when: wpa_conf.changed

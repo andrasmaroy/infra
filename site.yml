@@ -14,3 +14,9 @@
   tasks:
     - import_role:
         name: iot_ac
+
+- hosts: iot*
+  roles:
+    - iot
+  vars_files:
+    - group_vars/iot.yml

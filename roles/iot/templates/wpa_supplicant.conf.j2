@@ -1,0 +1,11 @@
+{% for key,value in wpa_supplicant_config.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+
+{% for net in wpa_supplicant_networks %}
+network={
+{% for key,value in net.items() %}
+        {{ key }}={{ value }}
+{% endfor %}
+}
+{% endfor %}
