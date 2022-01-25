@@ -1,5 +1,9 @@
 ---
 
+roles:
+  - name: maxhoesel.nut_netclient
+  - name: ntd.nut
+
 collections:
   - name: git@github.com:andrasmaroy/iot_ac.git#/ansible
     type: git

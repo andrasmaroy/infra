@@ -20,3 +20,11 @@
     - iot
   vars_files:
     - group_vars/iot.yml
+
+- hosts: nas
+  roles:
+    - ntd.nut
+
+- hosts: nut_client
+  roles:
+    - maxhoesel.nut_netclient

@@ -1,0 +1,10 @@
+---
+
+nut_netclient_monitors:
+    - system: "ups@nas.{{ domain_local }}"
+      powervalue: 1
+      username: monitor
+      password: "{{ nut_password }}"
+      type: slave
+
+nut_netclient_deadtime: 25
