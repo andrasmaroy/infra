@@ -5,6 +5,25 @@
     cache_valid_time: 86400
   ignore_errors: yes
 
+- name: Set timezone
+  timezone:
+    name: Europe/Budapest
+
+- name: Ensure the locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Check default locale
+  shell: localectl status | grep 'LANG=en_US.UTF-8'
+  changed_when: False
+  ignore_errors: True
+  register: locale_status
+
+- name: Set as default locale
+  command: localectl set-locale LANG=en_US.UTF-8
+  when: not ansible_check_mode and locale_status.rc != 0
+
 - name: Configure SSH config.
   lineinfile:
     path: /etc/ssh/sshd_config
