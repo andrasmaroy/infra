@@ -9,13 +9,9 @@
     - raspberry_pi
 
 - hosts: iot_ac
-  collections:
-    - andrasmaroy.iot_ac
-  tasks:
-    - import_role:
-        name: iot_ac
   roles:
     - geerlingguy.nodejs
+    - andrasmaroy.iot_ac.iot_ac
 
 - hosts: iot*
   roles:
