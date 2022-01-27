@@ -1,6 +1,7 @@
 ---
 
 roles:
+  - name: geerlingguy.nodejs
   - name: maxhoesel.nut_netclient
   - name: ntd.nut
 
