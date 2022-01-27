@@ -4,6 +4,10 @@
   roles:
     - base
 
+- hosts: nas
+  roles:
+    - ntd.nut
+
 - hosts: raspberry_pi
   roles:
     - raspberry_pi
@@ -13,16 +17,12 @@
     - geerlingguy.nodejs
     - andrasmaroy.iot_ac.iot_ac
 
+- hosts: nut_client
+  roles:
+    - maxhoesel.nut_netclient
+
 - hosts: iot*
   roles:
     - iot
   vars_files:
     - group_vars/iot.yml
-
-- hosts: nas
-  roles:
-    - ntd.nut
-
-- hosts: nut_client
-  roles:
-    - maxhoesel.nut_netclient
