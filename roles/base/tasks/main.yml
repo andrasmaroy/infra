@@ -7,7 +7,7 @@
 
 - name: Set timezone
   timezone:
-    name: Europe/Budapest
+    name: "{{ timezone }}"
 
 - name: Ensure the locale exists
   locale_gen:

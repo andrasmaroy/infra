@@ -30,3 +30,4 @@ nut_password: !vault |
           6534353837623534363464383536633562353136643931386462
 
 mqtt_host: "mqtt.{{ domain_local }}"
+timezone: Europe/Budapest
