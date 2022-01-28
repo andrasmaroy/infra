@@ -15,7 +15,10 @@
 - hosts: iot_ac
   roles:
     - geerlingguy.nodejs
+    - andrasmaroy.zigbee2mqtt
     - andrasmaroy.iot_ac.iot_ac
+  vars_files:
+    - vars/zigbee_devices.yml
 
 - hosts: nut_client
   roles:
