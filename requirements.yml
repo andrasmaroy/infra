@@ -11,5 +11,6 @@ roles:
 
 collections:
   - name: ansible.netcommon
+  - name: community.general
   - name: git@github.com:andrasmaroy/iot_ac.git#/ansible
     type: git
