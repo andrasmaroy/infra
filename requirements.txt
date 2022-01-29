@@ -1,2 +1,3 @@
 ansible-base>=2.10,<2.11
+netaddr
 passlib

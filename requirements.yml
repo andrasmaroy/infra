@@ -8,5 +8,6 @@ roles:
     name: andrasmaroy.zigbee2mqtt
 
 collections:
+  - name: ansible.netcommon
   - name: git@github.com:andrasmaroy/iot_ac.git#/ansible
     type: git
