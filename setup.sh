@@ -5,7 +5,7 @@ set -euo pipefail
 
 readonly SSH_PUBLIC_KEY=''
 
-apt update && apt install -y sudo python3 python3-apt python3-pip
+apt update && apt install -y acl python3 python3-apt python3-pip sudo
 
 /usr/sbin/adduser --system --shell /bin/bash ansible
 /usr/sbin/adduser ansible sudo
