@@ -14,3 +14,5 @@ collections:
   - name: community.general
   - name: git@github.com:andrasmaroy/iot_ac.git#/ansible
     type: git
+  - name: git@github.com:andrasmaroy/iot_baby.git#/ansible
+    type: git

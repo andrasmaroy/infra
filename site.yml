@@ -26,6 +26,10 @@
   vars_files:
     - vars/pihole.yml
 
+- hosts: iot_baby
+  roles:
+    - andrasmaroy.iot_baby.iot_baby
+
 - hosts: nut_client
   roles:
     - maxhoesel.nut_netclient
