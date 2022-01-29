@@ -20,6 +20,12 @@
   vars_files:
     - vars/zigbee_devices.yml
 
+- hosts: pihole
+  roles:
+    - zfuller.pihole
+  vars_files:
+    - vars/pihole.yml
+
 - hosts: nut_client
   roles:
     - maxhoesel.nut_netclient

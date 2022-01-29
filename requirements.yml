@@ -4,8 +4,10 @@ roles:
   - name: geerlingguy.nodejs
   - name: maxhoesel.nut_netclient
   - name: ntd.nut
-  - src: https://github.com/andrasmaroy/ansible-role-zigbee2mqtt
-    name: andrasmaroy.zigbee2mqtt
+  - name: zfuller.pihole
+    src: https://github.com/andrasmaroy/pihole.git
+  - name: andrasmaroy.zigbee2mqtt
+    src: https://github.com/andrasmaroy/ansible-role-zigbee2mqtt
 
 collections:
   - name: ansible.netcommon
