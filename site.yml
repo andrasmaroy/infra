@@ -1,6 +1,10 @@
 ---
 
-- hosts: all
+- hosts: mikrotik
+  roles:
+    - mikrotik
+
+- hosts: all:!mikrotik
   roles:
     - base
 

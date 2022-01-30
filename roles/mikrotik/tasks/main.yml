@@ -1,0 +1,27 @@
+---
+
+- name: Check DDNS status
+  routeros_command:
+    commands:
+      - :put [ /ip cloud get ddns-enabled ]
+  changed_when: false
+  register: ddns_enabled
+
+- name: Get domain name
+  routeros_command:
+    commands:
+      - :put [ /ip cloud get dns-name ]
+  when: ddns_enabled.stdout_lines[0][-1] == "true"
+  changed_when: false
+  register: ddns_domain
+
+- name: Register DNS records
+  cloudflare_dns:
+    zone: "{{ domain_public }}"
+    type: CNAME
+    value: "{{ ddns_domain.stdout_lines[0][-1] }}"
+    record: "{{ site }}"
+    proxied: no
+    account_email: "{{ email_address }}"
+    account_api_key: "{{ cloudflare_api_key }}"
+  when: ddns_domain.stdout_lines is defined
