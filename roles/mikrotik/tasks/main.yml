@@ -19,9 +19,12 @@
   cloudflare_dns:
     zone: "{{ domain_public }}"
     type: CNAME
-    value: "{{ ddns_domain.stdout_lines[0][-1] }}"
-    record: "{{ site }}"
+    value: "{{ item.value }}"
+    record: "{{ item.record }}"
     proxied: no
     account_email: "{{ email_address }}"
     account_api_key: "{{ cloudflare_api_key }}"
   when: ddns_domain.stdout_lines is defined
+  loop:
+    - { record: "{{ site }}", value: "{{ ddns_domain.stdout_lines[0][-1] }}" }
+    - { record: "{{ domain_public }}", value: "{{ site }}.{{ domain_public }}" }
