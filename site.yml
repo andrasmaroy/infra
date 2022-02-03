@@ -3,6 +3,7 @@
 - hosts: mikrotik
   roles:
     - mikrotik
+  strategy: linear
 
 - hosts: all:!mikrotik
   roles:
