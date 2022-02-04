@@ -15,7 +15,7 @@
 
 - name: Update apt cache
   apt:
-    update_cache: yes
+    update_cache: true
   when: log2ram_apt_source.changed
 
 - name: Install log2ram
@@ -30,11 +30,12 @@
     section: Timer
     option: OnCalendar
     value: weekly
+    mode: 0644
 
 - name: Ensure log2ram is running on startup
   systemd:
     name: log2ram
-    daemon_reload: yes
+    daemon_reload: true
     enabled: true
 
 - name: Reboot the Raspberry for changes to apply

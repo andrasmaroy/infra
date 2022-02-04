@@ -15,6 +15,7 @@
   copy:
     src: vlans
     dest: /etc/network/interfaces.d/vlans
+    mode: 0644
   notify: reboot
 
 - name: Disable untagged network traffic

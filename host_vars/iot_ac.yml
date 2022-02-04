@@ -32,7 +32,7 @@ zigbee_mqtt_password: !vault |
 nodejs_version: "16.x"
 nodejs_install_npm_user: root
 
-zigbee_update: no
+zigbee_update: false
 zigbee_version: 1.21.2
 
 # zigbee2mqtt config

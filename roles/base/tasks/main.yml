@@ -3,8 +3,9 @@
 - name: Update apt cache
   apt:
     cache_valid_time: 86400
+    update_cache_retries: 1
   # Ignore errors so playbooks can run on offline iot nodes as well
-  ignore_errors: yes
+  ignore_errors: true   # noqa: ignore-errors
 
 - name: Set timezone
   timezone:
@@ -17,8 +18,8 @@
 
 - name: Check default locale
   shell: localectl status | grep 'LANG=en_US.UTF-8'
-  changed_when: False
-  ignore_errors: True
+  changed_when: false
+  ignore_errors: true
   register: locale_status
 
 - name: Set as default locale

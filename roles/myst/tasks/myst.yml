@@ -15,7 +15,7 @@
 
 - name: Update apt cache
   apt:
-    update_cache: yes
+    update_cache: true
   when: myst_apt_source.changed
 
 - name: Install myst

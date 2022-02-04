@@ -35,33 +35,33 @@ pihole_setupvars_rev_server_target: "{{ ansible_facts.default_ipv4.gateway }}"
 pihole_setupvars_webpassword: "{{ pihole_password | hash('sha256') | hash('sha256') }}"
 
 pihole_gravity_lists:
-    - address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-      comment: Default Pi-Hole block list
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/abuse.txt
-      comment: Lists of sites created to deceive
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/ads.txt
-      comment: Ad servers/sites
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/fraud.txt
-      comment: Sites create to fraud
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/malware.txt
-      comment: Known sites that host malware
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/phishing.txt
-      comment: Sites created to phish info
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/ransomware.txt
-      comment: Known sites that host or contain ransomware
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/redirect.txt
-      comment: Sites that redirect your from your intended site
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/scam.txt
-      comment: Sites that intend to scam
-      enabled: true
-    - address: https://blocklistproject.github.io/Lists/tracking.txt
-      comment: Sites dedicated to tracking and gathering visitor info
-      enabled: true
+  - address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    comment: Default Pi-Hole block list
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/abuse.txt
+    comment: Lists of sites created to deceive
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/ads.txt
+    comment: Ad servers/sites
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/fraud.txt
+    comment: Sites create to fraud
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/malware.txt
+    comment: Known sites that host malware
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/phishing.txt
+    comment: Sites created to phish info
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/ransomware.txt
+    comment: Known sites that host or contain ransomware
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/redirect.txt
+    comment: Sites that redirect your from your intended site
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/scam.txt
+    comment: Sites that intend to scam
+    enabled: true
+  - address: https://blocklistproject.github.io/Lists/tracking.txt
+    comment: Sites dedicated to tracking and gathering visitor info
+    enabled: true
