@@ -1,0 +1,24 @@
+---
+
+- name: Add myst apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: ECCB6A56B22C536D
+    state: present
+
+- name: Add myst apt source
+  apt_repository:
+    repo: deb http://ppa.launchpad.net/mysteriumnetwork/node/ubuntu focal main
+    filename: myst
+    state: present
+  register: myst_apt_source
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: myst_apt_source.changed
+
+- name: Install myst
+  apt:
+    name: myst
+    state: present

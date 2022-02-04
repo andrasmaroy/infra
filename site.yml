@@ -25,6 +25,10 @@
   vars_files:
     - vars/zigbee_devices.yml
 
+- hosts: myst
+  roles:
+    - myst
+
 - hosts: pihole
   roles:
     - zfuller.pihole

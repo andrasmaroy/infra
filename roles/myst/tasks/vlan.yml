@@ -1,0 +1,24 @@
+---
+
+- name: Install vlan
+  apt:
+    name: vlan
+    state: present
+
+- name: Enable 8021q kernel module
+  lineinfile:
+    path: /etc/modules
+    line: "8021q"
+  notify: reboot
+
+- name: Copy vlans network file
+  copy:
+    src: vlans
+    dest: /etc/network/interfaces.d/vlans
+  notify: reboot
+
+- name: Disable untagged network traffic
+  lineinfile:
+    line: denyinterfaces eth0
+    path: /etc/dhcpcd.conf
+  notify: reboot

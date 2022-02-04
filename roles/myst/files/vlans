@@ -1,0 +1,3 @@
+auto eth0.16
+iface eth0.16 inet manual
+  vlan-raw-device eth0
