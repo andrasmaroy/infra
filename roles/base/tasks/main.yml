@@ -5,6 +5,7 @@
     cache_valid_time: 86400
     update_cache_retries: 1
   # Ignore errors so playbooks can run on offline iot nodes as well
+  changed_when: false
   ignore_errors: true   # noqa: ignore-errors
 
 - name: Set timezone
