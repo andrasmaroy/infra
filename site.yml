@@ -13,6 +13,10 @@
   roles:
     - ntd.nut
 
+- hosts: k3s_server:k3s_agent
+  roles:
+    - xanmanning.k3s
+
 - hosts: raspberry_pi
   roles:
     - raspberry_pi
