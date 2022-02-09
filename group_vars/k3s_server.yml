@@ -6,5 +6,24 @@ k3s_etcd_datastore: true
 k3s_use_experimental: true
 k3s_server:
   secrets-encryption: true
+  tls-san:
+    - "{{ kube_vip_address }}"
   node-taint:
     - "node-role.kubernetes.io/master=true:NoSchedule"
+
+k3s_server_manifests_urls:
+  - url: https://kube-vip.io/manifests/rbac.yaml
+    filename: kube-vip-rbac.yaml
+
+k3s_server_manifests_templates:
+  - kube-vip.yaml.j2
+
+kube_vip_version: v0.4.2
+kube_vip_interface: "{{ ansible_facts.default_ipv4.interface }}"
+kube_vip_address: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    31633837343335306463386262336233356433636330633861316435623365353030363130313837
+    6639646535643035303438646637363233613861663136370a346662383839656661356535383331
+    63646533323761356134633337376637333862613535343564633763353234303139373830653464
+    6238346563353262350a346233616366316137613964353634386666366561323137336230663434
+    3765
