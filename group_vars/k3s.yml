@@ -1,0 +1,4 @@
+---
+
+# k3s common variables
+k3s_become: true

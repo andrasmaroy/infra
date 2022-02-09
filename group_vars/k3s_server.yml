@@ -1,6 +1,6 @@
 ---
 
-k3s_become: true
+# k3s server variables
 k3s_control_node: true
 k3s_etcd_datastore: true
 k3s_use_experimental: true
