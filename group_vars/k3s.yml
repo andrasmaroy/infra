@@ -2,3 +2,4 @@
 
 # k3s common variables
 k3s_become: true
+k3s_release_version: v1.22
