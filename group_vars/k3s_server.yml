@@ -6,6 +6,8 @@ k3s_etcd_datastore: true
 k3s_use_experimental: true
 k3s_server:
   secrets-encryption: true
+  disable:
+    - servicelb
   tls-san:
     - "{{ kube_vip_address }}"
   node-taint:
@@ -14,13 +16,27 @@ k3s_server:
 k3s_server_manifests_urls:
   - url: https://kube-vip.io/manifests/rbac.yaml
     filename: kube-vip-rbac.yaml
+  - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/namespace.yaml"
+    filename: metallb-namespace.yaml
+  - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml"
+    filename: metallb.yaml
 
 k3s_server_manifests_templates:
   - kube-vip.yaml.j2
+  - metallb-config.yaml.j2
 
 kube_vip_version: v0.4.2
 kube_vip_interface: "{{ ansible_facts.default_ipv4.interface }}"
 kube_vip_address: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    61303837346534633164343566386135386237376538366139383534333638653236323938366437
+    6266623665636239656533646134353462653031306566300a613630613034376637386638333830
+    36336362616638363730323137656366376338336632646638636565303131383930653736393636
+    3731626236326132650a383834373364663637363837633039396132316565643739393164643730
+    3565
+
+metallb_version: v0.11.0
+metallb_address: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     31633837343335306463386262336233356433636330633861316435623365353030363130313837
     6639646535643035303438646637363233613861663136370a346662383839656661356535383331
