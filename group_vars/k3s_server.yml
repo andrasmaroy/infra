@@ -20,6 +20,8 @@ k3s_server_manifests_urls:
     filename: metallb-namespace.yaml
   - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml"
     filename: metallb.yaml
+  - url: "https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml"
+    filename: longhorn.yaml
 
 k3s_server_manifests_templates:
   - kube-vip.yaml.j2
@@ -43,3 +45,5 @@ metallb_address: !vault |
     63646533323761356134633337376637333862613535343564633763353234303139373830653464
     6238346563353262350a346233616366316137613964353634386666366561323137336230663434
     3765
+
+longhorn_version: v1.2.3

@@ -1,0 +1,19 @@
+---
+
+- name: Install dependencies
+  apt:
+    pkg:
+      - open-iscsi
+      - nfs-common
+      - bash
+      - curl
+      - grep
+      - gawk
+      - util-linux
+
+- name: Enable iscsid service
+  systemd:
+    name: iscsid
+    daemon_reload: true
+    enabled: true
+    state: started
