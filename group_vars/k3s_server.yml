@@ -43,6 +43,7 @@ k3s_server_manifests_templates:
   - traefik-chart.yaml.j2
   - cert-manager-config.yaml.j2
   - letsencrypt-issuer.yaml.j2
+  - traefik-gateway.yaml.j2
 
 kube_vip_version: v0.4.2
 kube_vip_interface: "{{ ansible_facts.default_ipv4.interface }}"
