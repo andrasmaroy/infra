@@ -19,12 +19,12 @@ k3s_server_manifests_urls:
   - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/namespace.yaml"
     filename: metallb-namespace.yaml
   - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml"
-    filename: metallb.yaml
   - url: "https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml"
-    filename: longhorn.yaml
+  - url: "https://github.com/cert-manager/cert-manager/releases/download/{{ certmanager_version }}/cert-manager.yaml"
 
 k3s_server_manifests_templates:
   - kube-vip.yaml.j2
+  - letsencrypt-issuer.yaml.j2
   - metallb-config.yaml.j2
 
 kube_vip_version: v0.4.2
@@ -47,3 +47,5 @@ metallb_address: !vault |
     3765
 
 longhorn_version: v1.2.3
+
+certmanager_version: v1.7.1
