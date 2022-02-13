@@ -44,6 +44,7 @@ k3s_server_manifests_templates:
   - cert-manager-config.yaml.j2
   - letsencrypt-issuer.yaml.j2
   - traefik-gateway.yaml.j2
+  - kubernetes-dashboard-chart.yaml.j2
   - system-httproutes.yaml.j2
 
 kube_vip_version: v0.4.2
@@ -70,3 +71,5 @@ longhorn_version: v1.2.3
 certmanager_version: v1.7.1
 
 gateway_api_version: v0.4.1
+
+kubernetes_dashboard_version: 5.2.0
