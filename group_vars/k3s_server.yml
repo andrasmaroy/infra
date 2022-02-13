@@ -1,6 +1,9 @@
 ---
 
 # k3s server variables
+node_taint:
+  - "node-role.kubernetes.io/master=true:NoSchedule"
+
 k3s_control_node: true
 k3s_etcd_datastore: true
 k3s_use_experimental: true
@@ -11,8 +14,7 @@ k3s_server:
     - traefik
   tls-san:
     - "{{ kube_vip_address }}"
-  node-taint:
-    - "node-role.kubernetes.io/master=true:NoSchedule"
+  node-taint: "{{ node_taint }}"
 
 k3s_server_manifests_urls:
   - url: https://kube-vip.io/manifests/rbac.yaml
