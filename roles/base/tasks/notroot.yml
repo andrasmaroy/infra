@@ -1,0 +1,90 @@
+---
+
+# Check if there's a user with the set user ID, assume it's a user from the
+# initial setup. For example the 'pi' user on Raspberry Pis.
+- name: Check if user with the ID exists
+  command: "id -un {{ notroot_uid }}"
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  register: notroot_user
+
+# If the user is already there and isn't named notroot then it needs to be
+# renamed. To do this first all processes running in the name of the user need
+# to be killed.
+# `pkill` returns with 1 if it didn't kill any processes, hence failed_when
+- name: Kill all running user processes
+  command: "pkill -u {{ notroot_uid }}"
+  failed_when: kill_processes.rc > 1
+  register: kill_processes
+  when:
+    (notroot_user.rc == 0 and notroot_user.stdout != notroot_username)
+
+# Check the group with the same id as the user, if the user exists it probably
+# created a group with the same name, which should be renamed as well.
+- name: Get default group name for notroot user
+  command: "id -gn {{ notroot_uid }}"
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  register: notroot_group
+
+# If the above group exists and doesn't have the correct name, rename it.
+- name: Rename default group
+  command: "groupmod -n {{ notroot_username }} {{ notroot_group.stdout }}"
+  when:
+    (notroot_group.rc == 0 and notroot_group.stdout != notroot_username)
+
+# If the user exists and doesn't have the correct name, rename it.
+- name: Rename user to notroot
+  command: "usermod -l {{ notroot_username }} -d /home/{{ notroot_username }} -m {{ notroot_user.stdout }}"
+  when:
+    (notroot_user.rc == 0 and notroot_user.stdout != notroot_username)
+
+# Set parameters for the user, this also creates the user if it didn't exist
+# before. Make sure the user is added to the sudo group as well. Also set the
+# correct password.
+- name: Set notroot user
+  user:
+    append: true
+    groups: sudo
+    name: "{{ notroot_username }}"
+    password: "{{ notroot_password | string | password_hash('sha512', 65534 | random(seed=inventory_hostname) | string) }}"
+    shell: /bin/bash
+    skeleton: /etc/skel
+    uid: "{{ notroot_uid }}"
+
+# If a user is being renamed, make sure to remove its entry from sudoers.d
+- name: Remove suders.d file for old user
+  file:
+    path: "/etc/sudoers.d/{{ notroot_user.stdout }}"
+    state: absent
+  when:
+    (notroot_user.rc == 0 and notroot_user.stdout != notroot_username)
+
+# Add the notroot user to sudoers.d to allow passwordless sudo for convenience
+- name: Add notroot user to sudoers.d
+  lineinfile:
+    create: true
+    group: root
+    line: "{{ notroot_username }} ALL=(ALL) NOPASSWD: ALL"
+    mode: 0440
+    owner: root
+    path: "/etc/sudoers.d/{{ notroot_username }}"
+
+# Get the authorized SSH key data for the ansible user which was set by the
+# `setup.sh` script during host bootstrapping.
+- name: Get ssh authorized key
+  command: cat /var/ansible/.ssh/authorized_keys
+  changed_when: false
+  check_mode: false
+  register: ssh_authorized_keys
+
+# Set the same SSH key as authorized key that Ansible uses already.
+# This is a tradeoff between convenience and security, in a homelab environment
+# I really don't see the point of adding a separate SSH key for these purposes,
+# but don't do this in production.
+- name: Set authorized_key for notroot user
+  authorized_key:
+    key: "{{ ssh_authorized_keys.stdout_lines[0] }}"
+    user: "{{ notroot_username }}"

@@ -1,3 +1,6 @@
 ---
 
 timezone: UTC
+
+notroot_uid: 1000
+notroot_username: notroot
