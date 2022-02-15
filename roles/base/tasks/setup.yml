@@ -1,0 +1,49 @@
+---
+
+- name: Update apt cache
+  apt:
+    cache_valid_time: 86400
+    update_cache_retries: 1
+  # Ignore errors so playbooks can run on offline iot nodes as well
+  changed_when: false
+  ignore_errors: true   # noqa: ignore-errors
+
+- name: Set timezone
+  timezone:
+    name: "{{ timezone }}"
+
+- name: Ensure the locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Check default locale
+  shell: localectl status | grep 'LANG=en_US.UTF-8'
+  changed_when: false
+  ignore_errors: true
+  register: locale_status
+
+- name: Set as default locale
+  command: localectl set-locale LANG=en_US.UTF-8
+  when: not ansible_check_mode and locale_status.rc != 0
+
+- name: Configure SSH config.
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^#?PermitRootLogin'
+      line: 'PermitRootLogin no'
+    - regexp: '^#?PermitEmptyPasswords'
+      line: 'PermitEmptyPasswords no'
+    - regexp: '^#?PasswordAuthentication'
+      line: 'PasswordAuthentication no'
+  register: sshd_config_changed
+
+- name: Restart SSHD if needed
+  systemd:
+    name: ssh
+    state: restarted
+  when: sshd_config_changed.changed
