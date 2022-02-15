@@ -8,6 +8,10 @@
   changed_when: false
   ignore_errors: true   # noqa: ignore-errors
 
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname | replace('_', '-') }}"
+
 - name: Set timezone
   timezone:
     name: "{{ timezone }}"

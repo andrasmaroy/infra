@@ -1,9 +1,5 @@
 ---
 
-- name: Set hostname
-  hostname:
-    name: "{{ inventory_hostname | replace('_', '-') }}"
-
 - name: Remove initial setup wizard
   file:
     path: /etc/xdg/autostart/piwiz.desktop
