@@ -88,3 +88,11 @@
   authorized_key:
     key: "{{ ssh_authorized_keys.stdout_lines[0] }}"
     user: "{{ notroot_username }}"
+
+# Finally disable password login for the root user, since at this point the
+# notroot user has an SSH key set up and is able to sudo, so there is no reason
+# to keep the root user enabled.
+- name: Disable root user password
+  user:
+    name: root
+    password: "!"
