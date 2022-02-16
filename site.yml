@@ -29,7 +29,9 @@
       # See: https://github.com/k3s-io/k3s/issues/4188
       k3s_check_packages:
         debian-11: []
-    - k3s
+  tasks:
+    - import_tasks: roles/k3s_server/tasks/kubeconfig.yml
+      when: k3s_primary_control_node is defined and k3s_primary_control_node
 
 - hosts: raspberry_pi
   roles:

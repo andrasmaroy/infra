@@ -1,4 +1,0 @@
----
-
-- import_tasks: kubeconfig.yml
-  when: k3s_primary_control_node is defined and k3s_primary_control_node
