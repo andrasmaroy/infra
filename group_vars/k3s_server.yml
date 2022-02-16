@@ -50,7 +50,7 @@ k3s_server_manifests_templates:
   - system-httproutes.yaml.j2
 
 kube_vip_version: v0.4.2
-kube_vip_interface: "{{ ansible_facts.default_ipv4.interface }}"
+kube_vip_interface: kube-vip
 kube_vip_address: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     61303837346534633164343566386135386237376538366139383534333638653236323938366437

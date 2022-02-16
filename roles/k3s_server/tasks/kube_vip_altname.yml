@@ -1,0 +1,39 @@
+---
+
+# To handle heterogenous server nodes with different interface names introduce
+# an interface alternative name for the default interface that can be usesd for
+# kube-vip since it is set on all the master nodes with the same name.
+- name: Check if proper altname is set
+  command: ip link show kube-vip
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  register: kube_vip_interface_status
+
+# On the first run when the rule is not persisted yet the altname needs to be
+# set manually for the cluster to start properly. This command will only run
+# the first time, after that the rule will automatically set the same thing
+# upon startup.
+- name: Add the altname manually if needed
+  command: ip link property add dev "{{ ansible_facts.default_ipv4.interface }}" altname kube-vip
+  when: kube_vip_interface_status.rc != 0
+
+# Custom udev rule files can be added with which altname can be set[1] for the
+# given interface. Use the MAC address for identifying the interface and set
+# the proper altname for it. This file is parsed by udev[2] on startup.
+# [1]: https://www.freedesktop.org/software/systemd/man/systemd.link.html#AlternativeName=
+# [2]: https://systemd.io/PREDICTABLE_INTERFACE_NAMES/
+- name: Persist altname
+  ini_file:
+    path: /etc/systemd/network/00-kube-vip.link
+    group: root
+    mode: 0644
+    no_extra_spaces: true
+    option: "{{ item.option }}"
+    owner: root
+    section: "{{ item.section }}"
+    value: "{{ item.value }}"
+  loop:
+    - { section: "Match", option: "MACAddress", value: "{{ ansible_facts.default_ipv4.macaddress }}" }
+    - { section: "Link", option: "AlternativeNamesPolicy", value: "" }
+    - { section: "Link", option: "AlternativeName", value: "kube-vip" }

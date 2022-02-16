@@ -1,0 +1,3 @@
+---
+
+- import_tasks: kube_vip_altname.yml

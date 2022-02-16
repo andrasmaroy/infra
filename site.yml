@@ -17,6 +17,10 @@
   roles:
     - k3s_agent
 
+- hosts: k3s_server
+  roles:
+    - k3s_server
+
 - hosts: k3s
   roles:
     - xanmanning.k3s
