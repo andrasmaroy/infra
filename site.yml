@@ -14,9 +14,8 @@
     - ntd.nut
 
 - hosts: k3s_agent
-  tasks:
-    - name: Install Longhorn prerequisites on agents
-      import_tasks: roles/k3s/tasks/longhorn.yml
+  roles:
+    - k3s_agent
 
 - hosts: k3s
   roles:
