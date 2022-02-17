@@ -6,4 +6,22 @@ atlas   ansible_ssh_private_key_file=~/.ssh/id_atlas
 
 [raspberry_pi]
 iot_ac
+pihole
 
+[k3s_server]
+server1
+server2
+server3
+
+[k3s_agent]
+agent1
+agent2
+agent3
+
+[k3s:children]
+k3s_server
+k3s_agent
+
+[nut_client]
+iot_ac
+pihole
