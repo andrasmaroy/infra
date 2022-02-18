@@ -1,0 +1,40 @@
+---
+
+- name: Add Longhorn helm repository
+  kubernetes.core.helm_repository:
+    name: longhorn
+    url: https://charts.longhorn.io
+
+- name: Install Longhorn
+  kubernetes.core.helm:
+    name: longhorn
+    chart_ref: longhorn/longhorn
+    namespace: longhorn-system
+    chart_version: "{{ longhorn_version }}"
+    update_repo_cache: true
+    create_namespace: true
+    atomic: true
+
+- name: Add route for Longhorn UI
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: gateway.networking.k8s.io/v1alpha2
+      kind: HTTPRoute
+      metadata:
+        name: longhorn-frontend
+        namespace: longhorn-system
+
+      spec:
+        parentRefs:
+          - name: traefik
+            namespace: kube-system
+
+        hostnames:
+          - longhorn.kubi.{{ domain_local }}
+
+        rules:
+          - backendRefs:
+              - name: longhorn-frontend
+                namespace: longhorn-system
+                port: 80
+                weight: 1

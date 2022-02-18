@@ -41,6 +41,7 @@
   roles:
     - k3s_gateway_api
     - helm_metallb
+    - helm_longhorn
   environment:
     K8S_AUTH_KUBECONFIG: ~/.kube/kubi.yaml
 
