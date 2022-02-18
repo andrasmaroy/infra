@@ -1,0 +1,61 @@
+---
+
+- name: Add kubernetes-dashboard helm repository
+  kubernetes.core.helm_repository:
+    name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard
+
+- name: Install kubernetes-dashboard
+  kubernetes.core.helm:
+    name: kubernetes-dashboard
+    chart_ref: kubernetes-dashboard/kubernetes-dashboard
+    namespace: kubernetes-dashboard
+    chart_version: "{{ kubernetes_dashboard_chart_version }}"
+    update_repo_cache: true
+    create_namespace: true
+    atomic: true
+    values:
+      service:
+        externalPort: 80
+      protocolHttp: true
+      extraArg:
+        - --enable-skip-login
+        - --enable-insecure-login
+        - --namespace=kubernetes-dashboard
+
+- name: Add role binding for kubernetes-dashboard
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: admin-user
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: cluster-admin
+      subjects:
+        - kind: ServiceAccount
+          name: kubernetes-dashboard
+          namespace: kubernetes-dashboard
+
+- name: Add route for kubernetes-dashboard
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: gateway.networking.k8s.io/v1alpha2
+      kind: HTTPRoute
+      metadata:
+        name: kubernetes-dashboard
+        namespace: kubernetes-dashboard
+      spec:
+        parentRefs:
+          - name: traefik
+            namespace: kube-system
+        hostnames:
+          - dashboard.kubi.{{ domain_local }}
+        rules:
+          - backendRefs:
+              - name: kubernetes-dashboard
+                namespace: kubernetes-dashboard
+                port: 80
+                weight: 1
