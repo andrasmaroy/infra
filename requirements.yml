@@ -25,6 +25,8 @@ collections:
     version: 3.0.0
   - name: community.routeros
     version: 2.0.0
+  - name: kubernetes.core
+    version: 2.2.3
   - name: git@github.com:andrasmaroy/iot_ac.git#/ansible
     type: git
   - name: git@github.com:andrasmaroy/iot_baby.git#/ansible
