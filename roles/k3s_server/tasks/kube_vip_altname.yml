@@ -34,6 +34,6 @@
     section: "{{ item.section }}"
     value: "{{ item.value }}"
   loop:
-    - { section: "Match", option: "MACAddress", value: "{{ ansible_facts.default_ipv4.macaddress }}" }
-    - { section: "Link", option: "AlternativeNamesPolicy", value: "" }
-    - { section: "Link", option: "AlternativeName", value: "kube-vip" }
+    - {section: "Match", option: "MACAddress", value: "{{ ansible_facts.default_ipv4.macaddress }}"}
+    - {section: "Link", option: "AlternativeNamesPolicy", value: ""}
+    - {section: "Link", option: "AlternativeName", value: "kube-vip"}
