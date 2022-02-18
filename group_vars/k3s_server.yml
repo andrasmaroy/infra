@@ -21,7 +21,7 @@ k3s_server_manifests_urls:
     filename: kube-vip-rbac.yaml
 
 k3s_server_manifests_templates:
-  - kube-vip.yaml.j2
+  - roles/k3s_server/templates/kube-vip-daemonset.yaml.j2
 
 kube_vip_version: v0.4.2
 kube_vip_interface: kube-vip
