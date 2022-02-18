@@ -22,8 +22,6 @@ k3s_server_manifests_urls:
 
 k3s_server_manifests_templates:
   - kube-vip.yaml.j2
-  - traefik-chart.yaml.j2
-  - traefik-gateway.yaml.j2
   - kubernetes-dashboard-chart.yaml.j2
   - system-httproutes.yaml.j2
 

@@ -43,6 +43,7 @@
     - helm_metallb
     - helm_longhorn
     - helm_cert_manager
+    - helm_traefik
   environment:
     K8S_AUTH_KUBECONFIG: ~/.kube/kubi.yaml
 

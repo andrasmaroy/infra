@@ -1,0 +1,106 @@
+---
+
+- name: Add Traefik helm repository
+  kubernetes.core.helm_repository:
+    name: traefik
+    url: https://helm.traefik.io/traefik
+
+- name: Install Traefik
+  kubernetes.core.helm:
+    name: traefik
+    chart_ref: traefik/traefik
+    namespace: kube-system
+    chart_version: "{{ traefik_chart_version }}"
+    update_repo_cache: true
+    create_namespace: true
+    atomic: true
+    values:
+      rbac:
+        enabled: true
+      ports:
+        web:
+          expose: false
+          redirectTo: websecure
+      podAnnotations:
+        prometheus.io/port: "8082"
+        prometheus.io/scrape: "true"
+      providers:
+        kubernetesIngress:
+          publishedService:
+            enabled: true
+      priorityClassName: "system-cluster-critical"
+      tolerations: []
+      deployment:
+        kind: DaemonSet
+      ingressRoute:
+        dashboard:
+          enabled: false
+      service:
+        externalIPs:
+          - "{{ metallb_address }}"
+      experimental:
+        kubernetesGateway:
+          enabled: true
+
+- name: Request certificate
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: cert-manager.io/v1
+      kind: Certificate
+      metadata:
+        name: letsenrypt-traefik
+        namespace: kube-system
+      spec:
+        dnsNames:
+          - '*.kubi.{{ domain_local }}'
+        secretName: letsencrypt-traefik
+        issuerRef:
+          name: letsencrypt
+          kind: ClusterIssuer
+          group: cert-manager.io
+
+- name: Setup gateway for Traefik
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: gateway.networking.k8s.io/v1alpha2
+      kind: Gateway
+      metadata:
+        name: traefik
+        namespace: kube-system
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt
+      spec:
+        gatewayClassName: traefik
+        listeners:
+          - name: websecure
+            hostname: '*.kubi.{{ domain_local }}'
+            port: 8443
+            protocol: HTTPS
+            allowedRoutes:
+              namespaces:
+                from: All
+            tls:
+              mode: Terminate
+              certificateRefs:
+                - name: letsencrypt-traefik
+                  kind: Secret
+                  group: core
+
+- name: Add route for Traefik
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: gateway.networking.k8s.io/v1alpha2
+      kind: HTTPRoute
+      metadata:
+        name: traefik-dashboard
+        namespace: kube-system
+      spec:
+        parentRefs:
+          - name: traefik
+        hostnames:
+          - traefik.kubi.{{ domain_local }}
+        rules:
+          - backendRefs:
+              - name: api@internal
+                kind: TraefikService
+                group: traefik.containo.us
