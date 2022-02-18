@@ -24,20 +24,6 @@ k3s_server_manifests_urls:
   - url: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml"
   - url: "https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml"
   - url: "https://github.com/cert-manager/cert-manager/releases/download/{{ certmanager_version }}/cert-manager.yaml"
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_referencepolicies.yaml
-    filename: 04-apiextensions.k8s.io_v1_customresourcedefinition_referencepolicies.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_gatewayclasses.yaml
-    filename: 01-apiextensions.k8s.io_v1_customresourcedefinition_gatewayclasses.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_gateways.yaml
-    filename: 02-apiextensions.k8s.io_v1_customresourcedefinition_gateways.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_httproutes.yaml
-    filename: 03-apiextensions.k8s.io_v1_customresourcedefinition_httproutes.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_tcproutes.yaml
-    filename: 05-apiextensions.k8s.io_v1_customresourcedefinition_tcproutes.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_tlsroutes.yaml
-    filename: 06-apiextensions.k8s.io_v1_customresourcedefinition_tlsroutes.gateway.networking.k8s.io.yaml
-  - url: https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/{{ gateway_api_version }}/config/crd/v1alpha2/gateway.networking.k8s.io_udproutes.yaml
-    filename: 07-apiextensions.k8s.io_v1_customresourcedefinition_udproutes.gateway.networking.k8s.io.yaml
 
 k3s_server_manifests_templates:
   - kube-vip.yaml.j2
@@ -71,7 +57,5 @@ metallb_address: !vault |
 longhorn_version: v1.2.3
 
 certmanager_version: v1.7.1
-
-gateway_api_version: v0.4.1
 
 kubernetes_dashboard_version: 5.2.0

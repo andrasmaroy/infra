@@ -33,6 +33,16 @@
     - import_tasks: roles/k3s_server/tasks/kubeconfig.yml
       when: k3s_primary_control_node is defined and k3s_primary_control_node
 
+- name: Apply helm charts from localhost
+  hosts: localhost
+  connection: local
+  vars:
+    ansible_become: false
+  roles:
+    - k3s_gateway_api
+  environment:
+    K8S_AUTH_KUBECONFIG: ~/.kube/kubi.yaml
+
 - hosts: raspberry_pi
   roles:
     - raspberry_pi
