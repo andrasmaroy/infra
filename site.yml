@@ -40,6 +40,7 @@
     ansible_become: false
   roles:
     - k3s_gateway_api
+    - helm_metallb
   environment:
     K8S_AUTH_KUBECONFIG: ~/.kube/kubi.yaml
 
