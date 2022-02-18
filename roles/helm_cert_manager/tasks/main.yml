@@ -1,0 +1,55 @@
+---
+
+- name: Add cert-manager helm repository
+  kubernetes.core.helm_repository:
+    name: jetstack
+    url: https://charts.jetstack.io
+
+- name: Install cert-manager
+  kubernetes.core.helm:
+    name: cert-manager
+    chart_ref: jetstack/cert-manager
+    namespace: cert-manager
+    chart_version: "{{ certmanager_version }}"
+    update_repo_cache: true
+    create_namespace: true
+    atomic: true
+    values:
+      installCRDs: true
+      extraArg:
+        - --dns01-recursive-nameservers-only
+        - --dns01-recursive-nameservers="1.1.1.1:53,9.9.9.9:53"
+
+- name: Create secret with Cloudflare API key
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: cloudflare-api-key
+        namespace: cert-manager
+      type: Opaque
+      stringData:
+        api-key: "{{ cloudflare_api_key }}"
+
+- name: Create certificate issuer
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      metadata:
+        name: letsencrypt
+      spec:
+        acme:
+          email: "{{ email_address }}"
+          server: https://acme-v02.api.letsencrypt.org/directory
+          privateKeySecretRef:
+            name: letsencrypt-key
+          solvers:
+            - selector: {}
+              dns01:
+                cloudflare:
+                  email: "{{ email_address }}"
+                  apiKeySecretRef:
+                    name: cloudflare-api-key
+                    key: api-key
