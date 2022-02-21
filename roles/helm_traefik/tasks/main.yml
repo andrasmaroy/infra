@@ -97,10 +97,17 @@
       spec:
         parentRefs:
           - name: traefik
+            group: gateway.networking.k8s.io
+            kind: Gateway
         hostnames:
           - traefik.kubi.{{ domain_local }}
         rules:
           - backendRefs:
-              - name: api@internal
+              - group: traefik.containo.us
                 kind: TraefikService
-                group: traefik.containo.us
+                name: api@internal
+                weight: 1
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /

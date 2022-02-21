@@ -28,13 +28,19 @@
         parentRefs:
           - name: traefik
             namespace: kube-system
-
+            group: gateway.networking.k8s.io
+            kind: Gateway
         hostnames:
           - longhorn.kubi.{{ domain_local }}
-
         rules:
           - backendRefs:
-              - name: longhorn-frontend
+              - group: ""
+                kind: Service
+                name: longhorn-frontend
                 namespace: longhorn-system
                 port: 80
                 weight: 1
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
