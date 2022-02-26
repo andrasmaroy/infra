@@ -1,0 +1,20 @@
+---
+
+- name: Add backports apt source
+  ansible.builtin.apt_repository:
+    repo: deb http://deb.debian.org/debian/ {{ ansible_distribution_release }}-backports main contrib non-free
+    filename: "{{ ansible_distribution_release }}-backports"
+
+- name: Install appropriate kernel headers
+  ansible.builtin.apt:
+    name: "linux-headers-{{ ansible_kernel }}"
+
+- name: Install ZFS
+  ansible.builtin.apt:
+    name: zfsutils-linux
+    default_release: "{{ ansible_distribution_release }}-backports"
+
+- name: Load ZFS modules
+  community.general.modprobe:
+    name: zfs
+    state: present
