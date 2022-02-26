@@ -1,0 +1,22 @@
+---
+
+- name: Import or create pool
+  block:
+    - name: Try importing the pool first
+      ansible.builtin.command:
+        cmd: zpool import tank
+        creates: /tank
+
+    - name: Check if the pool was imported
+      community.general.zpool_facts:
+        pool: tank
+  rescue:
+    - name: Create the pool as it doesn't exist
+      ansible.builtin.command:
+        argv: "{{ [
+            'zpool',
+            'create',
+            'tank',
+            'raidz2'
+            ] + zpool_disks }}"
+        creates: /tank

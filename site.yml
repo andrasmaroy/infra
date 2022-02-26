@@ -14,6 +14,8 @@
     - luks_tpm
     - zfs
     - ntd.nut
+  vars_files:
+    - vars/zpool_disks.yml
 
 - hosts: k3s_agent
   roles:
