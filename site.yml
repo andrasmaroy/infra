@@ -11,6 +11,7 @@
 
 - hosts: nas
   roles:
+    - luks_tpm
     - ntd.nut
 
 - hosts: k3s_agent

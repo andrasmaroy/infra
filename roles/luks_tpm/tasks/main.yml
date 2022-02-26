@@ -1,0 +1,135 @@
+---
+
+- name: Install TPM2 dependencies
+  apt:
+    pkg:
+      - initramfs-tools
+      - tpm2-tools
+
+# Try to load data from where the key should be in the TPM
+# `tpm2_unseal` returns binary data, for ansible to be able to handle it
+# convert it to hex with `xxd`.
+- name: Check for existing key
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: set -o pipefail; tpm2_unseal -c 0x81000000 | xxd -p -c 256
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  no_log: true
+  register: current_key
+
+# If there was no key in the TPM or it was too short (aka garbage) then
+# generate one, store it in TPM and add it as a key for the LUKS device.
+- name: Generate and persist key
+  when: current_key.rc != 0 or current_key.stdout | length < 128
+  block:
+    # Use the TPM to generate a random key, it can conly generate 48 bytes
+    # at once, so generate 32 bytes random data twice and then combine.
+    - name: Generate random key
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_getrandom -V -o "random{{ item }}.bin" 32
+      loop: "{{ range(1, 3) | list }}"
+
+    # Combine the two 32 byte blobs to form a 64 byte blob.
+    - name: Combine generated keys
+      ansible.builtin.command:
+        chdir: /root
+        cmd: cat random1.bin random2.bin > random.bin
+
+    # Create a primary resident RSA key pair object under the endorsement
+    # hierarchy get its context object that allows one to subsequently perform
+    # TPM operations with this resident key pair, the outputs of which can be
+    # authenticated as having been performed on this device. The endorsement
+    # hierarchy is used to make assertions that are constrained to a specific
+    # TPM instance via chaining to primary keys that are resident to the TPM.
+    - name: Generate root key for owner
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_createprimary -V -C o -c primary.ctx
+
+    # Generate a sealing object from the generated key, that is tied to the
+    # primary key pair.
+    - name: Generate a key to seal under root key "primary"
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_create -V -g sha256 -u seal.pub -r seal.priv -i random.bin -C primary.ctx
+
+    # Load the seal key (public and private) part into TPM under under root key
+    # "primary" and then given 'seal.ctx' context
+    - name: Load the seal key into TPM
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_load -V -C primary.ctx -u seal.pub -r seal.priv -c seal.ctx
+
+    # Clear any data at the TPM address, if any.
+    - name: Persist the seal key into TPM
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_evictcontrol -V -C o -c 0x81000000
+      failed_when: false
+
+    # Persist the seal key into TPM.
+    - name: Persist the seal key into TPM
+      ansible.builtin.command:
+        chdir: /root
+        cmd: tpm2_evictcontrol -V -C o -c seal.ctx 0x81000000
+
+    # Add the randomly generated key to the LUKS device, so that later it can
+    # be used to unlock it.
+    - name: Add key to luks
+      community.crypto.luks_device:
+        device: "{{ luks_device }}"
+        new_keyfile: /root/random.bin
+        passphrase: "{{ luks_passphrase }}"
+  always:
+    # Make sure that no sensitive data remains on the disk from the above
+    # process.
+    # Marked to run even in check mode.
+    - name: Cleanup key data
+      ansible.builtin.file:
+        path: "/root/{{ item }}"
+        state: absent
+      loop:
+        - primary.ctx
+        - random.bin
+        - random1.bin
+        - random2.bin
+        - seal.ctx
+        - seal.priv
+        - seal.pub
+      check_mode: false
+
+# Copy initramfs hook that copies the binaries needed to use TPM to the initrd
+# and loads the necessary modules there as well.
+- name: Copy tpm hook
+  ansible.builtin.copy:
+    dest: /etc/initramfs-tools/hooks/tpm2
+    mode: 0755
+    src: tpm2
+  notify: Update initramfs
+
+# Copy the script that will be used to during the mount phase to retrieve the
+# key from TPM and unlock the LUKS volume with it.
+- name: Copy unlock script
+  ansible.builtin.copy:
+    dest: /usr/local/bin/unlock-luks-from-tpm.sh
+    mode: 0755
+    src: unlock-luks-from-tpm.sh
+  notify: Update initramfs
+
+# Add the above unlock script to crypttab, so that it is actually called when
+# trying to unlock and mount the encrypted volume.
+# The posix.mount module is designed to manipulate fstab and crypttab, this
+# adds 0 0 to the end of the definition which is out spec for the crypttab, but
+# it is ignored based on testing.
+- name: Add unlock script to crypttab
+  ansible.posix.mount:
+    fstab: /etc/crypttab
+    fstype: none
+    opts: luks,initramfs,keyscript=/usr/local/bin/unlock-luks-from-tpm.sh,discard
+    path: "UUID={{ luks_uuid }}"
+    src: "{{ luks_target }}"
+    state: present
+  notify: Update initramfs
