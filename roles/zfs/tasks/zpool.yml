@@ -33,3 +33,17 @@
     cmd: zpool set feature@encryption=enabled tank
   when: zpool_encryption_feature.stdout != "enabled" and
         zpool_encryption_feature.stdout != "active"
+
+# To be able to mount encrypted volumes at boot time ZFS first needs to load
+# the keys. Since the root filesystem is encrypted, storing the keys there
+# should be fine.
+# To actually load the stored keys add a systmd service that will run before
+# mounting the volumes and loads the keys from the system.
+- name: Copy zfs-load-key unit file
+  ansible.builtin.copy:
+    src: zfs-load-key.service
+    dest: /etc/systemd/system/zfs-load-key.service
+
+- name: Enable the zfs-load-key service
+  ansible.builtin.service:
+    name: zfs-load-key
