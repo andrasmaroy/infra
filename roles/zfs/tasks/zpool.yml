@@ -20,3 +20,16 @@
             'raidz2'
             ] + zpool_disks }}"
         creates: /tank
+
+- name: Check if encryption is enabled for the pool
+  ansible.builtin.command:
+    cmd: zpool get -H -o value feature@encryption tank
+  changed_when: false
+  check_mode: false
+  register: zpool_encryption_feature
+
+- name: Enable encryption
+  ansible.builtin.command:
+    cmd: zpool set feature@encryption=enabled tank
+  when: zpool_encryption_feature.stdout != "enabled" and
+        zpool_encryption_feature.stdout != "active"
