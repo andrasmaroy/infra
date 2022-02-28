@@ -1,16 +1,24 @@
 ---
 
+# Use a block for pool creation so that if it already exists we don't try to
+# create it again.
 - name: Import or create pool
   block:
+    # Try to import the pool first, if the disks already contain a pool with
+    # this name, then this steps saves the creation process.
     - name: Try importing the pool first
       ansible.builtin.command:
         cmd: zpool import tank
         creates: /tank
 
+    # Fetch pool facts to see if it was properly imported and it's not just
+    # garbage in the folder that is assumed to be the pool.
     - name: Check if the pool was imported
       community.general.zpool_facts:
         pool: tank
   rescue:
+    # If importing failed or the pool doesn't even exists, create it from
+    # scratch. The disk IDs need to be specified for creation.
     - name: Create the pool as it doesn't exist
       ansible.builtin.command:
         argv: "{{ [
@@ -21,6 +29,8 @@
             ] + zpool_disks }}"
         creates: /tank
 
+# Check the encryption feature for the pool, it needs to be enabled on the pool
+# level to be able to create volumes with encryption later on.
 - name: Check if encryption is enabled for the pool
   ansible.builtin.command:
     cmd: zpool get -H -o value feature@encryption tank
