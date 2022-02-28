@@ -13,6 +13,7 @@
   roles:
     - luks_tpm
     - zfs
+    - netatalk
     - ntd.nut
   vars_files:
     - vars/zpool_disks.yml

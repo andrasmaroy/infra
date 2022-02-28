@@ -1,0 +1,70 @@
+---
+
+# Create a ZFS volume to be used for time machine backups, set its size limit
+# to 2TB (double the size of the MacBook SSD) so that time machine actually
+# detects space running out.
+# No encryption here as the backups themselves are encrypted.
+- name: Time Machine zfs dataset
+  zfs:
+    name: tank/TimeMachine
+    state: present
+    extra_zfs_properties:
+      refquota: "2001111162552"   # 1.82TiB or 2TB
+
+# Create a unix group that allows access to the time machine volume, anyone in
+# this group is able to use the volume for backups.
+- name: Time Machine group
+  group:
+    name: timemachine
+    system: true
+
+# Actually associate the group with the volume, giving group write access too.
+- name: Time Machine dataset permissions
+  file:
+    state: directory
+    path: /tank/TimeMachine
+    group: timemachine
+    mode: 0770
+
+# Pin netatalk to 3.1.12 to make sure the newer version is used and to avoid
+# breaking changes. Version 2 and 3 use completely different configuration
+# schemes, hence the importance of this.
+- name: Install netatalk
+  apt:
+    pkg:
+      - netatalk=3.1.12*
+      - avahi-daemon
+
+# Configure AFP shares
+# Configured users should be able to access their home folders on the pool
+# as well as users in the timemachine group be able to use the share for time
+# machine backups.
+# Reference: http://netatalk.sourceforge.net/3.1/htmldocs/afp.conf.5.html
+- name: Setup afp.conf
+  community.general.ini_file:
+    path: /etc/netatalk/afp.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: 0644
+  loop:
+    - {section: "Global", option: "mimic model", value: "RackMac"}
+    - {section: "Global", option: "fqdn", value: "nas.{{ domain_local }}"}
+    - {section: "Homes", option: "basedir regex", value: "/tank/Home"}
+    - {section: "Time Machine", option: "path", value: "/tank/TimeMachine"}
+    - {section: "Time Machine", option: "time machine", value: "yes"}
+    - {section: "Time Machine", option: "vol size limit", value: 1908736}
+    - {section: "Time Machine", option: "valid users", value: "@timemachine"}
+  notify: Restart netatalk
+
+- name: Start Netatalk Services
+  service:
+    name: netatalk
+    enabled: true
+    state: started
+
+- name: Start Avahi Services
+  service:
+    name: avahi-daemon
+    enabled: true
+    state: started
