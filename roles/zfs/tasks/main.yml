@@ -2,3 +2,4 @@
 
 - import_tasks: install.yml
 - import_tasks: zpool.yml
+- import_tasks: vols.yml

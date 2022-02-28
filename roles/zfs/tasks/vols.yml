@@ -1,0 +1,41 @@
+---
+
+# Since the root filesystem is encrypted, it is safe to store keys for the
+# ZFS volumes on it for auto unlocking. ZFS doesn't support TPM for this
+# purpose, so this is the next best thing.
+- name: Create keystore folder
+  ansible.builtin.file:
+    group: root
+    mode: 0700
+    owner: root
+    path: /etc/keystore
+    state: directory
+
+- name: Include zfs keys file
+  ansible.builtin.include_vars:
+    file: zpool_keys.yml
+  no_log: true
+
+# Store the actual encryption keys with strict permissions. Keys are 32 byte
+# long hex strings.
+- name: Persist ZFS encryption keys
+  ansible.builtin.copy:
+    content: "{{ zfs_keys[item] }}"
+    dest: "/etc/keystore/tank-{{ item }}.key"
+    group: root
+    mode: 0400
+    owner: root
+  no_log: true
+  loop: "{{ zfs_keys.keys() }}"
+
+# Create the volumes corresponding to the stored keys. Explicitly set the
+# encryption algorithm and format that matches the keys stored beforehand.
+- name: Create encrypted volumes
+  community.general.zfs:
+    name: "tank/{{ item | capitalize }}"
+    state: present
+    extra_zfs_properties:
+      encryption: aes-256-gcm
+      keyformat: hex
+      keylocation: "file:///etc/keystore/tank-{{ item }}.key"
+  loop: "{{ zfs_keys.keys() }}"

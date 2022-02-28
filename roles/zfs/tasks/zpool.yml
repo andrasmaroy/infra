@@ -43,6 +43,7 @@
   ansible.builtin.copy:
     src: zfs-load-key.service
     dest: /etc/systemd/system/zfs-load-key.service
+    mode: 0644
 
 - name: Enable the zfs-load-key service
   ansible.builtin.service:
