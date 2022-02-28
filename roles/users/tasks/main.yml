@@ -1,0 +1,42 @@
+---
+
+- name: Include users var file
+  ansible.builtin.include_vars:
+    file: users.yml
+  no_log: true
+
+# Create a separate volume for each user, properties are inherited from the
+# parent volume, so encryption doesn't need to be specified again.
+- name: User home datasets
+  zfs:
+    name: tank/Home/{{ item }}
+    state: present
+  loop: "{{ users.keys() }}"
+
+# Create the users themselves. Since the users are only used for accessing
+# shares set them with nologin shell.
+# Home folders are set to be the volumes created above.
+- name: Create users
+  user:
+    create_home: false
+    groups: "{{ users[item].groups }}"
+    home: /tank/Home/{{ users[item].name }}
+    name: "{{ users[item].name }}"
+    password: "{{ users[item].password | string | password_hash('sha512', 65534 | random(seed=inventory_hostname) | string) }}"
+    shell: /usr/sbin/nologin
+  loop: "{{ users.keys() }}"
+  loop_control:
+    label: "{{ item }}"
+  register: user_accounts
+
+# Set ownership for the volumes used for the home folders so that they can
+# actually be accessed.
+- name: Home folder permissions
+  file:
+    group: "{{ item.group }}"
+    mode: 0755
+    owner: "{{ item.uid }}"
+    path: "{{ item.home }}"
+    state: directory
+  with_items:
+    - "{{ user_accounts.results }}"

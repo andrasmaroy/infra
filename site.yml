@@ -14,6 +14,7 @@
     - luks_tpm
     - zfs
     - netatalk
+    - users
     - ntd.nut
   vars_files:
     - vars/zpool_disks.yml
