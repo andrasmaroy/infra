@@ -29,12 +29,7 @@
 
 - hosts: k3s
   roles:
-    - role: xanmanning.k3s
-      # Remove check for iptables-legacy, as of v1.22.3 of K3S it is no longer
-      # a hard dependency and works with nftables instead.
-      # See: https://github.com/k3s-io/k3s/issues/4188
-      k3s_check_packages:
-        debian-11: []
+    - xanmanning.k3s
   tasks:
     - import_tasks: roles/k3s_server/tasks/kubeconfig.yml
       when: k3s_primary_control_node is defined and k3s_primary_control_node

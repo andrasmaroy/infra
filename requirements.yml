@@ -10,7 +10,7 @@ roles:
   - name: zfuller.pihole
     src: https://github.com/andrasmaroy/pihole.git
   - name: xanmanning.k3s
-    version: v3.1.0
+    version: v3.1.1
   - name: andrasmaroy.zigbee2mqtt
     src: https://github.com/andrasmaroy/ansible-role-zigbee2mqtt
 
