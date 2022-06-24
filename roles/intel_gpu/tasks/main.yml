@@ -1,0 +1,30 @@
+---
+
+- name: Add non-free apt source
+  ansible.builtin.apt_repository:
+    repo: deb http://ftp.de.debian.org/debian bullseye main non-free
+    filename: bullseye-non-free
+    state: present
+  register: nonfree_apt_source
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: nonfree_apt_source.changed
+
+- name: Install GPU driver
+  ansible.builtin.apt:
+    pkg:
+      - intel-media-va-driver-non-free
+      - firmware-linux
+      - firmware-realtek
+  notify: Update initramfs
+
+- name: Configure driver
+  ansible.builtin.copy:
+    src: i915.conf
+    dest: /etc/modprobe.d/i915.conf
+    group: root
+    mode: 0644
+    owner: root
+  notify: Update initramfs

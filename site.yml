@@ -19,6 +19,10 @@
   vars_files:
     - vars/zpool_disks.yml
 
+- hosts: u59
+  roles:
+    - intel_gpu
+
 - hosts: k3s_agent
   roles:
     - k3s_agent
