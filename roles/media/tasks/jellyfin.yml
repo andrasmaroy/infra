@@ -1,0 +1,69 @@
+---
+
+- name: Add utkuozdemir helm repository
+  kubernetes.core.helm_repository:
+    name: utkuozdemir
+    url: https://utkuozdemir.org/helm-charts
+
+- name: Install Jellyfin
+  kubernetes.core.helm:
+    name: jellyfin
+    chart_ref: utkuozdemir/jellyfin
+    namespace: media
+    chart_version: "{{ jellyfin_chart_version }}"
+    update_repo_cache: true
+    create_namespace: true
+    atomic: true
+    values:
+      extraVolumeMounts:
+        - mountPath: /mnt/tv
+          name: media-shows
+        - mountPath: /mnt/movies
+          name: media-movies
+      extraVolumes:
+        - name: media-shows
+          nfs:
+            path: /tank/Media/Shows/Complete
+            server: nas
+        - name: media-movies
+          nfs:
+            path: /tank/Media/Movies/Complete
+            server: nas
+      image:
+        repository: docker.io/jellyfin/jellyfin
+        tag: latest
+      persistence:
+        config:
+          storageClass: longhorn
+      resources:
+        limits:
+          gpu.intel.com/i915: 1
+
+- name: Add route for Jellyfin
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: gateway.networking.k8s.io/v1alpha2
+      kind: HTTPRoute
+      metadata:
+        name: jellyfin
+        namespace: media
+      spec:
+        parentRefs:
+          - name: traefik
+            namespace: kube-system
+            group: gateway.networking.k8s.io
+            kind: Gateway
+        hostnames:
+          - jelly.kubi.{{ domain_local }}
+        rules:
+          - backendRefs:
+              - group: ""
+                kind: Service
+                name: jellyfin
+                namespace: media
+                port: 8096
+                weight: 1
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /

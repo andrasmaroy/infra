@@ -1,3 +1,5 @@
 ---
 
 intel_gpu_plugin_version: v0.24.0
+
+jellyfin_chart_version: 2.0.0
