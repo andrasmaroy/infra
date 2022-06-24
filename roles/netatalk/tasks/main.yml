@@ -42,6 +42,17 @@
   when: item is match("Downloads|Media.*")
   loop: "{{ zfs_vols.keys() }}"
 
+# Create a unix group that allows access to the media volumes
+- name: Media group
+  group:
+    name: media
+    system: true
+  register: media_group
+
+- name: Export media group ID for use later
+  ansible.builtin.set_fact:
+    media_gid: "{{ media_group.gid }}"
+
 # Pin netatalk to 3.1.12 to make sure the newer version is used and to avoid
 # breaking changes. Version 2 and 3 use completely different configuration
 # schemes, hence the importance of this.
