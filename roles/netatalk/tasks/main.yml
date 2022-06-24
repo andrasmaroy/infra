@@ -26,6 +26,22 @@
     group: timemachine
     mode: 0770
 
+- name: Include zfs vols file
+  ansible.builtin.include_vars:
+    file: zfs_vols.yml
+  no_log: true
+
+# These shared folders should be writeable by group, enforce this by group ACL.
+- name: Set ACLs for shared directories
+  acl:
+    path: /tank/{{ item }}
+    state: present
+    default: true
+    etype: group
+    permissions: rwx
+  when: item is match("Downloads|Media.*")
+  loop: "{{ zfs_vols.keys() }}"
+
 # Pin netatalk to 3.1.12 to make sure the newer version is used and to avoid
 # breaking changes. Version 2 and 3 use completely different configuration
 # schemes, hence the importance of this.
@@ -55,6 +71,12 @@
     - {section: "Time Machine", option: "time machine", value: "yes"}
     - {section: "Time Machine", option: "vol size limit", value: 1908736}
     - {section: "Time Machine", option: "valid users", value: "@timemachine"}
+    - {section: "Media", option: "path", value: "/tank/Media"}
+    - {section: "Media", option: "chmod request", value: "ignore"}
+    - {section: "Media", option: "valid users", value: "@media"}
+    - {section: "Downloads", option: "path", value: "/tank/Downloads"}
+    - {section: "Downloads", option: "chmod request", value: "ignore"}
+    - {section: "Downloads", option: "valid users", value: "@media"}
   notify: Restart netatalk
 
 - name: Start Netatalk Services
