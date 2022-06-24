@@ -15,7 +15,6 @@
     - zfs
     - netatalk
     - users
-    - ntd.nut
   vars_files:
     - vars/zpool_disks.yml
 
@@ -77,6 +76,7 @@
 - hosts: pihole
   roles:
     - zfuller.pihole
+    - ntd.nut
   vars_files:
     - vars/pihole.yml
 

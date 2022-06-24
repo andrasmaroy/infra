@@ -1,7 +1,7 @@
 ---
 
 nut_netclient_monitors:
-    - system: "ups@nas.{{ domain_local }}"
+    - system: "ups@pihole.{{ domain_local }}"
       powervalue: 1
       username: monitor
       password: "{{ nut_password }}"

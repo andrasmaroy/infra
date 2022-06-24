@@ -63,3 +63,33 @@ pihole_gravity_lists:
   - address: https://blocklistproject.github.io/Lists/tracking.txt
     comment: Sites dedicated to tracking and gathering visitor info
     enabled: true
+
+nut_ups:
+  - name: ups
+    driver: usbhid-ups
+    device: auto
+    description: CyberPower CP1500EPFCLCD UPS
+    extra: |
+      pollinterval = 15
+
+nut_mode: netserver
+
+nut_packages:
+  - nut
+
+nut_upsd_extra: |
+  MAXAGE 25
+  MAXCONN 1024
+  LISTEN 0.0.0.0 3493
+
+nut_upsmon_extra: |
+  MINSUPPLIES 1
+  SHUTDOWNCMD "/sbin/shutdown -h +0"
+  POLLFREQ 5
+  POLLFREQALERT 5
+  HOSTSYNC 15
+  DEADTIME 25
+  POWERDOWNFLAG /etc/killpower
+  RBWARNTIME 43200
+  NOCOMMWARNTIME 300
+  FINALDELAY 5
