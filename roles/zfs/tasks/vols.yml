@@ -11,31 +11,29 @@
     path: /etc/keystore
     state: directory
 
-- name: Include zfs keys file
+- name: Include zfs vols file
   ansible.builtin.include_vars:
-    file: zpool_keys.yml
+    file: zfs_vols.yml
   no_log: true
 
 # Store the actual encryption keys with strict permissions. Keys are 32 byte
 # long hex strings.
 - name: Persist ZFS encryption keys
   ansible.builtin.copy:
-    content: "{{ zfs_keys[item] }}"
-    dest: "/etc/keystore/tank-{{ item }}.key"
+    content: "{{ zfs_vols[item].key }}"
+    dest: "/etc/keystore/tank-{{ item | lower() }}.key"
     group: root
     mode: 0400
     owner: root
   no_log: true
-  loop: "{{ zfs_keys.keys() }}"
+  when: zfs_vols[item].key is defined
+  loop: "{{ zfs_vols.keys() }}"
 
-# Create the volumes corresponding to the stored keys. Explicitly set the
-# encryption algorithm and format that matches the keys stored beforehand.
-- name: Create encrypted volumes
+# Create the volumes, encryption and other properties defined in the extra
+# properties field.
+- name: Create volumes
   community.general.zfs:
-    name: "tank/{{ item | capitalize }}"
+    name: "tank/{{ item }}"
     state: present
-    extra_zfs_properties:
-      encryption: aes-256-gcm
-      keyformat: hex
-      keylocation: "file:///etc/keystore/tank-{{ item }}.key"
-  loop: "{{ zfs_keys.keys() }}"
+    extra_zfs_properties: "{{ zfs_vols[item].extra_zfs_properties | default({}) }}"
+  loop: "{{ zfs_vols.keys() }}"
