@@ -15,6 +15,7 @@
     - zfs
     - netatalk
     - users
+    - geerlingguy.nfs
   vars_files:
     - vars/zpool_disks.yml
 
