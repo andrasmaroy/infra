@@ -5,6 +5,12 @@
     file: users.yml
   no_log: true
 
+# Create user groups first
+- name: Create groups
+  group:
+    name: "{{ item }}"
+  loop: "{{ user_groups }}"
+
 # Create a separate volume for each user, properties are inherited from the
 # parent volume, so encryption doesn't need to be specified again.
 - name: User home datasets
