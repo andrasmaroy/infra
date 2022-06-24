@@ -1,0 +1,7 @@
+---
+
+zpool_disks:
+  - wwn-0x50014ee26927e234
+  - wwn-0x50014ee2be7dcafe
+  - wwn-0x50014ee2be7f80cd
+  - wwn-0x50014ee26927f57d

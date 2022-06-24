@@ -25,7 +25,7 @@
             'zpool',
             'create',
             'tank',
-            'raidz2'
+            'raidz'
             ] + zpool_disks }}"
         creates: /tank
 
