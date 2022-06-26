@@ -100,6 +100,7 @@
             group: gateway.networking.k8s.io
             kind: Gateway
         hostnames:
+          - play.{{ domain_public }}
           - jelly.kubi.{{ domain_local }}
         rules:
           - backendRefs:
