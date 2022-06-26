@@ -70,6 +70,11 @@
         - name: certificate
           secret:
             secretName: letsencrypt-jellyfin
+      additionalPorts:
+        - name: https
+          containerPort: 8920
+          protocol: TCP
+          hostPort: 8920
       image:
         repository: docker.io/jellyfin/jellyfin
         tag: latest
