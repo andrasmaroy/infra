@@ -5,6 +5,41 @@
     name: utkuozdemir
     url: https://utkuozdemir.org/helm-charts
 
+- name: Create secret for PKCS#12 keystore password
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: letsencrypt-jellyfin-pkcs12
+        namespace: media
+      type: Opaque
+      stringData:
+        password: "{{ jellyfin_pkcs12_password }}"
+
+- name: Request certificate
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: cert-manager.io/v1
+      kind: Certificate
+      metadata:
+        name: letsenrypt-jellyfin
+        namespace: media
+      spec:
+        dnsNames:
+          - 'jelly.{{ domain_local }}'
+        secretName: letsencrypt-jellyfin
+        issuerRef:
+          name: letsencrypt
+          kind: ClusterIssuer
+          group: cert-manager.io
+        keystores:
+          pkcs12:
+            create: true
+            passwordSecretRef:
+              name: letsencrypt-jellyfin-pkcs12
+              key: password
+
 - name: Install Jellyfin
   kubernetes.core.helm:
     name: jellyfin
@@ -20,6 +55,9 @@
           name: media-shows
         - mountPath: /mnt/movies
           name: media-movies
+        - mountPath: /etc/ssl/private
+          name: certificate
+          readOnly: true
       extraVolumes:
         - name: media-shows
           nfs:
@@ -29,6 +67,9 @@
           nfs:
             path: /tank/Media/Movies/Complete
             server: nas
+        - name: certificate
+          secret:
+            secretName: letsencrypt-jellyfin
       image:
         repository: docker.io/jellyfin/jellyfin
         tag: latest
