@@ -1,0 +1,9 @@
+---
+
+- name: Setup kernel cmdline
+  lineinfile:
+    path: /boot/cmdline.txt
+    backrefs: true
+    regexp: ^(cgroup_memory=1 cgroup_enable=memory )?(.*)$
+    line: 'cgroup_memory=1 cgroup_enable=memory \2'
+  notify: 'Reboot if kernel cmdline has been changed'
