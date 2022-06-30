@@ -14,6 +14,9 @@
     update_repo_cache: true
     create_namespace: true
     atomic: true
+    values:
+      defaultSettings:
+        createDefaultDiskLabeledNodes: true
 
 - name: Add route for Longhorn UI
   kubernetes.core.k8s:

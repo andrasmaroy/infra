@@ -4,3 +4,7 @@
 k3s_registration_address: "kubi-api.{{ domain_local }}"
 k3s_become: true
 k3s_release_version: v1.22.6+k3s1
+
+node_label:
+  - "node.longhorn.io/create-default-disk=true"
+node_taint: []

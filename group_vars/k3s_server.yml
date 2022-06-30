@@ -15,6 +15,7 @@ k3s_server:
   tls-san:
     - "{{ kube_vip_address }}"
   node-taint: "{{ node_taint }}"
+  node-label: "{{ node_label }}"
 
 k3s_server_manifests_urls:
   - url: https://kube-vip.io/manifests/rbac.yaml
