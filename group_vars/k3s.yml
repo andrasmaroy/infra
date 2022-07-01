@@ -9,6 +9,17 @@ node_label:
   - "node.longhorn.io/create-default-disk=true"
 node_taint: []
 
+kubelet_arg:
+  - "feature-gates=GracefulNodeShutdown=true"
+  - "config=/etc/rancher/k3s/kubelet.config"
+
+kubelet_config:
+  apiVersion: kubelet.config.k8s.io/v1beta1
+  kind: KubeletConfiguration
+
+  shutdownGracePeriod: 30s
+  shutdownGracePeriodCriticalPods: 10s
+
 notroot_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37623139303032323466616165656333653837373832316438643739643863326231643239323565

@@ -4,3 +4,4 @@
 k3s_agent:
   node-taint: "{{ node_taint }}"
   node-label: "{{ node_label }}"
+  kubelet-arg: "{{ kubelet_arg }}"

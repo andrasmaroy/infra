@@ -1,0 +1,17 @@
+---
+
+- name: Create config folder
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Fill kubelet config
+  ansible.builtin.copy:
+    content: "{{ kubelet_config | to_nice_yaml }}"
+    dest: /etc/rancher/k3s/kubelet.config
+    group: root
+    mode: 0644
+    owner: root

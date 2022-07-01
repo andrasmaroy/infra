@@ -16,6 +16,7 @@ k3s_server:
     - "{{ kube_vip_address }}"
   node-taint: "{{ node_taint }}"
   node-label: "{{ node_label }}"
+  kubelet-arg: "{{ kubelet_arg }}"
 
 k3s_server_manifests_urls:
   - url: https://kube-vip.io/manifests/rbac.yaml
