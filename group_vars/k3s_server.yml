@@ -2,7 +2,7 @@
 
 # k3s server variables
 node_taint:
-  - "node-role.kubernetes.io/master=true:NoSchedule"
+  - "node-role.kubernetes.io/master=true:PreferNoSchedule"
 
 k3s_control_node: true
 k3s_etcd_datastore: true

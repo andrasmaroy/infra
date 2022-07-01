@@ -1,0 +1,5 @@
+---
+
+node_taint:
+  - "node-role.kubernetes.io/master=true:NoSchedule"
+node_label: []
