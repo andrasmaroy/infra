@@ -5,6 +5,22 @@
     name: utkuozdemir
     url: https://utkuozdemir.org/helm-charts
 
+- name: Create persistent volume for config
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: jellyfin-config
+        namespace: media
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: longhorn
+
 - name: Create secret for PKCS#12 keystore password
   kubernetes.core.k8s:
     definition:
@@ -80,7 +96,7 @@
         tag: latest
       persistence:
         config:
-          storageClass: longhorn
+          existingClaim: jellyfin-config
       resources:
         limits:
           gpu.intel.com/i915: 1
