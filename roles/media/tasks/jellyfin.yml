@@ -66,31 +66,29 @@
     create_namespace: true
     atomic: true
     values:
-      extraVolumeMounts:
-        - mountPath: /mnt/tv
-          name: media-shows
-        - mountPath: /mnt/movies
-          name: media-movies
-        - mountPath: /etc/ssl/private
-          name: certificate
-          readOnly: true
-      extraVolumes:
-        - name: media-shows
-          nfs:
-            path: /tank/Media/Shows/Complete
-            server: nas
-        - name: media-movies
-          nfs:
-            path: /tank/Media/Movies/Complete
-            server: nas
-        - name: certificate
-          secret:
-            secretName: letsencrypt-jellyfin
       additionalPorts:
         - name: https
           containerPort: 8920
           protocol: TCP
           hostPort: 8920
+      extraVolumeMounts:
+        - mountPath: /mnt/tv
+          name: media
+          subPath: Shows/Complete
+        - mountPath: /mnt/movies
+          name: media
+          subPath: Movies/Complete
+        - mountPath: /etc/ssl/private
+          name: certificate
+          readOnly: true
+      extraVolumes:
+        - name: media
+          nfs:
+            path: /tank/Media
+            server: nas
+        - name: certificate
+          secret:
+            secretName: letsencrypt-jellyfin
       image:
         repository: docker.io/jellyfin/jellyfin
         tag: latest
