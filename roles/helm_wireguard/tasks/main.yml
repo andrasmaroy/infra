@@ -1,0 +1,63 @@
+---
+
+- name: Add k8s-at-home helm repository
+  kubernetes.core.helm_repository:
+    name: k8s-at-home
+    url: https://k8s-at-home.com/charts/
+
+- name: Create wireguard namespace
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: wireguard
+
+- name: Include wireguard vars file
+  ansible.builtin.include_vars:
+    file: wireguard.yml
+  no_log: true
+
+- name: Create secret for Wireguard config
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: wireguard-config
+        namespace: wireguard
+      type: Opaque
+      stringData:
+        wg0.conf: "{{ lookup('template', 'wg0.conf.j2') }}"
+  no_log: true
+
+- name: Install Wireguard
+  kubernetes.core.helm:
+    name: wireguard
+    chart_ref: k8s-at-home/wireguard
+    namespace: wireguard
+    create_namespace: true
+    chart_version: "{{ wireguard_chart_version }}"
+    update_repo_cache: true
+    atomic: true
+    values:
+      env:
+        TZ: "{{ timezone }}"
+        LOG_LEVEL: verbose
+      persistence:
+        config:
+          enabled: true
+          type: secret
+          name: wireguard-config
+          defaultMode: 0600
+          mountPath: /etc/wireguard/wg0.conf
+          subPath: wg0.conf
+      configSecret:
+        enabled: false
+      service:
+        main:
+          annotations:
+            metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+          type: LoadBalancer
+          externalIPs:
+            - "{{ metallb_address }}"

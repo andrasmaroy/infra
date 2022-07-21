@@ -56,6 +56,8 @@
       delegate_to: localhost
     - role: helm_kubernetes_dashboard
       delegate_to: localhost
+    - role: helm_wireguard
+      delegate_to: localhost
     - role: helm_yugabytedb
       delegate_to: localhost
   environment:

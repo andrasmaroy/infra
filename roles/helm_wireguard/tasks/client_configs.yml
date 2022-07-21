@@ -1,0 +1,20 @@
+---
+
+- name: Include wireguard vars file
+  ansible.builtin.include_vars:
+    file: wireguard.yml
+  no_log: true
+
+- name: Create client config folders
+  file:
+    path: "./wireguard_clients/client_{{ item }}"
+    state: directory
+    mode: 0700
+  loop: "{{ range(1, wireguard_peers | length + 1) | list }}"
+
+- name: Generate client configs
+  template:
+    src: wg-client.conf.j2
+    dest: "./wireguard_clients/client_{{ item }}/wg0-client.conf"
+    mode: 0600
+  loop: "{{ range(1, wireguard_peers | length + 1) | list }}"

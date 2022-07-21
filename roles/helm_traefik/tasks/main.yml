@@ -42,6 +42,8 @@
       service:
         externalIPs:
           - "{{ metallb_address }}"
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
       experimental:
         kubernetesGateway:
           enabled: true
