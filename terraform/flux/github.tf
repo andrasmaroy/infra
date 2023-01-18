@@ -25,6 +25,19 @@ resource "kubernetes_secret" "main" {
   }
 }
 
+resource "kubernetes_secret" "sops-gpg" {
+  depends_on = [kubectl_manifest.install]
+
+  metadata {
+    name      = "sops-gpg"
+    namespace = data.flux_sync.main.namespace
+  }
+
+  data = {
+    "sops.asc" = local.flux_secrets.gpg_key
+  }
+}
+
 data "github_repository" "main" {
   full_name = "${local.flux_secrets.github_owner}/${local.repository_name}"
 }
