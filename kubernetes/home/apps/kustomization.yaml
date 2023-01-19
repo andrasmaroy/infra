@@ -9,3 +9,5 @@ patches:
       kind: HelmRelease
       group: helm.toolkit.fluxcd.io
       version: v2beta1
+resources:
+  - drone
