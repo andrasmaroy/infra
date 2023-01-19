@@ -1,6 +1,21 @@
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
+provider "registry.terraform.io/carlpett/sops" {
+  version     = "0.7.2"
+  constraints = "0.7.2"
+  hashes = [
+    "h1:+A1/RJ3eNVQHDFHjol70EfC5Yh9e78WMXxh1uoxlAYQ=",
+    "zh:43f218054ea3a72c9756bf989aeebb9d0f23b66fd08e9fb4ae75d4f921295e82",
+    "zh:57fd326388042a6b7ecd60f740f81e5ef931546c4f068f054e7df34acf65d190",
+    "zh:87b970db8c137f4c2fcbff7a5705419a0aea9268ae0ac94f1ec5b978e42ab0d2",
+    "zh:9e3b67b89ac919f01731eb0466baa08ce0721e6cf962fe6752e7cc526ac0cba0",
+    "zh:c028f67ef330be0d15ce4d7ac7649a2e07a98ed3003fca52e0c72338b5f481f8",
+    "zh:c29362e36a44480d0d9cb7d90d1efba63fe7e0e94706b2a07884bc067c46cbc7",
+    "zh:d5bcfa836244718a1d564aa96eb7d733b4d361b6ecb961f7c5bcd0cadb1dfd05",
+  ]
+}
+
 provider "registry.terraform.io/fluxcd/flux" {
   version     = "0.22.3"
   constraints = "0.22.3"
@@ -37,25 +52,6 @@ provider "registry.terraform.io/gavinbunney/kubectl" {
     "zh:6131a927f9dffa014ab5ca5364ac965fe9b19830d2bbf916a5b2865b956fdfcf",
     "zh:c62e0c9fd052cbf68c5c2612af4f6408c61c7e37b615dc347918d2442dd05e93",
     "zh:f0beffd7ce78f49ead612e4b1aefb7cb6a461d040428f514f4f9cc4e5698ac65",
-  ]
-}
-
-provider "registry.terraform.io/hashicorp/external" {
-  version = "2.2.3"
-  hashes = [
-    "h1:D2RKjqoU26isFINpmeKG9NS0LvkPmrQkNXeYO2TdgyA=",
-    "zh:184ecd339d764de845db0e5b8a9c87893dcd0c9d822167f73658f89d80ec31c9",
-    "zh:2661eaca31d17d6bbb18a8f673bbfe3fe1b9b7326e60d0ceb302017003274e3c",
-    "zh:2c0a180f6d1fc2ba6e03f7dfc5f73b617e45408681f75bca75aa82f3796df0e4",
-    "zh:4b92ae44c6baef4c4952c47be00541055cb5280dd3bc8031dba5a1b2ee982387",
-    "zh:5641694d5daf3893d7ea90be03b6fa575211a08814ffe70998d5adb8b59cdc0a",
-    "zh:5bd55a2be8a1c20d732ac9c604b839e1cadc8c49006315dffa4d709b6874df32",
-    "zh:6e0ef5d11e1597202424b7d69b9da7b881494c9b13a3d4026fc47012dc651c79",
-    "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
-    "zh:9e19f89fa25004d3b926a8d15ea630b4bde62f1fa4ed5e11a3d27aabddb77353",
-    "zh:b763efdd69fd097616b4a4c89cf333b4cee9699ac6432d73d2756f8335d1213f",
-    "zh:e3b561efdee510b2b445f76a52a902c52bee8e13095e7f4bed7c80f10f8d294a",
-    "zh:fe660bb8781ee043a093b9a20e53069974475dcaa5791a1f45fd03c61a26478a",
   ]
 }
 
@@ -118,24 +114,5 @@ provider "registry.terraform.io/integrations/github" {
     "zh:9d7ee91e9ceddf1b753e7923b0a017178398b7d5ce1dc08f6aae3d9de747f262",
     "zh:a8cdf17c25b6d77c0a1498507747c8aa26f3042b01bc67f89ab3d388ca39ec19",
     "zh:ba3393c640dc69644c00d4735b38ac862e7f1e3b1461ba66724feb871380a1fb",
-  ]
-}
-
-provider "registry.terraform.io/meilleursagents/ansiblevault" {
-  version     = "2.2.0"
-  constraints = "2.2.0"
-  hashes = [
-    "h1:TOdx5Wkp6BBfnOoA2+bY67F3SItoXhIoEvow5KCw/pM=",
-    "zh:06faf88f2a6f2e9aabadb0d50565f4804636039042d37984463f0ca647f52189",
-    "zh:15053cceec8b24d9b62598e9e6860607603c2ecc7871705720a0753ef297d79f",
-    "zh:525f261f35d58151b4c51301cc1ae98a592c9b3400449361a91f2d84c467e2ac",
-    "zh:8bfe3b2c2b975792987d0642e8525efbf436ae08b1cebb1fa266b8954cb1915e",
-    "zh:93a943b494b0f70ef644334bf7646bf203ca087873385ab8ff89d406b9448771",
-    "zh:c651248189d297321a48feb775907de0ba2b9a100cb35f7364357b0af0e55931",
-    "zh:ccbee95f3c264c663fcddac8c8c921ec9f4fde95f15196838a73a9bf215a4020",
-    "zh:d3226f7b3a3013fceeef3392f54708b976daa0f43767bc24ff8c420c8a48a1a9",
-    "zh:f236d34596a51f64163eb5d13c3bcea4e10023f7e65f777b7267c463c427aad2",
-    "zh:f79f848b9c4b67879c2c25f2ef5b654eaafcfd7568f442eea2566bb580519c4f",
-    "zh:fbe2363c1c6a32df6443e650b53b5004a4d6f9431d23935ed98c500bed1552bd",
   ]
 }

@@ -1,12 +1,8 @@
 terraform {
   required_providers {
-    ansiblevault = {
-      source  = "MeilleursAgents/ansiblevault"
-      version = "2.2.0"
-    }
-    external = {
-      source  = "hashicorp/external"
-      version = "2.2.3"
+    sops = {
+      source  = "carlpett/sops"
+      version = "0.7.2"
     }
     flux = {
       source  = "fluxcd/flux"
@@ -32,17 +28,8 @@ terraform {
   required_version = "~> 1.3.0"
 }
 
-data "external" "vault_pass" {
-  program = ["bash", "-c", "ansible-vault-pass | jq -R -c '{\"pass\": .}'"]
-}
-
-provider "ansiblevault" {
-  vault_pass  = data.external.vault_pass.result.pass
-  root_folder = "."
-}
-
-data "ansiblevault_path" "flux_secrets" {
-  path = "secrets.yaml"
+data "sops_file" "flux_secrets" {
+  source_file = "secrets.sops.yaml"
 }
 
 provider "flux" {}
