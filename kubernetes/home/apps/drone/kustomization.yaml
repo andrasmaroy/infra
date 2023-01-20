@@ -7,3 +7,4 @@ resources:
   - secrets-runner.sops.yaml
   - repository.yaml
   - release-server.yaml
+  - release-runner.yaml
