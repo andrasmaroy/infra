@@ -1,6 +1,7 @@
 # Generate manifests
 data "flux_install" "main" {
   target_path = local.target_path
+  components_extra = ["image-reflector-controller", "image-automation-controller"]
 }
 
 resource "kubernetes_namespace" "flux_system" {
