@@ -1,6 +1,9 @@
 ---
 name: Tag Flux target
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - flux-image-updates
 
 jobs:
   create-tag:

@@ -1,0 +1,23 @@
+---
+name: Flux auto-PR
+on:
+  create:
+    branches:
+      - flux-image-updates
+
+jobs:
+  pull-request:
+    name: Open PR to main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout
+
+      - uses: repo-sync/pull-request@v2
+        name: pull-request
+        with:
+          destination_branch: "main"
+          pr_title: "[Flux] Automatic update"
+          pr_reviewer: ${{ github.repository_owner }}
+          pr_draft: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
