@@ -5,3 +5,4 @@ resources:
 - gotk-sync.yaml
 - gotk-components.yaml
 - gotk-notifications.yaml
+- gotk-monitoring.yaml
