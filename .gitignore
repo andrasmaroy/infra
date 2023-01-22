@@ -1,2 +1,9 @@
 hosts
 wireguard_clients
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
