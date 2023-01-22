@@ -6,4 +6,5 @@ metadata:
   namespace: drone
 spec:
   interval: 5m0s
-  url: https://charts.drone.io
+  type: "oci"
+  url: oci://ghcr.io/andrasmaroy/drone-charts
