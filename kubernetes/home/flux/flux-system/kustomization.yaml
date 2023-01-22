@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
 - gotk-sync.yaml
 - gotk-components.yaml
+- gotk-notifications.yaml
+- gotk-monitoring.yaml
+- gotk-image-updates.yaml

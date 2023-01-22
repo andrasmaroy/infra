@@ -1,6 +1,12 @@
 ---
-name: TFLint
-on: [push, pull_request]
+name: Terraform lint
+on:
+  push:
+    paths:
+      - 'terraform/**'
+  pull_request:
+    paths:
+      - 'terraform/**'
 
 jobs:
   tflint:
