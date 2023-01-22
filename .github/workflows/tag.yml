@@ -1,0 +1,18 @@
+---
+name: Tag Flux target
+on: [push]
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout source code
+
+      - uses: rickstaa/action-create-tag@v1
+        name: Create or update tag
+        with:
+          tag: flux-target
+          message: Update flux-target to HEAD
+          force_push_tag: true
