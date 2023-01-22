@@ -8,4 +8,5 @@ resources:
   - repository.yaml
   - release-server.yaml
   - release-runner.yaml
+  - image-updates.yaml
   - alerts.yaml

@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: drone
-      version: 0.6.3
+      version: 0.6.3  # {"$imagepolicy": "flux-system:drone-server:tag"}
   values:
     updateStrategy:
       type: Recreate
