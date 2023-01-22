@@ -1,6 +1,7 @@
 # Generate manifests
 data "flux_sync" "main" {
-  branch      = local.branch
+  branch      = ""
+  tag         = "flux-target"
   target_path = local.target_path
   url         = "ssh://git@github.com/${local.flux_secrets.github_owner}/${local.repository_name}"
 }

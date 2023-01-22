@@ -54,6 +54,11 @@ resource "github_repository_file" "install" {
   file       = data.flux_install.main.path
   content    = data.flux_install.main.content
   branch     = local.branch
+  lifecycle {
+    ignore_changes = [
+      content,
+    ]
+  }
 }
 
 resource "github_repository_file" "sync" {
@@ -61,6 +66,11 @@ resource "github_repository_file" "sync" {
   file       = data.flux_sync.main.path
   content    = data.flux_sync.main.content
   branch     = local.branch
+  lifecycle {
+    ignore_changes = [
+      content,
+    ]
+  }
 }
 
 resource "github_repository_file" "kustomize" {
@@ -68,4 +78,9 @@ resource "github_repository_file" "kustomize" {
   file       = data.flux_sync.main.kustomize_path
   content    = data.flux_sync.main.kustomize_content
   branch     = local.branch
+  lifecycle {
+    ignore_changes = [
+      content,
+    ]
+  }
 }
