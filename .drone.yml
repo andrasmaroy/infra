@@ -2,6 +2,9 @@
 kind: pipeline
 type: kubernetes
 name: Terraform Daily Plan
+trigger:
+  event:
+    - cron
 
 steps:
   - name: Terraform Plan
