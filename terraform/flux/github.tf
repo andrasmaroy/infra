@@ -34,7 +34,7 @@ resource "kubernetes_secret" "sops-gpg" {
   }
 
   data = {
-    "sops.asc" = local.flux_secrets.gpg_key
+    "sops.asc" = nonsensitive(local.flux_secrets.gpg_key)
   }
 }
 
