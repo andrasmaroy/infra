@@ -1,0 +1,11 @@
+---
+kind: pipeline
+type: kubernetes
+name: terraform
+
+steps:
+  - name: terraform
+    image: jmccann/drone-terraform:5
+    actions:
+      - validate
+      - plan
