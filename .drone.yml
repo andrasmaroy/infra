@@ -5,7 +5,7 @@ name: terraform
 
 steps:
   - name: terraform
-    image: jmccann/drone-terraform:5
+    image: hashicorp/terraform:1.3.7
     actions:
       - validate
       - plan
