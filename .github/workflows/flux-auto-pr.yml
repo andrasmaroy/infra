@@ -16,6 +16,7 @@ jobs:
       - uses: repo-sync/pull-request@v2
         name: pull-request
         with:
+          source_branch: "flux-image-updates"
           destination_branch: "main"
           pr_title: "[Flux] Automatic update"
           pr_reviewer: ${{ github.repository_owner }}
