@@ -27,6 +27,24 @@ steps:
       - terraform init -lockfile=readonly
       - terraform validate
       - terraform plan -detailed-exitcode
+  - name: notify
+    image: drillster/drone-email
+    settings:
+      from.address:
+        from_secret: email_from
+      from.name: Drone CI
+      host: smtp.sendgrid.net
+      username: apikey
+      password:
+        from_secret: sendgrid_apikey
+      recipients:
+        from_secret: email_address
+      recipients_only: true
+      subject: Terraform Daily Plan failed
+    when:
+      status:
+        - success
+        - failure
 
 node_selector:
   kubernetes.io/arch: amd64
