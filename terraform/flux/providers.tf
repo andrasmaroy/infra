@@ -1,4 +1,11 @@
 terraform {
+  cloud {
+    organization = "andrasmaroy"
+
+    workspaces {
+      name = "flux"
+    }
+  }
   required_providers {
     sops = {
       source  = "carlpett/sops"
