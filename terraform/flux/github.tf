@@ -7,7 +7,7 @@ locals {
 }
 
 resource "tls_private_key" "main" {
-  algorithm   = "ED25519"
+  algorithm = "ED25519"
 }
 
 resource "kubernetes_secret" "main" {
