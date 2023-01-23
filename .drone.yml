@@ -9,3 +9,6 @@ steps:
     actions:
       - validate
       - plan
+
+node_selector:
+  kubernetes.io/arch: amd64
