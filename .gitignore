@@ -1,6 +1,9 @@
 hosts
 wireguard_clients
 
+# Terragrunt generated files
+tg_*.tf
+
 # Local .terraform directories
 **/.terraform/*
 
