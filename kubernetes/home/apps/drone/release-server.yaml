@@ -33,9 +33,11 @@ spec:
             - path: /
               pathType: Prefix
     resources:
-      requests:
-        cpu: 100m
+      limits:
         memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
     persistentVolume:
       storageClass: longhorn
       annotations:

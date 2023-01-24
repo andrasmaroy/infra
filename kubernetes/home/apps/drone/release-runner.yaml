@@ -24,9 +24,11 @@ spec:
           - NET_BIND_SERVICE
       readOnlyRootFilesystem: true
     resources:
-      requests:
-        cpu: 100m
+      limits:
         memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
     extraSecretNamesForEnvFrom:
       - drone-runner
     rbac:
