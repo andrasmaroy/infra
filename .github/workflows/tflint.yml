@@ -19,13 +19,15 @@ jobs:
       - uses: terraform-linters/setup-tflint@v2
         name: Setup TFLint
         with:
-          tflint_version: v0.38.1
+          tflint_version: v0.44.1
 
       - name: Show version
         run: tflint --version
 
       - name: Init TFLint
+        working-directory: ./terraform
         run: tflint --init
 
       - name: Run TFLint
-        run: tflint -f compact terraform
+        working-directory: ./terraform
+        run: tflint -f compact --recursive
