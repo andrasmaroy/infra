@@ -7,7 +7,7 @@ trigger:
     - cron
 
 steps:
-  - name: Terraform Plan
+  - name: plan
     image: hashicorp/terraform:1.3.7
     environment:
       KUBICONFIG:
@@ -28,7 +28,6 @@ steps:
       - chmod +x /usr/local/bin/sops
       - cd terraform/flux
       - terraform init -lockfile=readonly
-      - terraform validate
       - terraform plan -detailed-exitcode
   - name: notify
     image: drillster/drone-email
@@ -46,7 +45,6 @@ steps:
       subject: Terraform Daily Plan failed
     when:
       status:
-        - success
         - failure
 
 node_selector:
