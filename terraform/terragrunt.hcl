@@ -13,7 +13,6 @@ terraform {
       name = "${path_relative_to_include()}"
     }
   }
-  required_version = "~> 1.3.0"
 }
 EOF
 }

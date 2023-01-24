@@ -31,3 +31,39 @@ jobs:
       - name: Run TFLint
         working-directory: ./terraform
         run: tflint -f compact --recursive
+
+  terragrunt:
+    runs-on: ubuntu-latest
+
+    env:
+      tf_version: '1.3.7'
+      tg_version: 'v0.43.0'
+      tf_working_dir: 'terraform'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create dummy cloud.tf to prevent login
+        run: echo 'terraform {}' > dummy.tf
+      - name: Place dummy files
+        run: find terraform -type d -maxdepth 1 -exec cp dummy.tf {}/tg_cloud.tf \;
+      - name: Make terragrunt skip overwriting the dummy file
+        run: sed -i -e 's/if_exists = "overwrite_terragrunt"/if_exists = "skip"/' terraform/terragrunt.hcl
+      - name: 'Terragrunt Format'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terragrunt run-all'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: false
+      - name: 'Terragrunt Validate'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: "terragrunt run-all"
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: false
