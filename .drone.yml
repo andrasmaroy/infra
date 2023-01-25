@@ -49,3 +49,57 @@ steps:
 
 node_selector:
   kubernetes.io/arch: amd64
+
+---
+kind: pipeline
+type: kubernetes
+name: Terraform Apply
+trigger:
+  branch:
+    - main
+
+steps:
+  - name: apply
+    image: alpine/terragrunt:1.3.6
+    environment:
+      KUBICONFIG:
+        from_secret: kubi
+      SOPS_GPG_KEY:
+        from_secret: sops
+      TF_INPUT: 'false'
+      TF_TOKEN_app_terraform_io:
+        from_secret: terraform_cloud_token
+    commands:
+      - mkdir -p /root/.gnupg /root/.kube
+      - chmod 0700 /root/.gnupg
+      - echo "$SOPS_GPG_KEY" > /root/.gnupg/sops.asc
+      - echo "$KUBICONFIG" > /root/.kube/kubi.yaml
+      - apk update
+      - apk add gpg gpg-agent
+      - gpg --import /root/.gnupg/sops.asc
+      - wget https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64 -O /usr/local/bin/sops
+      - chmod +x /usr/local/bin/sops
+      - cd terraform
+      - terragrunt run-all init -lockfile=readonly
+      - terragrunt run-all validate
+      - terragrunt run-all apply
+  - name: notify
+    image: drillster/drone-email
+    settings:
+      from.address:
+        from_secret: email_from
+      from.name: Drone CI
+      host: smtp.sendgrid.net
+      username: apikey
+      password:
+        from_secret: sendgrid_apikey
+      recipients:
+        from_secret: email_address
+      recipients_only: true
+      subject: Terraform Apply failed
+    when:
+      status:
+        - failure
+
+node_selector:
+  kubernetes.io/arch: amd64
