@@ -12,6 +12,16 @@ terraform {
   required_version = "~> 1.3.0"
 }
 
+data "terraform_remote_state" "sendgrid" {
+  backend = "remote"
+  config = {
+    organization = "andrasmaroy"
+    workspaces = {
+      name = "sendgrid"
+    }
+  }
+}
+
 provider "drone" {
   server = local.secrets.drone_server
   token  = local.secrets.drone_token

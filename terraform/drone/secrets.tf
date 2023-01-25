@@ -25,7 +25,7 @@ resource "drone_orgsecret" "kubi" {
 resource "drone_orgsecret" "sendgrid_apikey" {
   namespace                  = nonsensitive(local.secrets.owner)
   name                       = "sendgrid_apikey"
-  value                      = local.secrets.sendgrid_apikey
+  value                      = sensitive(data.terraform_remote_state.sendgrid.outputs.drone_api_key)
   allow_on_pull_request      = false
   allow_push_on_pull_request = false
 }
