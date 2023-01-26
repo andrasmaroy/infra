@@ -6,5 +6,6 @@ resources:
   - secrets-postgresql.sops.yaml
   - secrets-pgpool.sops.yaml
   - secrets-pgpool-users.sops.yaml
+  - initdb-script.yaml
   - repository.yaml
   - release.yaml
