@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: postgresql-ha
+  namespace: flux-system
+spec:
+  image: registry-1.docker.io/bitnamicharts/postgresql-ha
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: postgresql-ha
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: postgresql-ha
+  policy:
+    semver:
+      range: '*'
