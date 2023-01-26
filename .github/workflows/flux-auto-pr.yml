@@ -1,7 +1,7 @@
 ---
 name: Flux auto-PR
 on:
-  create:
+  push:
     branches:
       - flux-image-updates
 
