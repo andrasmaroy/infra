@@ -1,0 +1,62 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: postgresql-ha
+  namespace: postgresql-ha
+spec:
+  chart:
+    spec:
+      chart: postgresql-ha
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+      version: 10.0.9  # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
+  values:
+    env: {}   # Necessary for the generic TZ patch to not fail
+    fullnameOverride: postgresql-ha
+    persistence:
+      storageClass: longhorn
+      size: 1Gi
+      annotations:
+        helm.sh/resource-policy: keep
+    global:
+      postgresql:
+        existingSecret: postgresql-ha-postgresql
+    postgresql:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containerSecurityContext:
+        capabilities:
+          drop:
+            - ALL
+      extraEnvVars:
+        - name: TZ
+          value: ${TZ}
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 50m
+        limits:
+          memory: 256Mi
+    pgpool:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      extraEnvVars:
+        - name: TZ
+          value: ${TZ}
+      existingSecret: postgresql-ha-pgpool
+      containerSecurityContext:
+        capabilities:
+          drop:
+            - ALL
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+      customUsersSecret: postgresql-ha-pgpool-users
+      initdbScriptsCM: postgresql-ha-initdb-script
+  interval: 1m0s
