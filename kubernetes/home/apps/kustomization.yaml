@@ -11,3 +11,4 @@ patches:
       version: v2beta1
 resources:
   - drone
+  - postgresql-ha
