@@ -57,6 +57,8 @@ name: Terraform Apply
 trigger:
   branch:
     - main
+  event:
+    - push
 
 steps:
   - name: apply
