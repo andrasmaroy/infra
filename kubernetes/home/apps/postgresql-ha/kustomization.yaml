@@ -9,3 +9,4 @@ resources:
   - initdb-script.yaml
   - repository.yaml
   - release.yaml
+  - alerts.yaml
