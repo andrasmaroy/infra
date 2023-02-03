@@ -25,21 +25,23 @@ data:
         if is_boolean_yes "$PGPOOL_ENABLE_POOL_PASSWD"; then
             info "Creating custom users and their databases..."
 
+            export PGPASSWORD="$PGPOOL_POSTGRES_PASSWORD"
+            export PGUSER="$PGPOOL_POSTGRES_USERNAME"
             read -r -a nodes <<<"$(tr ',;' ' ' <<<"${PGPOOL_BACKEND_NODES}")"
             for node in "${nodes[@]}"; do
                 read -r -a fields <<<"$(tr ':' ' ' <<<"${node}")"
                 if [[ -n "${fields[1]:-}" ]]; then
-                    export PGHOST="${fields[1]}"
-                    break
+                    export PGHOST="$(psql -h ${fields[1]} -t -d repmgr -c "select conninfo from repmgr.nodes where type='primary';" | head -n 1 | sed -e 's/^.*host=\([^ ]*\) .*$/\1/')"
+                    if [ -n "$PGHOST" ]; then
+                        break
+                    fi
                 fi
             done
             if [ -z "$PGHOST" ]; then
-              print_validation_error "Error checking setting PGHOST, a backend must be set!"
+              error "Error checking setting PGHOST, a backend must be set!"
+              exit 1
             fi
-            export PGPASSWORD="$PGPOOL_POSTGRES_PASSWORD"
-            export PGUSER="$PGPOOL_POSTGRES_USERNAME"
             # Now that we have a database connection, override PGHOST with the primary node
-            export PGHOST="$(psql -t -d repmgr -c "select conninfo from repmgr.nodes where type='primary';" | head -n 1 | sed -e 's/^.*host=\([^ ]*\) .*$/\1/')"
 
             if [[ -n "${PGPOOL_POSTGRES_CUSTOM_USERS}" ]]; then
                 read -r -a custom_users_list <<<"$(tr ',;' ' ' <<<"${PGPOOL_POSTGRES_CUSTOM_USERS}")"

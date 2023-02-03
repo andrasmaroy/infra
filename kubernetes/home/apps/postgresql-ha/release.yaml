@@ -57,5 +57,5 @@ spec:
         limits:
           memory: 384Mi
       customUsersSecret: postgresql-ha-pgpool-users
-      # initdbScriptsCM: postgresql-ha-initdb-script
+      initdbScriptsCM: postgresql-ha-initdb-script
   interval: 1m0s
