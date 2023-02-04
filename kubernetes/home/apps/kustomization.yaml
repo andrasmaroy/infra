@@ -10,5 +10,6 @@ patches:
       group: helm.toolkit.fluxcd.io
       version: v2beta1
 resources:
+  - bjw-s-repository.yaml
   - drone
   - postgresql-ha
