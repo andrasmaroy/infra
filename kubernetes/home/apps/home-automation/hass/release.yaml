@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/homeassistant/home-assistant
-      tag: "2023.2"
+      tag: "2023.2" # {"$imagepolicy": "flux-system:home-assistant:tag"}
       pullPolicy: IfNotPresent
 
     env:
