@@ -79,6 +79,12 @@ spec:
         type: emptyDir
         mountPath: /run
         medium: Memory
+      secrets:
+        enabled: true
+        type: secret
+        name: home-assistant
+        mountPath: /config/secrets.yaml
+        subPath: secrets.yaml
 
     resources:
       limits:

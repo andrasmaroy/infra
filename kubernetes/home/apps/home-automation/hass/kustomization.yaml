@@ -4,3 +4,12 @@ kind: Kustomization
 resources:
   - release.yaml
   - image-updates.yaml
+secretGenerator:
+  - name: home-assistant
+    namespace: home-automation
+    files:
+      - secrets.yaml=secrets.sops.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
