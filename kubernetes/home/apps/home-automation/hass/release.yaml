@@ -1,0 +1,74 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: hass
+  namespace: home-automation
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.3.0
+  values:
+    image:
+      repository: docker.io/homeassistant/home-assistant
+      tag: "2023.2"
+      pullPolicy: IfNotPresent
+
+    env:
+      S6_READ_ONLY_ROOT: 1
+
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
+
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - NET_RAW
+      readOnlyRootFilesystem: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8123
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: hass.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        storageClass: longhorn
+        size: 1Gi
+        retain: true
+      tmp:
+        enabled: true
+        type: emptyDir
+        mountPath: /run
+        medium: Memory
+
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        memory: 512Mi
+        cpu: 50m
