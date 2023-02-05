@@ -36,7 +36,7 @@ spec:
           - '/bin/bash'
           - '-c'
         args:
-          - '[ ! -f /config/.HA_VERSION ] && echo {{ .Values.image.tag }}.0 > /config/.HA_VERSION; if [ ! -d /config/custom_components/hacs ]; then wget -O - https://get.hacs.xyz | bash -; fi'
+          - '[ ! -f /config/.HA_VERSION ] && echo {{ .Values.image.tag }} > /config/.HA_VERSION; if [ ! -d /config/custom_components/hacs ]; then wget -O - https://get.hacs.xyz | bash -; fi'
         image: vandot/alpine-bash
         securityContext:
           runAsUser: 0
