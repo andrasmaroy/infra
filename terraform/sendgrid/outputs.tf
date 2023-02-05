@@ -22,3 +22,8 @@ output "jellyfin_api_key" {
   value     = sendgrid_api_key.main["Jellyfin"].api_key
   sensitive = true
 }
+
+output "home_assistant_api_key" {
+  value     = sendgrid_api_key.main["Home Assistant"].api_key
+  sensitive = true
+}

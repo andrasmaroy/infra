@@ -13,3 +13,4 @@ resources:
   - bjw-s-repository.yaml
   - drone
   - postgresql-ha
+  - home-automation

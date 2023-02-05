@@ -1,0 +1,94 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: hass
+  namespace: home-automation
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.3.0
+  values:
+    image:
+      repository: docker.io/homeassistant/home-assistant
+      tag: "2023.2" # {"$imagepolicy": "flux-system:home-assistant:tag"}
+      pullPolicy: IfNotPresent
+
+    env:
+      S6_READ_ONLY_ROOT: 1
+
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
+
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - NET_RAW
+      readOnlyRootFilesystem: true
+
+    initContainers:
+      get-hacs:
+        command:
+          - '/bin/bash'
+          - '-c'
+        args:
+          - '[ ! -f /config/.HA_VERSION ] && echo {{ .Values.image.tag }}.0 > /config/.HA_VERSION; if [ ! -d /config/custom_components/hacs ]; then wget -O - https://get.hacs.xyz | bash -; fi'
+        image: vandot/alpine-bash
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /config
+            name: config
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8123
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: hass.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        storageClass: longhorn
+        size: 1Gi
+        retain: true
+      tmp:
+        enabled: true
+        type: emptyDir
+        mountPath: /run
+        medium: Memory
+      secrets:
+        enabled: true
+        type: secret
+        name: home-assistant
+        mountPath: /config/secrets.yaml
+        subPath: secrets.yaml
+
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        memory: 512Mi
+        cpu: 50m
