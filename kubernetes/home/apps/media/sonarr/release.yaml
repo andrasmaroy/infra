@@ -1,0 +1,79 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.3.0
+  values:
+    image:
+      repository: docker.io/spritsail/sonarr
+      tag: "3.0.9" # {"$imagepolicy": "flux-system:sonarr:tag"}
+      pullPolicy: IfNotPresent
+    env:
+      ANALYTICS: "false"
+      SGID: 568
+      SUID: 568
+    probes:
+      liveness:
+        custom: true
+        spec:
+          exec:
+            command:
+              - /bin/sh
+              - '-c'
+              - 'wget -qO /dev/null http://127.0.0.1:8989/api/system/status?apiKey=`xmlstarlet sel -t -v /Config/ApiKey /config/config.xml`'
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - SETUID
+          - SETGID
+    service:
+      main:
+        ports:
+          http:
+            port: 8989
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: sonarr.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        storageClass: longhorn
+        size: 1Gi
+        retain: true
+      media:
+        enabled: true
+        type: nfs
+        path: /tank/Media/Shows
+        server: nas
+        mountPath: /media
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        memory: 400Mi
+        cpu: 10m

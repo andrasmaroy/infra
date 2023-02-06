@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: jackett
+  namespace: flux-system
+spec:
+  image: docker.io/spritsail/jackett
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: jackett
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: jackett
+  policy:
+    semver:
+      range: '*'
