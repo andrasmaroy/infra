@@ -37,3 +37,22 @@
     state: present
     extra_zfs_properties: "{{ zfs_vols[item].extra_zfs_properties | default({}) }}"
   loop: "{{ zfs_vols.keys() }}"
+
+# Check if the volumes are mounted
+- name: Check if the pool was imported
+  community.general.zfs_facts:
+    name: "tank/{{ item }}"
+  loop: "{{ zfs_vols.keys() }}"
+  loop_control:
+    label: "{{ item }}"
+  register: zfs_datasets
+
+# When the pool was imported and the volumes aren't created here, then they
+# need to be mounted manually
+- name: Mount volume
+  ansible.builtin.shell:
+    cmd: "/sbin/zfs mount {{ item.name }}"
+  when: item.ansible_facts.ansible_zfs_datasets[0].mounted == 'no'
+  loop_control:
+    label: "{{ item.name }}"
+  loop: "{{ zfs_datasets.results }}"

@@ -1,5 +1,22 @@
 ---
 
+# To make sure the below steps aren't skipped unintentionally check if the
+# target directory is there and if it's empty, delete it
+- name: Check and remove /tank if empty
+  block:
+    - name: Check /tank contents
+      ansible.builtin.find:
+        paths: /tank
+        file_type: any
+      register: tank_contents
+
+    - name: Remove /tank if empty
+      ansible.builtin.file:
+        path: /tank
+        state: absent
+      when: tank_contents.matched == 0
+
+
 # Use a block for pool creation so that if it already exists we don't try to
 # create it again.
 - name: Import or create pool

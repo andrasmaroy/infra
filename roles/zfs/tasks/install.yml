@@ -8,11 +8,16 @@
 - name: Install appropriate kernel headers
   ansible.builtin.apt:
     name: "linux-headers-{{ ansible_kernel }}"
+  register: kernel_headers
 
 - name: Install ZFS
   ansible.builtin.apt:
     name: zfsutils-linux
     default_release: "{{ ansible_distribution_release }}-backports"
+
+- name: Rebuild zfs kernel module if needed
+  shell: apt install --reinstall zfs-dkms
+  when: kernel_headers.changed
 
 - name: Load ZFS modules
   community.general.modprobe:
