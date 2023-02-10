@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   image: docker.io/spritsail/jackett
-  interval: 24h0m0s
+  interval: 168h0m0s
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImagePolicy
