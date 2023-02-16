@@ -10,6 +10,7 @@ notroot_password: !vault |
      6534356534633630383830356330653161636164393962616433
 
 iot_ac_mqtt_host: "{{ mqtt_host }}"
+iot_ac_mqtt_port: 8883
 iot_ac_mqtt_password: !vault |
      $ANSIBLE_VAULT;1.1;AES256
      31353536333334643361363261333030373466316166303837346534653632653734386632313037
@@ -37,7 +38,7 @@ zigbee_version: 1.21.2
 # zigbee2mqtt config
 # see: https://www.zigbee2mqtt.io/guide/configuration/
 zigbee2mqtt_mqtt:
-  server: mqtts://{{ mqtt_host }}:1883
+  server: mqtts://{{ mqtt_host }}:8883
   password: "{{ zigbee_mqtt_password }}"
 zigbee2mqtt_ota:
   disable_automatic_update_check: true
