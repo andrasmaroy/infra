@@ -1,0 +1,32 @@
+---
+
+- name: Copy vlans network file
+  ansible.builtin.template:
+    src: vlans.j2
+    dest: /etc/network/interfaces.d/vlans
+    mode: 0644
+  notify: reboot
+
+- name: Install avahi-daemon
+  ansible.builtin.apt:
+    name: avahi-daemon
+
+- name: Configure reflector
+  community.general.ini_file:
+    mode: 0644
+    no_extra_spaces: true
+    option: enable-reflector
+    path: /etc/avahi/avahi-daemon.conf
+    section: reflector
+    value: 'yes'
+  notify: Restart avahi-daemon
+
+- name: Configure reflector vlans
+  community.general.ini_file:
+    mode: 0644
+    no_extra_spaces: true
+    option: allow-interfaces
+    path: /etc/avahi/avahi-daemon.conf
+    section: server
+    value: "{{ vlans | map('regex_replace', '^(.*)$', 'eth0.\\1') | list | join(',') }}"
+  notify: Restart avahi-daemon

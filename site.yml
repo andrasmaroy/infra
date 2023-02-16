@@ -83,6 +83,7 @@
   roles:
     - zfuller.pihole
     - ntd.nut
+    - mdns_reflector
   vars_files:
     - vars/pihole.yml
 

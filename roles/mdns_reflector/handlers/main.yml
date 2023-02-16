@@ -1,0 +1,9 @@
+---
+
+- name: reboot
+  reboot:
+
+- name: Restart avahi-daemon
+  service:
+    name: avahi-daemon
+    state: restarted

@@ -1,0 +1,6 @@
+{% for vlan in vlans %}
+auto eth0.{{ vlan }}
+iface eth0.{{ vlan }} inet manual
+  vlan-raw-device eth0
+
+{% endfor %}
