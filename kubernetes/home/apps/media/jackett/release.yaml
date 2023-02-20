@@ -5,6 +5,7 @@ metadata:
   namespace: media
 spec:
   interval: 1m0s
+  timeout: 15m0s
   chart:
     spec:
       chart: app-template
@@ -17,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/spritsail/jackett
-      tag: "0.20.3017" # {"$imagepolicy": "flux-system:jackett:tag"}
+      tag: "0.20.3082" # {"$imagepolicy": "flux-system:jackett:tag"}
       pullPolicy: IfNotPresent
     env:
       SUID: 568

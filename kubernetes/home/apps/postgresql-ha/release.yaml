@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-      version: 11.1.2 # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
+      version: 11.1.3 # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     fullnameOverride: postgresql-ha
@@ -59,3 +59,4 @@ spec:
       customUsersSecret: postgresql-ha-pgpool-users
       initdbScriptsCM: postgresql-ha-initdb-script
   interval: 1m0s
+  timeout: 15m0s
