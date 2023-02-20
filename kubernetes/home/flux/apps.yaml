@@ -12,7 +12,7 @@ spec:
   path: ./kubernetes/home/apps
   prune: true
   wait: true
-  timeout: 5m0s
+  timeout: 15m0s
   decryption:
     provider: sops
     secretRef:
