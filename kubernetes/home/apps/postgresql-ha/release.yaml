@@ -59,3 +59,4 @@ spec:
       customUsersSecret: postgresql-ha-pgpool-users
       initdbScriptsCM: postgresql-ha-initdb-script
   interval: 1m0s
+  timeout: 15m0s
