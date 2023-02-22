@@ -48,6 +48,21 @@ spec:
         ports:
           http:
             port: 8123
+      coiot:
+        enabled: true
+        primary: false
+        ports:
+          coiot:
+            enabled: true
+            primary: false
+            port: 5683
+            targetPort: 5683
+            protocol: UDP
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        type: LoadBalancer
+        externalIPs:
+          - ${METALLB_ADDRESS}
     ingress:
       main:
         enabled: true
