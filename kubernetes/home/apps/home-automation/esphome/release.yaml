@@ -53,6 +53,10 @@ spec:
         storageClass: longhorn
         size: 1Gi
         retain: true
+      cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /cache
     resources:
       limits:
         memory: 512Mi
