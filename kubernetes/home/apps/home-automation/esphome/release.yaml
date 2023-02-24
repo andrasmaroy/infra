@@ -25,10 +25,6 @@ spec:
       ESPHOME_DASHBOARD_USE_PING: false
       ESPHOME_DASHBOARD_RELATIVE_URL: "/"
       HOME: "/config"
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
       readOnlyRootFilesystem: true
     service:
       main:
