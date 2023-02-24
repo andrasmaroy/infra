@@ -10,3 +10,6 @@ tg_*.tf
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+# Local env file for flux
+kubernetes/home/base/environment.yaml
