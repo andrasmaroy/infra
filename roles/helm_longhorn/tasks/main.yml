@@ -18,6 +18,21 @@
       defaultSettings:
         createDefaultDiskLabeledNodes: true
 
+- name: Add service-replicated-longhorn storage class
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: service-replicated-longhorn
+      provisioner: driver.longhorn.io
+      allowVolumeExpansion: true
+      parameters:
+        numberOfReplicas: "1"
+        dataLocality: "best-effort"
+        staleReplicaTimeout: "2880"  # 48 hours in minutes
+        fromBackup: ""
+
 - name: Add route for Longhorn UI
   kubernetes.core.k8s:
     definition:
