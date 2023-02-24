@@ -1,3 +1,4 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -11,13 +12,13 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-      version: 11.1.3 # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
+      version: 11.1.3  # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
   values:
-    env: {} # Necessary for the generic TZ patch to not fail
+    env: {}  # Necessary for the generic TZ patch to not fail
     fullnameOverride: postgresql-ha
     persistence:
-      storageClass: longhorn
-      size: 1Gi
+      storageClass: service-replicated-longhorn
+      size: 2Gi
       annotations:
         helm.sh/resource-policy: keep
     global:

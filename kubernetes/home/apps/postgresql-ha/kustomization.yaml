@@ -6,8 +6,21 @@ resources:
   - secrets-postgresql.sops.yaml
   - secrets-pgpool.sops.yaml
   - secrets-pgpool-users.sops.yaml
-  - initdb-script.yaml
   - repository.yaml
   - release.yaml
   - image-updates.yaml
   - alerts.yaml
+
+configMapGenerator:
+  - name: postgresql-ha-initdb-script
+    namespace: postgresql-ha
+    files:
+      - initdb.sh=initdb.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    app.kubernetes.io/component: postgresql
+    app.kubernetes.io/instance: postgresql-ha
+    app.kubernetes.io/name: postgresql-ha
