@@ -42,6 +42,8 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+    nodeSelector:
+      kubernetes.io/hostname: nas
     persistence:
       config:
         enabled: true
