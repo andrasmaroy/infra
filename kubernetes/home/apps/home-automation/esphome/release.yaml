@@ -51,10 +51,6 @@ spec:
         storageClass: longhorn
         size: 1Gi
         retain: true
-      cache:
-        enabled: true
-        type: emptyDir
-        mountPath: /cache
       secrets:
         enabled: true
         type: secret
