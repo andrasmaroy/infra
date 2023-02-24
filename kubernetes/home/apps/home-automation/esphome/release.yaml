@@ -57,6 +57,12 @@ spec:
         enabled: true
         type: emptyDir
         mountPath: /cache
+      secrets:
+        enabled: true
+        type: secret
+        name: esphome
+        mountPath: /config/secrets.yaml
+        subPath: secrets.yaml
     resources:
       limits:
         memory: 512Mi
