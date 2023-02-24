@@ -1,0 +1,61 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: esphome
+  namespace: home-automation
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.3.1
+  values:
+    image:
+      repository: docker.io/esphome/esphome
+      tag: "2023.2.4"  # {"$imagepolicy": "flux-system:esphome:tag"}
+      pullPolicy: IfNotPresent
+    env:
+      ESPHOME_DASHBOARD_USE_PING: false
+      ESPHOME_DASHBOARD_RELATIVE_URL: "/"
+      HOME: "/config"
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+    service:
+      main:
+        ports:
+          http:
+            port: 6052
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: esphome.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        storageClass: longhorn
+        size: 1Gi
+        retain: true
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 256Mi
+        cpu: 100m

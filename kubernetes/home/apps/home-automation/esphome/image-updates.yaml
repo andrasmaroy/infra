@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: esphome
+  namespace: flux-system
+spec:
+  image: docker.io/esphome/esphome
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: esphome
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: esphome
+  policy:
+    semver:
+      range: '*'
