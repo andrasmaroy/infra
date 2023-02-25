@@ -81,11 +81,8 @@
 
 - hosts: pihole
   roles:
-    - zfuller.pihole
     - ntd.nut
     - mdns_reflector
-  vars_files:
-    - vars/pihole.yml
 
 - hosts: iot_baby
   roles:
