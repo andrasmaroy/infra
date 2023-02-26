@@ -3,10 +3,23 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - secrets-server.sops.yaml
-  - secrets-runner.sops.yaml
   - repository.yaml
   - release-server.yaml
   - release-runner.yaml
   - image-updates.yaml
   - alerts.yaml
+
+secretGenerator:
+  - name: server
+    namespace: drone
+    envs:
+      - secrets-server.sops.env
+  - name: runner
+    namespace: drone
+    envs:
+      - secrets-runner.sops.env
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+configurations:
+  - kustomizeconfig.yaml

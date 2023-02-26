@@ -30,7 +30,7 @@ spec:
         cpu: 10m
         memory: 32Mi
     extraSecretNamesForEnvFrom:
-      - drone-runner
+      - runner
     rbac:
       buildNamespaces:
         - drone

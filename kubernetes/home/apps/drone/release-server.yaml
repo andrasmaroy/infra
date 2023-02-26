@@ -43,7 +43,7 @@ spec:
       annotations:
         helm.sh/resource-policy: keep
     extraSecretNamesForEnvFrom:
-      - drone-server
+      - server
     env:
       DRONE_LOGS_COLOR: true
       DRONE_LOGS_PRETTY: true
