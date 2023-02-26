@@ -6,3 +6,4 @@ resources:
   - repository.yaml
   - secrets.sops.yaml
   - release.yaml
+  - alerts.yaml
