@@ -6,4 +6,26 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: https://bjw-s.github.io/helm-charts
+  type: "oci"
+  url: oci://ghcr.io/bjw-s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: app-template
+  namespace: flux-system
+spec:
+  image: ghcr.io/bjw-s/app-template
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: app-template
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: app-template
+  policy:
+    semver:
+      range: '*'
