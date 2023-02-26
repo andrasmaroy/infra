@@ -4,6 +4,16 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - repository.yaml
-  - secrets.sops.yaml
   - release.yaml
   - alerts.yaml
+
+secretGenerator:
+  - name: admin
+    namespace: pihole
+    envs:
+      - secrets.sops.env
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+configurations:
+  - kustomizeconfig.yaml
