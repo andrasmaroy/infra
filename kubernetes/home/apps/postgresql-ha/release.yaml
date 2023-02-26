@@ -23,7 +23,7 @@ spec:
         helm.sh/resource-policy: keep
     global:
       postgresql:
-        existingSecret: postgresql-ha-postgresql
+        existingSecret: postgresql
     postgresql:
       nodeSelector:
         kubernetes.io/arch: amd64
@@ -46,7 +46,7 @@ spec:
       extraEnvVars:
         - name: TZ
           value: ${TZ}
-      existingSecret: postgresql-ha-pgpool
+      existingSecret: pgpool
       containerSecurityContext:
         capabilities:
           drop:
@@ -57,7 +57,7 @@ spec:
           cpu: 50m
         limits:
           memory: 384Mi
-      customUsersSecret: postgresql-ha-pgpool-users
+      customUsersSecret: pg-users
       initdbScriptsCM: postgresql-ha-initdb-script
   interval: 1m0s
   timeout: 15m0s

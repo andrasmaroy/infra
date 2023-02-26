@@ -3,9 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - secrets-postgresql.sops.yaml
-  - secrets-pgpool.sops.yaml
-  - secrets-pgpool-users.sops.yaml
   - repository.yaml
   - release.yaml
   - image-updates.yaml
@@ -14,13 +11,29 @@ resources:
 configMapGenerator:
   - name: postgresql-ha-initdb-script
     namespace: postgresql-ha
+    options:
+      disableNameSuffixHash: true
     files:
       - initdb.sh=initdb.sh
+secretGenerator:
+  - name: pg-users
+    namespace: postgresql-ha
+    envs:
+      - pg-users.sops.env
+  - name: pgpool
+    namespace: postgresql-ha
+    envs:
+      - pgpool.sops.env
+  - name: postgresql
+    namespace: postgresql-ha
+    envs:
+      - postgresql.sops.env
 generatorOptions:
-  disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   labels:
     app.kubernetes.io/component: postgresql
     app.kubernetes.io/instance: postgresql-ha
     app.kubernetes.io/name: postgresql-ha
+configurations:
+  - kustomizeconfig.yaml
