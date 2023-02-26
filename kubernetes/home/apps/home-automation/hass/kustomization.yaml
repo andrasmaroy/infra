@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - release.yaml
   - image-updates.yaml
+  - alerts.yaml
+
 secretGenerator:
   - name: home-assistant
     namespace: home-automation
