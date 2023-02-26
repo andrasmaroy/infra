@@ -5,3 +5,7 @@ terraform {
 module "sonarr" {
   source = "./sonarr"
 }
+
+module "radarr" {
+  source = "./radarr"
+}
