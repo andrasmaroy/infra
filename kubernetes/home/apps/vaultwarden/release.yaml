@@ -1,0 +1,50 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: vaultwarden
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: gissilabs
+        namespace: vaultwarden
+      version: 1.0.0
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    database:
+      type: postgresql
+      wal: false
+      existingSecret: vaultwarden
+    vaultwarden:
+      domain: https://vault.${DOMAIN_PUBLIC}
+      allowSignups: false
+      enableWebsockets: false
+      extraEnv:
+        TZ: ${TZ}
+      admin:
+        enabled: true
+        existingSecret: vaultwarden
+      smtp:
+        enabled: true
+        host: smtp.sendgrid.net
+        from: "vaultwarden@${DOMAIN_PUBLIC}"
+        existingSecret: vaultwarden
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 100Mi
+    ingress:
+      enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: webpublic
+        traefik.ingress.kubernetes.io/router.tls: "true"
+      host: vault.${DOMAIN_PUBLIC}
