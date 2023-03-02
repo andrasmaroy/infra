@@ -10,8 +10,6 @@ resources:
 configMapGenerator:
   - name: esphome-devices
     namespace: home-automation
-    options:
-      disableNameSuffixHash: true
     files:
       - devices/living-room-ac.yaml
 secretGenerator:

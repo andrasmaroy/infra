@@ -7,3 +7,8 @@ nameReference:
     fieldSpecs:
       - path: spec/values/persistence/secrets/name
         kind: HelmRelease
+  - kind: ConfigMap
+    version: v1
+    fieldSpecs:
+      - path: spec/values/persistence/devices/name
+        kind: HelmRelease
