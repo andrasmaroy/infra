@@ -47,10 +47,12 @@ spec:
     persistence:
       config:
         enabled: true
+        type: emptyDir
+      devices:
+        enabled: true
+        type: configMap
+        name: esphome-devices
         mountPath: /config
-        storageClass: longhorn
-        size: 1Gi
-        retain: true
       secrets:
         enabled: true
         type: secret

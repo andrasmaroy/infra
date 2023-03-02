@@ -1,0 +1,78 @@
+---
+# Pin configuration
+# GPIO2  - onboard status LED on ESP
+# GPIO4  - external status LED
+# GPIO5  - IR receiver
+# GPIO13 - external button
+# GPIO14 - IR LED
+
+esphome:
+  name: living-room-ac
+  friendly_name: Living Room AC
+
+esp8266:
+  board: esp01_1m
+
+logger:
+
+# Home Assistant API
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # Enable fast_connect so the board can join a hidden network
+  fast_connect: true
+  domain: .iot.${DOMAIN_LOCAL}
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Living-Room-Ac Fallback Hotspot"
+    password: !secret fallback_password
+
+captive_portal:
+
+# Use the blue LED as a status light.
+#   Blink slowly = Temporary issue
+#   Blink quickly = Error encountered
+status_led:
+  pin: GPIO4
+
+# Configure the IR receiver. Handy to pickup confirmation messages
+# from your AC (or capture commands from the actual remote)
+remote_receiver:
+  id: rcvr
+  pin:
+    number: GPIO5
+    inverted: true
+  dump: midea
+
+# Configure the IR LED: this one sends commands to other devices
+remote_transmitter:
+  pin: GPIO14
+  carrier_duty_percent: 50%
+
+climate:
+  - platform: midea_ir
+    name: "Living Room AC"
+    receiver_id: rcvr
+
+button:
+  - platform: restart
+    name: "Restart Button"
+    internal: true
+    id: restart_button
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO13
+    name: "Restart Button"
+    internal: true
+    on_press:
+      then:
+        - button.press: restart_button

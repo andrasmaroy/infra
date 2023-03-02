@@ -6,13 +6,21 @@ resources:
   - image-updates.yaml
   - alerts.yaml
 
+
+configMapGenerator:
+  - name: esphome-devices
+    namespace: home-automation
+    options:
+      disableNameSuffixHash: true
+    files:
+      - devices/living-room-ac.yaml
 secretGenerator:
   - name: esphome
     namespace: home-automation
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
     files:
       - secrets.yaml=secrets.sops.yaml
-generatorOptions:
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
 configurations:
   - kustomizeconfig.yaml
