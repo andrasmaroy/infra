@@ -48,12 +48,13 @@ spec:
       config:
         enabled: true
         type: emptyDir
-        mountPath: /config/.esphome
       devices:
         enabled: true
-        type: configMap
         name: esphome-devices
-        mountPath: /config
+        type: configMap
+        subPath:
+          - path: living-room-ac.yaml
+            mountPath: /config/living-room-ac.yaml
       secrets:
         enabled: true
         type: secret
