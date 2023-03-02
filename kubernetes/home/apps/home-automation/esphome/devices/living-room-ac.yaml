@@ -50,7 +50,7 @@ remote_receiver:
   pin:
     number: GPIO5
     inverted: true
-  dump: midea
+  dump: coolix
 
 # Configure the IR LED: this one sends commands to other devices
 remote_transmitter:
@@ -58,7 +58,7 @@ remote_transmitter:
   carrier_duty_percent: 50%
 
 climate:
-  - platform: midea_ir
+  - platform: coolix
     name: "Living Room AC"
     receiver_id: rcvr
 
