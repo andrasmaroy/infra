@@ -1,0 +1,27 @@
+---
+advanced:
+  channel: 15
+  cache_state: true
+  cache_state_persistent: true
+  cache_state_send_on_startup: true
+  log_level: info
+  log_output:
+    - console
+  network_key: '!secrets network_key'
+devices: devices.yaml
+homeassistant: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtts://mqtt.${DOMAIN_LOCAL}:8883
+  user: zigbee
+  password: '!secrets mqtt_password'
+ota:
+  disable_automatic_update_check: true
+permit_join: false
+serial:
+  port: tcp://zigstargw.iot.${DOMAIN_LOCAL}:6638
+frontend:
+  port: 8080
+  url: https://z2m.kubi.${DOMAIN_LOCAL}
+experimental:
+  new_api: true
