@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: valetudo-mapper
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: valetudo-mapper
+      namespace: home-automation
+  providerRef:
+    name: alertmanager

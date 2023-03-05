@@ -6,3 +6,4 @@ resources:
   - hass
   - esphome
   - z2m
+  - valetudo-mapper

@@ -1,0 +1,64 @@
+{
+	"mqtt": {
+		"identifier": "ENC[AES256_GCM,data:cI8HjF8=,iv:vm28BvV0fbdkX2OvDS5Elt8cHdaL4W9obaiw1IvE07Y=,tag:c1hc+B4DTsJ/E5/jZwXKFQ==,type:str]",
+		"topicPrefix": "valetudo",
+		"autoconfPrefix": "homeassistant",
+		"broker_url": "ENC[AES256_GCM,data:4pZCd8UYQx1LYioIXRj7fNKslBONAh0HGiomsqs/SbI+jUQ7H6oK4OxdcnOlJ/ILjqxUNI1D8JUuhmdbOLsa8z/DrUeGAGuXNx+AnRb2Hvx7rV7CYbq5Ht0S,iv:V7F2ygepJhI+xWfgcbPh/9SLZUQaxksoV62ZzTJOCc4=,tag:c4UxfXJxm+bzjVL46LK2gw==,type:str]",
+		"caPath": "",
+		"mapDataTopic": "ENC[AES256_GCM,data:aK/SijTmJ72hgE9bT082Wm1raHPz8NQ=,iv:N5Li1x0MMyDmKYUCxPq0JLS4mBVhfo07+QWT4ii9eQw=,tag:LWR9A+viALmwe7SKAj0XMA==,type:str]",
+		"minMillisecondsBetweenMapUpdates": 10000,
+		"publishMapImage": true,
+		"publishMapData": false
+	},
+	"mapSettings": {
+		"colors": {
+			"background": "#33a1f5",
+			"background2": "#046cd4",
+			"floor": "#56affc",
+			"obstacle_strong": "#a1dbff",
+			"path": "white",
+			"forbidden_marker": "red",
+			"forbidden_zone": "rgba(255, 0, 0, 0.38)",
+			"cleaned_marker": "rgba(53, 125, 46, 1.0)",
+			"cleaned_zone": "rgba(107, 244, 66, 0.3)",
+			"cleaned_block": "rgba(107, 244, 36, 0.34)"
+		},
+		"drawPath": true,
+		"drawCharger": true,
+		"drawRobot": true,
+		"drawCurrentlyCleanedZones": false,
+		"drawCurrentlyCleanedBlocks": false,
+		"drawForbiddenZones": true,
+		"drawVirtualWalls": true,
+		"scale": 4,
+		"gradientBackground": true,
+		"autoCrop": 20,
+		"crop_x1": 30,
+		"crop_y1": 70,
+		"crop_x2": 440,
+		"crop_y2": 440,
+		"rotate": 90
+	},
+	"webserver": {
+		"enabled": true,
+		"port": 3000
+	},
+	"sops": {
+		"kms": null,
+		"gcp_kms": null,
+		"azure_kv": null,
+		"hc_vault": null,
+		"age": null,
+		"lastmodified": "2023-03-04T09:02:44Z",
+		"mac": "ENC[AES256_GCM,data:ExdytFdAm64oYUGlrUQPXnMvJbRczWhwxSMwy4NwfBgBjO6y+k5Z4AWuKPP2Ee3XiEJb9E3OGgTzDVMNwqMJH3+E0Fq5WwwY49TmXFwFkQlb9EEfiCCCUGC8GHXAf1WtVzmV0dYOH/IlICnmcQHc85+hT6ajS5cLBTCPLdoXjYs=,iv:Sm72192XXHmrQiCxqUSxiPloQhN20bKwZcXggAri5ac=,tag:QmpNOZ44Jy/sMtHnQqUJeg==,type:str]",
+		"pgp": [
+			{
+				"created_at": "2023-03-04T08:38:55Z",
+				"enc": "-----BEGIN PGP MESSAGE-----\n\nhQIMA/2zKbmHCsRnARAAkDgcDo07DJ7E6B2gm9zy3b6FW5ajkGfcm2H6IeXo9Bud\nURnp992F5VT3ty2GlbX0m9P9R7xoJ8AbN/Y0kkOfOi5VLo430eE6oevwVtYYitqY\n/cqzzL2f/+K6yjWZVCjF80Jkk4yEED1M0DA0ZhHTNbFoSN+rWmrNtIqAIypkUwA5\nFJ2nqCp0gL7C3lDPE6CVSwcBgq0qX/K6btPQ0q6QGKSR1Si7DQQ5TAOQ6XB/DYGC\nUQ6CMmjyXKDtZgvj+SzgSVHKwt2kjdE/4OHkP2uXSMaND0epstB5SLqPDhLrnNDE\nYB/6JS5DGCq/t0CyNje0wsq0uNo0N/5cG2ReRD1E+lMDxu+RCFROAEr9e469FjaO\nrikQpqvrxQqlK/hFxSP4YO6JVxqDFT4pQht3iuZhIHfEt4fd+olmxqNvBNvWuGGh\nADbTzgqY76i4WeupmfP3A215BBAyMxD8NFUppml1qb2wyCMjlb2ksdT+6RrV4gKr\nvjyNMgG6xRu1vpp20aNlbKzUJOOMQWFW8ZLzQ+VTnLb6ReklPgybcsYKikE3ocUV\nChlEQccYIEyqpEHGI8ZLwroNncHBQxGgDpqAkpf7eUimTyfqexXAh5RwnjwFPUuf\nR2hFaa1oWUqSO8wKa6LNKOdSbkNXhSkE2LjnFu5lQre5GojhPfqwe+8Fg6acE0jS\nXAFKKnDw2Ezy6yuPMhwrSF/zq5R0lHnRGNGES8cLtlOWkXe9FV9WK1ETs/ZZe0sd\nIzcMJH5R1LkCMONEymnC5Lxj3Vwy+gXR5Uxsc/C7WrdtfWMek37c61eu8mmq\n=OQAq\n-----END PGP MESSAGE-----\n",
+				"fp": "976AA83A5066FFE4CF485376F76C07C5F5BB0BEB"
+			}
+		],
+		"encrypted_regex": "(identifier|broker_url|mapDataTopic)",
+		"version": "3.7.3"
+	}
+}
