@@ -21,6 +21,6 @@ notroot_password: !vault |
           66343961323934623366316562313364646438336464303064386331323337653839
 
 nfs_exports:
-  - "/zfs/Cloud      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anonuid=33,anongid=33,mountpoint=/zfs/Cloud)"
-  - "/zfs/Downloads  {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},mountpoint=/zfs/Downloads)"
-  - "/zfs/Media      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},crossmnt,mountpoint=/zfs/Media)"
+  - "/tank/Cloud      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anonuid=33,anongid=33,mountpoint=/tank/Cloud) 127.0.0.1(rw,sync,all_squash,anonuid=33,anongid=33,mountpoint=/tank/Cloud)"
+  - "/tank/Downloads  {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},mountpoint=/tank/Downloads) 127.0.0.1(rw,sync,all_squash,anongid={{ media_gid }},mountpoint=/tank/Downloads)"
+  - "/tank/Media      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},crossmnt,mountpoint=/tank/Media) 127.0.0.1(rw,sync,all_squash,anongid={{ media_gid }},crossmnt,mountpoint=/tank/Media)"
