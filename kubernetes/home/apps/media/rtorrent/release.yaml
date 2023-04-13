@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,20 +13,18 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.3.2  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 1.4.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     image:
       repository: docker.io/jesec/rtorrent-flood
       tag: master-distroless
       pullPolicy: IfNotPresent
-
     env:
       FLOOD_OPTION_ALLOWEDPATH: "/downloads"
       FLOOD_OPTION_HOST: "0.0.0.0"
       FLOOD_OPTION_PORT: "3000"
       FLOOD_OPTION_RTORRENT: "true"
       HOME: "/config"
-
     configMaps:
       config:
         enabled: true
@@ -72,7 +69,6 @@ spec:
             print = (cat, "Logging to ", (cfg.logfile))
             log.open_file = "log", (cfg.logfile)
             log.add_output = "info", "log"
-
     initContainers:
       remove-session-lock:
         command:
@@ -96,7 +92,6 @@ spec:
         ports:
           http:
             port: 3000
-
       bittorrent:
         enabled: true
         ports:
@@ -174,8 +169,6 @@ spec:
         server: nas
         path: /tank/Media/Music/Downloads
         mountPath: /downloads/music
-
-
     resources:
       limits:
         memory: 4Gi

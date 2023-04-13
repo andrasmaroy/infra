@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.3.2 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 1.4.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     image:
       repository: docker.io/spritsail/jackett
