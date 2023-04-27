@@ -15,9 +15,11 @@ spec:
         kind: HelmRepository
         name: mojo2600
         namespace: pihole
-      version: 2.12.0
+      version: 2.14.0
   values:
     env: {}  # Necessary for the generic TZ patch to not fail
+    image:
+      tag: "2023.03.1" # {"$imagepolicy": "flux-system:pihole:tag"}
     strategyType: Recreate
     serviceDns:
       type: LoadBalancer
@@ -31,6 +33,15 @@ spec:
       https:
         enabled: false
     virtualHost: pihole.kubi.${DOMAIN_LOCAL}
+    probes:
+      liveness:
+        type: command
+        command:
+          - /bin/sh
+          - '-c'
+          - dig +short +norecurse +retry=0 @127.0.0.1 pi.hole
+          - '||'
+          - exit 1
     ingress:
       enabled: true
       annotations:
@@ -76,7 +87,6 @@ spec:
       - https://blocklistproject.github.io/Lists/tracking.txt
     whitelist:
       - bugmenot.com
-      - mixpanel.com
     podDnsConfig:
       enabled: true
       policy: "None"
