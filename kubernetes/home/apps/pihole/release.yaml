@@ -87,7 +87,6 @@ spec:
       - https://blocklistproject.github.io/Lists/tracking.txt
     whitelist:
       - bugmenot.com
-      - mixpanel.com
     podDnsConfig:
       enabled: true
       policy: "None"
