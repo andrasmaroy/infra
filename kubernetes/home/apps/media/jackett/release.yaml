@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/spritsail/jackett
-      tag: "0.20.3956" # {"$imagepolicy": "flux-system:jackett:tag"}
+      tag: "0.20.4013" # {"$imagepolicy": "flux-system:jackett:tag"}
       pullPolicy: IfNotPresent
     env:
       SUID: 568
