@@ -8,6 +8,7 @@ resources:
   - sa.yaml
   - release.yaml
   - image-updates.yaml
+  - alerts.yaml
 secretGenerator:
   - name: tailscale-auth
     namespace: tailscale

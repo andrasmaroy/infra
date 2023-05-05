@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: tailscale
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: tailscale
+      namespace: tailscale
+  providerRef:
+    name: alertmanager
