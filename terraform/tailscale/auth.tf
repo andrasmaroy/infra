@@ -9,7 +9,13 @@ resource "tailscale_acl" "main" {
     }],
     "tagowners" : {
       "tag:kubi" : ["autogroup:admin"]
-    }
+    },
+    "autoapprovers" : {
+      "routes" : {
+        nonsensitive(local.secrets.routes) : ["tag:kubi"],
+      },
+      "exitNode" : ["tag:kubi"],
+    },
   })
 }
 
