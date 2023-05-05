@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: subnet-router
+  namespace: tailscale
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.4.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    controller:
+      type: statefulset
+    image:
+      repository: ghcr.io/tailscale/tailscale
+      tag: "v1.40.0"
+      pullPolicy: IfNotPresent
+    env:
+      TS_ACCEPT_DNS: "false"
+      TS_AUTHKEY:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-auth
+            key: TS_AUTHKEY
+      TS_EXTRA_ARGS: "--advertise-exit-node"
+      TS_KUBE_SECRET: subnet-router
+      TS_ROUTES:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-auth
+            key: TS_ROUTES
+      TS_USERSPACE: "true"
+    persistence:
+      cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /.cache
+        medium: Memory
+      tmp:
+        enabled: true
+        type: emptyDir
+        mountPath: /tmp
+    probes:
+      liveness:
+        custom: true
+        spec:
+          exec:
+            command:
+              - /bin/sh
+              - '-c'
+              - "tailscale --socket=/tmp/tailscaled.sock status --peers=false --active=true --json | grep -q '^    \"Online\": true,$'"
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      readOnlyRootFilesystem: true
+    service:
+      main:
+        enabled: false
+    serviceAccount:
+      name: tailscale
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 25m
+        memory: 32Mi

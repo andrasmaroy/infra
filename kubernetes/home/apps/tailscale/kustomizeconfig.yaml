@@ -7,3 +7,7 @@ nameReference:
     fieldSpecs:
       - path: rules/resourceNames
         kind: Role
+      - path: spec/values/env/TS_AUTHKEY/valueFrom/secretKeyRef/name
+        kind: HelmRelease
+      - path: spec/values/env/TS_ROUTES/valueFrom/secretKeyRef/name
+        kind: HelmRelease
