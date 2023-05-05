@@ -7,6 +7,7 @@ resources:
   - rolebinding.yaml
   - sa.yaml
   - release.yaml
+  - image-updates.yaml
 secretGenerator:
   - name: tailscale-auth
     namespace: tailscale
