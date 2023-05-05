@@ -1,0 +1,4 @@
+---
+creation_rules:
+  - path_regex: ".*\\.sops\\.yaml"
+    pgp: 976AA83A5066FFE4CF485376F76C07C5F5BB0BEB
