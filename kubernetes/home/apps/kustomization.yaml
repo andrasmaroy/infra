@@ -17,3 +17,4 @@ resources:
   - media
   - pihole
   - vaultwarden
+  - tailscale
