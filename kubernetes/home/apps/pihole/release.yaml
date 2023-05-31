@@ -18,7 +18,7 @@ spec:
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     image:
-      tag: "2023.05.1" # {"$imagepolicy": "flux-system:pihole:tag"}
+      tag: "2023.05.2" # {"$imagepolicy": "flux-system:pihole:tag"}
     strategyType: Recreate
     serviceDns:
       type: LoadBalancer
