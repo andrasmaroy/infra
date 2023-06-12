@@ -6,7 +6,7 @@ terraform {
     }
     sonarr = {
       source  = "devopsarr/sonarr"
-      version = "2.8.0"
+      version = "3.0.0"
     }
   }
   required_version = "~> 1.3.0"

@@ -8,9 +8,3 @@ resource "sonarr_delay_profile" "main" {
   preferred_protocol        = "torrent"
 }
 
-resource "sonarr_language_profile" "main" {
-  name            = "English/Hungarian"
-  cutoff_language = "English"
-  languages       = ["English", "Hungarian"]
-  upgrade_allowed = false
-}
