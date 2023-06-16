@@ -41,7 +41,7 @@ spec:
         memory: 256Mi
       requests:
         cpu: 10m
-        memory: 100Mi
+        memory: 150Mi
     ingress:
       enabled: true
       annotations:
