@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: docker.io/spritsail/radarr
-      tag: "4.7.1" # {"$imagepolicy": "flux-system:radarr:tag"}
+      tag: "4.7.2" # {"$imagepolicy": "flux-system:radarr:tag"}
       pullPolicy: IfNotPresent
     env:
       ANALYTICS: "false"
