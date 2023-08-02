@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: mojo2600
         namespace: pihole
-      version: 2.17.0
+      version: 2.18.0
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     image:
