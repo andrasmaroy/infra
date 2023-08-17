@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/koenkk/zigbee2mqtt
-      tag: "1.32.2" # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
+      tag: "1.32.1" # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
       pullPolicy: IfNotPresent
     env:
       ZIGBEE2MQTT_DATA: /data
