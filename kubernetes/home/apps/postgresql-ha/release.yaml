@@ -35,10 +35,10 @@ spec:
           value: ${TZ}
       resources:
         requests:
-          memory: 168Mi
+          memory: 256Mi
           cpu: 50m
         limits:
-          memory: 256Mi
+          memory: 384Mi
     pgpool:
       nodeSelector:
         kubernetes.io/arch: amd64
