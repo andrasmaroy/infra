@@ -18,3 +18,4 @@ resources:
   - pihole
   - vaultwarden
   - tailscale
+  - grocy
