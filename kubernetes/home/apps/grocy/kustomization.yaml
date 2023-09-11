@@ -6,3 +6,4 @@ resources:
   - release-backend.yaml
   - release-frontend.yaml
   - image-updates.yaml
+  - alerts.yaml
