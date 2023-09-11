@@ -53,3 +53,9 @@ spec:
         type: emptyDir
         mountPath: /tmp
         medium: Memory
+    resources:
+      limits:
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 8Mi

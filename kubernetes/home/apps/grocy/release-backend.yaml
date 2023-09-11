@@ -74,3 +74,9 @@ spec:
         type: emptyDir
         mountPath: /config/viewcache
         medium: Memory
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
