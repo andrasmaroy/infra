@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: docker.io/grocy/frontend
-      tag: "v4.0.3"
+      tag: "v4.0.3" # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
       pullPolicy: IfNotPresent
     env: {}
     securityContext:

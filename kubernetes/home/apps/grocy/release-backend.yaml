@@ -31,7 +31,7 @@ spec:
             name: config
     image:
       repository: docker.io/grocy/backend
-      tag: "v4.0.3"
+      tag: "v4.0.3" # {"$imagepolicy": "flux-system:grocy-backend:tag"}
       pullPolicy: IfNotPresent
     command:
       - sh

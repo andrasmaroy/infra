@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - release-backend.yaml
   - release-frontend.yaml
+  - image-updates.yaml

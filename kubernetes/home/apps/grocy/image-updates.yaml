@@ -1,0 +1,42 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: grocy-frontend
+  namespace: flux-system
+spec:
+  image: docker.io/grocy/frontend
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: grocy-backend
+  namespace: flux-system
+spec:
+  image: docker.io/grocy/backend
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: grocy-frontend
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: grocy-frontend
+  policy:
+    semver:
+      range: '*'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: grocy-backend
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: grocy-backend
+  policy:
+    semver:
+      range: '*'
