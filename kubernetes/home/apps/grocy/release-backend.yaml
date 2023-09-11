@@ -39,9 +39,13 @@ spec:
     args:
       - 'cp /var/www/data/config.php /config/config.php && php-fpm81'
     env:
-      GROCY_DATAPATH: /config
       GROCY_CALENDAR_FIRST_DAY_OF_WEEK: '1'
       GROCY_CURRENCY: HUF
+      GROCY_DATAPATH: /config
+      GROCY_FEATURE_FLAG_BATTERIES: 'false'
+      GROCY_FEATURE_FLAG_CALENDAR: 'false'
+      GROCY_FEATURE_FLAG_CHORES: 'false'
+      GROCY_FEATURE_FLAG_TASKS: 'false'
     securityContext:
       capabilities:
         drop:
