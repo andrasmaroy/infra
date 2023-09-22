@@ -94,7 +94,7 @@ spec:
         subPath: secrets.yaml
     resources:
       limits:
-        memory: 1280Mi
+        memory: 1400Mi
       requests:
-        memory: 512Mi
+        memory: 1Gi
         cpu: 50m
