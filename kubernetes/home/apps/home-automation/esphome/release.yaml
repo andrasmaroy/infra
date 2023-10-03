@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/esphome/esphome
-      tag: "2023.9.2" # {"$imagepolicy": "flux-system:esphome:tag"}
+      tag: "2023.9.3" # {"$imagepolicy": "flux-system:esphome:tag"}
       pullPolicy: IfNotPresent
     env:
       ESPHOME_DASHBOARD_USE_PING: false
