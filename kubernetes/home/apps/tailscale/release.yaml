@@ -20,7 +20,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/tailscale/tailscale
-      tag: "v1.48.1" # {"$imagepolicy": "flux-system:tailscale:tag"}
+      tag: "v1.50.1" # {"$imagepolicy": "flux-system:tailscale:tag"}
       pullPolicy: IfNotPresent
     env:
       TS_ACCEPT_DNS: "false"
