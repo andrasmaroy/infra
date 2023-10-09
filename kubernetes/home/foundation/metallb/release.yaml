@@ -23,3 +23,17 @@ spec:
           protocol: layer2
           addresses:
             - "${METALLB_ADDRESS}/32"
+    controller:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 20Mi
+        limits:
+          memory: 32Mi
+    speaker:
+      resources:
+        requests:
+          cpu: 25m
+          memory: 32Mi
+        limits:
+          memory: 64Mi
