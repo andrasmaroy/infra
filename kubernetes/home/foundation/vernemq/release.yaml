@@ -21,3 +21,17 @@ spec:
     additionalEnv:
       - name: DOCKER_VERNEMQ_ACCEPT_EULA
         value: 'yes'
+    extraVolumes:
+      - name: vernemq-auth
+        secret:
+          secretName: vernemq-auth
+          defaultMode: 420
+    extraVolumeMounts:
+      - name: vernemq-auth
+        mountPath: /etc/vernemq/vmq.acl
+        subPath: vernemq-acl
+        readOnly: true
+      - name: vernemq-auth
+        mountPath: /etc/vernemq/vmq.passwd
+        subPath: vernemq-passwd
+        readOnly: true

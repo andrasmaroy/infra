@@ -6,3 +6,14 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
+secretGenerator:
+  - name: vernemq-auth
+    namespace: vernemq
+    files:
+      - vernemq-passwd=users.sops
+      - vernemq-acl=acl.sops
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+configurations:
+  - kustomizeconfig.yaml
