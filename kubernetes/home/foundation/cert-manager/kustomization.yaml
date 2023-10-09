@@ -6,6 +6,7 @@ resources:
   - repository.yaml
   - release.yaml
   - cluster-issuer.yaml
+  - alerts.yaml
 
 secretGenerator:
   - name: cloudflare-api-key
