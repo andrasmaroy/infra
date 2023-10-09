@@ -50,8 +50,6 @@
       delegate_to: localhost
     - role: helm_longhorn
       delegate_to: localhost
-    - role: helm_cert_manager
-      delegate_to: localhost
     - role: helm_traefik
       delegate_to: localhost
     - role: helm_kubernetes_dashboard
