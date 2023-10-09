@@ -46,8 +46,6 @@
       delegate_to: localhost
     - role: k3s_gateway_api
       delegate_to: localhost
-    - role: helm_longhorn
-      delegate_to: localhost
     - role: helm_traefik
       delegate_to: localhost
     - role: helm_kubernetes_dashboard
