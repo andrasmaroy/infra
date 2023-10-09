@@ -5,3 +5,14 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - cluster-issuer.yaml
+
+secretGenerator:
+  - name: cloudflare-api-key
+    namespace: cert-manager
+    envs:
+      - secrets.sops.env
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
