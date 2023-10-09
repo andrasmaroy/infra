@@ -1,0 +1,17 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: vernemq
+  namespace: vernemq
+spec:
+  entryPoints:
+    - mqtts
+  routes:
+    - match: HostSNI(`mqtt.${DOMAIN_LOCAL}`)
+      services:
+        - name: vernemq
+          namespace: vernemq
+          port: 1883
+  tls:
+    secretName: letsencrypt-traefik
