@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: vernemq
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: vernemq
+      namespace: vernemq
+  providerRef:
+    name: alertmanager
