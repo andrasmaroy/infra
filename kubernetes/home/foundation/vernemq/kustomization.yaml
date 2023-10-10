@@ -7,7 +7,6 @@ resources:
   - certificate.yaml
   - release.yaml
   - alerts.yaml
-  - ingress-route.yaml
 secretGenerator:
   - name: vernemq-auth
     namespace: vernemq
