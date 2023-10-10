@@ -5,3 +5,4 @@ resources:
   - repository.yaml
   - certificates.yaml
   - tlsstore.yaml
+  - ingress.yaml
