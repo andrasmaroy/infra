@@ -1,0 +1,16 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: owntracks
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: owntracks-frontend
+      namespace: owntracks
+    - kind: HelmRelease
+      name: owntracks-recorder
+      namespace: owntracks
+  providerRef:
+    name: alertmanager
