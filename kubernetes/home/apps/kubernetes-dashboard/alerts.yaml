@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: kubernetes-dashboard
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: kubernetes-dashboard
+      namespace: kubernetes-dashboard
+  providerRef:
+    name: alertmanager
