@@ -1,0 +1,91 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: owntracks-recorder
+  namespace: owntracks
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.5.0  # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    image:
+      repository: docker.io/owntracks/recorder
+      tag: 0.9.1
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+    env:
+      OTR_CAPATH: /etc/ssl/certs/
+      OTR_LUASCRIPT: /config/hook.lua
+      OTR_HOST: "mqtt.${DOMAIN_LOCAL}"
+      OTR_PORT: 8883
+      OTR_HTTPHOST: 0.0.0.0
+      OTR_TOPICS: "owntracks/#"
+      OTR_USER: owntracks
+    envFrom:
+      - secretRef:
+          name: owntracks-recorder
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: otr.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+      public:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: webpublic
+          traefik.ingress.kubernetes.io/router.middlewares: owntracks-recorder-path-replace@kubernetescrd,owntracks-recorder-basic-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: otr.${DOMAIN_PUBLIC}
+            paths:
+              - path: /
+                pathType: Prefix
+    service:
+      main:
+        ports:
+          http:
+            port: 8083
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: owntracks-recorder
+        mountPath: /config/hook.lua
+        subPath: hook.lua
+      data:
+        enabled: true
+        mountPath: /store
+        storageClass: longhorn
+        retain: true
+        accessMode: ReadWriteOnce
+        size: 1Gi
+      scratch:
+        enabled: true
+        type: emptyDir
+        mountPath: /tmp
+        medium: Memory
+    resources:
+      limits:
+        memory: 50Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+    nodeSelector:
+      kubernetes.io/arch: amd64

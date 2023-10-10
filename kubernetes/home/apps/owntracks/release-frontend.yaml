@@ -17,7 +17,7 @@ spec:
       version: 1.5.0  # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     image:
-      repository: owntracks/frontend
+      repository: docker.io/owntracks/frontend
       tag: 2.12.0
     securityContext:
       capabilities:
