@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - repository.yaml
   - certificates.yaml
+  - release.yaml
   - tlsstore.yaml
   - ingress.yaml
