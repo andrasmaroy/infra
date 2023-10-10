@@ -13,6 +13,7 @@ resources:
   - bjw-s-repository.yaml
   - drone
   - postgresql-ha
+  - kubernetes-dashboard
   - home-automation
   - media
   - pihole
