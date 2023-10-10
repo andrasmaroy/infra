@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: docker.io/owntracks/recorder
-      tag: 0.9.1
+      tag: 0.9.1  # {"$imagepolicy": "flux-system:owntracks-recorder:tag"}
     securityContext:
       capabilities:
         drop:

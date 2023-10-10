@@ -1,0 +1,43 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: owntracks-frontend
+  namespace: flux-system
+spec:
+  image: docker.io/owntracks/frontend
+  interval: 24h0m0s
+
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: owntracks-recorder
+  namespace: flux-system
+spec:
+  image: docker.io/owntracks/recorder
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: owntracks-frontend
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: owntracks-frontend
+  policy:
+    semver:
+      range: '*'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: owntracks-recorder
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: owntracks-recorder
+  policy:
+    semver:
+      range: '*'

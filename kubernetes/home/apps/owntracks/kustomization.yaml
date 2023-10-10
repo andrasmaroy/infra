@@ -6,6 +6,7 @@ resources:
   - middlewares.yaml
   - release-recorder.yaml
   - release-frontend.yaml
+  - image-updates.yaml
   - alerts.yaml
 configMapGenerator:
   - name: owntracks-frontend
