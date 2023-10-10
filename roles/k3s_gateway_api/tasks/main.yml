@@ -1,5 +1,0 @@
----
-
-- name: Create Gateway API CRDs
-  kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='github.com/kubernetes-sigs/gateway-api/config/crd?ref=' + gateway_api_version) }}"
