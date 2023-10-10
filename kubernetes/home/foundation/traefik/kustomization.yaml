@@ -8,3 +8,4 @@ resources:
   - tlsstore.yaml
   - ingress.yaml
   - alerts.yaml
+  - image-updates.yaml
