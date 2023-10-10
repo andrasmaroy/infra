@@ -21,6 +21,12 @@ spec:
     additionalEnv:
       - name: DOCKER_VERNEMQ_ACCEPT_EULA
         value: 'yes'
+      - name: DOCKER_VERNEMQ_LISTENER__SSL__CAFILE
+        value: "/etc/ssl/vernemq/tls.crt"
+      - name: DOCKER_VERNEMQ_LISTENER__SSL__CERTFILE
+        value: "/etc/ssl/vernemq/tls.crt"
+      - name: DOCKER_VERNEMQ_LISTENER__SSL__KEYFILE
+        value: "/etc/ssl/vernemq/tls.key"
     extraVolumes:
       - name: vernemq-auth
         secret:
@@ -41,3 +47,17 @@ spec:
         memory: 256Mi
       limits:
         memory: 384Mi
+    secretMounts:
+      - name: vernemq-certificates
+        secretName: letsencrypt-vernemq
+        path: /etc/ssl/vernemq
+    service:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+      externalIPs:
+        - ${METALLB_ADDRESS}
+      type: LoadBalancer
+      mqtt:
+        enabled: false
+      mqtts:
+        enabled: true
