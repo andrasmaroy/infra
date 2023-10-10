@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - repository.yaml
+  - certificate.yaml
   - release.yaml
   - alerts.yaml
   - ingress-route.yaml
