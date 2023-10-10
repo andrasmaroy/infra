@@ -5,3 +5,4 @@ resources:
   - secrets.sops.yaml
   - certificate.yaml
   - release.yaml
+  - alerts.yaml

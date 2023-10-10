@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: jellyfin
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: jellyfin
+      namespace: media
+  providerRef:
+    name: alertmanager
