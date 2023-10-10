@@ -1,6 +1,0 @@
----
-
-- name: Create Intel GPU plugin
-  kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='github.com/intel/intel-device-plugins-for-kubernetes/deployments/gpu_plugin?ref=' + intel_gpu_plugin_version) }}"
-    namespace: kube-system

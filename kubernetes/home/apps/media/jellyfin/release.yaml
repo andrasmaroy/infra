@@ -1,0 +1,112 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 1.5.0  # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    image:
+      repository: docker.io/jellyfin/jellyfin
+      tag: 10.8.5   # {"$imagepolicy": "flux-system:jellyfin:tag"}
+      pullPolicy: IfNotPresent
+    probes:
+      liveness:
+        custom: true
+        spec:
+          exec:
+            command:
+              - /bin/bash
+              - '-c'
+              - 'curl -Lk -fsS http://127.0.0.1:8096/health || exit 1'
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 30
+      readiness:
+        type: HTTP
+        path: /
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+    service:
+      main:
+        ports:
+          http:
+            port: 8096
+      https:
+        ports:
+          https:
+            port: 8920
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        type: LoadBalancer
+        externalIPs:
+          - ${METALLB_ADDRESS}
+    serviceAccount:
+      create: true
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: jelly.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+      public:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: webpublic
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: play.${DOMAIN_PUBLIC}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      config:
+        enabled: true
+        storageClass: longhorn
+        size: 10Gi
+        retain: true
+      media:
+        enabled: true
+        type: nfs
+        path: /tank/Media
+        server: nas
+        subPath:
+          - path: Shows/Complete
+            mountPath: /mnt/tv
+          - path: Movies/Complete
+            mountPath: /mnt/movies
+      certificate:
+        enabled: true
+        type: secret
+        name: letsencrypt-jellyfin
+        mountPath: /etc/ssl/private
+        readOnly: true
+      cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /cache
+    resources:
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 6Gi
+      requests:
+        memory: 2Gi
+        cpu: 1

@@ -1,0 +1,20 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsenrypt-jellyfin
+  namespace: media
+spec:
+  dnsNames:
+    - 'jelly.${DOMAIN_LOCAL}'
+  secretName: letsencrypt-jellyfin
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+    group: cert-manager.io
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: letsencrypt-jellyfin-pkcs12
+        key: password

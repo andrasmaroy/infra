@@ -1,31 +1,21 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
-metadata:
-  name: bjw-s
-  namespace: flux-system
-spec:
-  interval: 5m0s
-  type: "oci"
-  url: oci://ghcr.io/bjw-s/helm
----
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageRepository
 metadata:
-  name: app-template
+  name: jellyfin
   namespace: flux-system
 spec:
-  image: ghcr.io/bjw-s/helm/app-template
+  image: docker.io/jellyfin/jellyfin
   interval: 24h0m0s
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImagePolicy
 metadata:
-  name: app-template
+  name: jellyfin
   namespace: flux-system
 spec:
   imageRepositoryRef:
-    name: app-template
+    name: jellyfin
   policy:
     semver:
       range: '*'
