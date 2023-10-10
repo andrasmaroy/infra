@@ -1,0 +1,110 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: kubernetes-dashboard
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-dashboard
+        namespace: kubernetes-dashboard
+      version: 7.0.0-alpha1
+  values:
+    env: {} # Necessary for the generic TZ patch to not fail
+    nginx:
+      enabled: false
+    cert-manager:
+      enabled: false
+    metrics-server:
+      enabled: false
+    api:
+      containers:
+        args:
+          - --enable-skip-login
+          - --enable-insecure-login
+          - --namespace=kubernetes-dashboard
+        env:
+          - name: TZ
+            value: ${TZ}
+        resources:
+          limits:
+            cpu: null
+    web:
+      containers:
+        env:
+          - name: TZ
+            value: ${TZ}
+        resources:
+          limits:
+            cpu: null
+    metricsScraper:
+      containers:
+        env:
+          - name: TZ
+            value: ${TZ}
+        resources:
+          limits:
+            cpu: null
+    app:
+      ingress:
+        enabled: false
+    extras:
+      manifests:
+        - apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            annotations:
+              meta.helm.sh/release-name: kubernetes-dashboard
+              meta.helm.sh/release-namespace: kubernetes-dashboard
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.tls: "true"
+            labels:
+              app.kubernetes.io/instance: kubernetes-dashboard
+              app.kubernetes.io/managed-by: Helm
+              app.kubernetes.io/part-of: kubernetes-dashboard
+              helm.sh/chart: kubernetes-dashboard-7.0.0-alpha1
+            name: kubernetes-dashboard
+            namespace: kubernetes-dashboard
+          spec:
+            rules:
+              - host: dashboard.kubi.${DOMAIN_LOCAL}
+                http:
+                  paths:
+                    - backend:
+                        service:
+                          name: kubernetes-dashboard-web
+                          port:
+                            name: web
+                      path: /
+                      pathType: ImplementationSpecific
+                    - backend:
+                        service:
+                          name: kubernetes-dashboard-api
+                          port:
+                            name: api
+                      path: /api
+                      pathType: ImplementationSpecific
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            labels:
+              app.kubernetes.io/instance: kubernetes-dashboard
+              app.kubernetes.io/managed-by: Helm
+              app.kubernetes.io/part-of: kubernetes-dashboard
+              helm.sh/chart: kubernetes-dashboard-7.0.0-alpha1
+            name: kubernetes-dashboard:cluster-admin
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - kind: ServiceAccount
+              name: kubernetes-dashboard
+              namespace: kubernetes-dashboard
