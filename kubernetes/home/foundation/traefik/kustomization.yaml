@@ -7,3 +7,4 @@ resources:
   - release.yaml
   - tlsstore.yaml
   - ingress.yaml
+  - alerts.yaml
