@@ -6,3 +6,4 @@ resources:
   - certificate.yaml
   - release.yaml
   - alerts.yaml
+  - image-updates.yaml
