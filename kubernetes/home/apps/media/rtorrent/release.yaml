@@ -107,6 +107,8 @@ spec:
       main:
         enabled: true
         annotations:
+          hajimari.io/icon: mdi:download-network
+          hajimari.io/appName: rTorrent
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:

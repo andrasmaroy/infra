@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: hajimari
+  namespace: hajimari
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: hajimari
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: hajimari
+        namespace: hajimari
+      version: 2.0.2
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    image:
+      tag: v0.3.1  # {"$imagepolicy": "flux-system:hajimari:tag"}
+    hajimari:
+      alwaysTargetBlank: true
+      defaultEnable: true
+      namespaceSelector:
+        any: true
+      showAppUrls: false
+      showAppGroups: true
+      showAppInfo: false
+      showAppStatus: true
+      showBookmarks: false
+      showSearch: false
+      customApps:
+        - group: NAS
+          apps:
+            - name: IPMI
+              url: https://nas-ipmi.${DOMAIN_LOCAL}/#login
+              icon: mdi:remote-desktop
+        - group: home-automation
+          apps:
+            - name: Manyi
+              url: http://manyi.iot.${DOMAIN_LOCAL}
+              icon: mdi:robot-vacuum
+            - name: ZigStar GW
+              url: http://zigstargw.iot.${DOMAIN_LOCAL}
+              icon: mdi:router-network-wireless
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          hajimari.io/icon: mdi:view-dashboard
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          - host: home.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      data:
+        enabled: false
+    securityContext:
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    resources:
+      limits:
+        memory: 20Mi
+      requests:
+        memory: 12Mi
+        cpu: 5m

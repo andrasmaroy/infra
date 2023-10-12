@@ -23,6 +23,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    hajimari.io/icon: mdi:arrow-decision
+    hajimari.io/group: foundation
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
   labels:
