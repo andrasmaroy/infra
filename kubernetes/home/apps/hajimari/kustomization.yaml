@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - image-updates.yaml
   - alerts.yaml
