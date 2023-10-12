@@ -25,6 +25,8 @@ spec:
     ingress:
       enabled: true
       annotations:
+        hajimari.io/icon: mdi:infinity
+        hajimari.io/appName: Drone
         traefik.ingress.kubernetes.io/router.entrypoints: webpublic
         traefik.ingress.kubernetes.io/router.tls: "true"
       hosts:

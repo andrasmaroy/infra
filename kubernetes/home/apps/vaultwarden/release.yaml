@@ -45,6 +45,7 @@ spec:
     ingress:
       enabled: true
       annotations:
+        hajimari.io/icon: mdi:safe-square
         traefik.ingress.kubernetes.io/router.entrypoints: webpublic
         traefik.ingress.kubernetes.io/router.tls: "true"
       host: vault.${DOMAIN_PUBLIC}

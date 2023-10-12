@@ -39,6 +39,8 @@ spec:
       main:
         enabled: true
         annotations:
+          hajimari.io/icon: mdi:record-rec
+          hajimari.io/appName: Recorder
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
@@ -49,6 +51,7 @@ spec:
       public:
         enabled: true
         annotations:
+          hajimari.io/enable: "false"
           traefik.ingress.kubernetes.io/router.entrypoints: webpublic
           traefik.ingress.kubernetes.io/router.middlewares: owntracks-recorder-path-replace@kubernetescrd,owntracks-recorder-basic-auth@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"

@@ -38,6 +38,8 @@ spec:
       main:
         enabled: true
         annotations:
+          hajimari.io/icon: mdi:cart
+          hajimari.io/appName: Grocy
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:

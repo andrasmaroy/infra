@@ -60,6 +60,7 @@ spec:
       main:
         enabled: true
         annotations:
+          hajimari.io/icon: mdi:emby
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
@@ -70,6 +71,7 @@ spec:
       public:
         enabled: true
         annotations:
+          hajimari.io/enable: "false"
           traefik.ingress.kubernetes.io/router.entrypoints: webpublic
           traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:

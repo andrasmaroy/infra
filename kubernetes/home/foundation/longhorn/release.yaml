@@ -23,5 +23,8 @@ spec:
       enabled: true
       host: longhorn.kubi.${DOMAIN_LOCAL}
       annotations:
+        hajimari.io/icon: mdi:harddisk
+        hajimari.io/group: foundation
+        hajimari.io/appName: longhorn
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
