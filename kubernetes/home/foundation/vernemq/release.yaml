@@ -44,9 +44,9 @@ spec:
     resources:
       requests:
         cpu: 25m
-        memory: 256Mi
-      limits:
         memory: 384Mi
+      limits:
+        memory: 512Mi
     secretMounts:
       - name: vernemq-certificates
         secretName: letsencrypt-vernemq
