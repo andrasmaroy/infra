@@ -31,6 +31,20 @@ spec:
       showAppStatus: true
       showBookmarks: false
       showSearch: false
+      customApps:
+        - group: NAS
+          apps:
+            - name: IPMI
+              url: https://nas-ipmi.${DOMAIN_LOCAL}/#login
+              icon: mdi:remote-desktop
+        - group: home-automation
+          apps:
+            - name: Manyi
+              url: http://manyi.iot.${DOMAIN_LOCAL}
+              icon: mdi:robot-vacuum
+            - name: ZigStar GW
+              url: http://zigstargw.iot.${DOMAIN_LOCAL}
+              icon: mdi:router-network-wireless
     ingress:
       main:
         enabled: true
