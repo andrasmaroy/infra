@@ -1,0 +1,390 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prom
+  namespace: monitoring
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: monitoring
+      version: 41.9.0
+  valuesFrom:
+    - kind: Secret
+      name: cluster-info
+      valuesKey: control-nodes
+      targetPath: kubeControllerManager.endpoints
+    - kind: Secret
+      name: cluster-info
+      valuesKey: control-nodes
+      targetPath: kubeEtcd.endpoints
+    - kind: Secret
+      name: cluster-info
+      valuesKey: control-nodes
+      targetPath: kubeProxy.endpoints
+    - kind: Secret
+      name: cluster-info
+      valuesKey: control-nodes
+      targetPath: kubeScheduler.endpoints
+  values:
+    defaultRules:
+      disabled:
+        KubeClientCertificateExpiration: true
+    additionalPrometheusRulesMap:
+      kubernetes-resource-usage.rules:
+        groups:
+          - name: kubernetes-resources
+            rules:
+              - alert: PodNearMemoryLimit
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
+                    {{ $value }}% of memory limit for longer than 15 minutes.
+                  summary: Pod memory usage above 80% of limit for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      avg_over_time(
+                        container_memory_working_set_bytes{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_limits{job="kube-state-metrics",resource="memory"}
+                      )
+                    )
+                  ) * 100 > 80
+                for: 15m
+                labels:
+                  severity: critical
+              - alert: PodHighCPUUsage
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
+                    {{ $value }}% of CPU request for longer than 15 minutes.
+                  summary: Pod CPU usage has been high for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      rate(
+                        container_cpu_usage_seconds_total{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"} >= 0.1
+                      )
+                    )
+                  ) * 100 > (100 + 100 / 3)
+                for: 15m
+                labels:
+                  severity: critical
+              - alert: LowCPUPodCPUUsageExceeded
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is
+                    overutilizing {{ $value }}% of low CPU request for longer
+                    than 15 minutes.
+                  summary: Pod CPU usage has been high for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      rate(
+                        container_cpu_usage_seconds_total{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"} <bool 0.1
+                      )
+                    ) == 1
+                  ) * 100 > 10
+                for: 15m
+                labels:
+                  severity: critical
+          - name: kubernetes-rightsizing
+            rules:
+              - alert: PodHighMemoryUsage
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
+                    {{ $value }}% of memory requests for longer than 15 minutes.
+                  summary: Pod memory usage has been high for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      avg_over_time(
+                        container_memory_working_set_bytes{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"}
+                      )
+                    )
+                  ) * 100 > (100 + 100 / 3)
+                for: 15m
+                labels:
+                  severity: warning
+              - alert: PodLowMemoryUsage
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
+                    {{ $value }}% of memory requests for longer than 15 minutes.
+                  summary: Pod memory usage has been low for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      avg_over_time(
+                        container_memory_working_set_bytes{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"}
+                      )
+                    )
+                  ) * 100 < (100 / 3)
+                for: 15m
+                labels:
+                  severity: warning
+              - alert: NoMemoryRequestOnPod
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
+                    memory request set.
+                  summary: Pod has no memory request set
+                expr: |-
+                  sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
+                  unless
+                  sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="memory"})
+                for: 1m
+                labels:
+                  severity: warning
+              - alert: NoMemoryLimitOnPod
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
+                    memory limit set.
+                  summary: Pod has no memory limit set
+                expr: |-
+                  sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
+                  unless
+                  sum by (namespace, pod, container) (kube_pod_container_resource_limits{resource="memory"})
+                for: 1m
+                labels:
+                  severity: warning
+              - alert: NoCPURequestOnPod
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
+                    CPU request set.
+                  summary: Pod has no CPU request set
+                expr: |-
+                  sum by (cluster, namespace, pod, container) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
+                  unless
+                  sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="cpu"})
+                for: 1m
+                labels:
+                  severity: warning
+              - alert: CPULimitOnPod
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has CPU
+                    limit set.
+                  summary: Pod has no memory limit set
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      kube_pod_container_resource_limits{job="kube-state-metrics",resource="cpu"}
+                    )
+                  )
+                for: 1m
+                labels:
+                  severity: warning
+              - alert: PodCPURequestUnderutilized
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
+                    {{ $value }}% of CPU requests for longer than 15 minutes.
+                  summary: Pod CPU usage has been low for more than 15 minutes.
+                expr: |-
+                  (
+                    sum by (cluster, namespace, pod, container) (
+                      rate(
+                        container_cpu_usage_seconds_total{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
+                      )
+                    )
+                  /
+                    (
+                      sum by (cluster, namespace, pod, container) (
+                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"} >= 0.1
+                      )
+                    )
+                  ) * 100 < (100 / 3) > 0
+                for: 15m
+                labels:
+                  severity: warning
+    alertmanager:
+      ingress:
+        enabled: true
+        hosts:
+          - alertmanager.kubi.${DOMAIN_LOCAL}
+        annotations:
+          hajimari.io/icon: mdi:bell-alert
+          hajimari.io/appName: Alert Manager
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+      alertmanagerSpec:
+        externalUrl: https://alertmanager.kubi.${DOMAIN_LOCAL}
+        resources:
+          requests:
+            cpu: 5m
+            memory: 32Mi
+          limits:
+            memory: 50Mi
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 1Gi
+      extraSecretMounts:
+        - name: secret-files
+          mountPath: /etc/secrets
+          subPath: ""
+          secretName: alertmanager-secrets
+          readOnly: true
+      config:
+        global:
+          smtp_from: "AlertManager <alertmanager@${DOMAIN_PUBLIC}>"
+          smtp_smarthost: "smtp.sendgrid.net:587"
+          smtp_auth_username: apikey
+          smtp_auth_password_file: /etc/secrets/smtp-auth-password
+          resolve_timeout: 5m
+        route:
+          routes:
+            - receiver: 'email'
+              matchers:
+                - severity = critical
+            - receiver: 'email'
+              matchers:
+                - severity = "error"
+                - namespace = "flux-system"
+        receivers:
+          - name: 'null'
+          - name: 'email'
+            email_configs:
+              - to: "${EMAIL_ADDRESS}"
+                send_resolved: true
+
+    grafana:
+      defaultDashboardsTimezone: "${TZ}"
+      adminUser: null
+      adminPassword: null
+      admin:
+        existingSecret: grafana-admin
+      ingress:
+        enabled: true
+        hosts:
+          - grafana.kubi.${DOMAIN_LOCAL}
+        annotations:
+          hajimari.io/icon: mdi:chart-bar-stacked
+          hajimari.io/appName: Grafana
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 128Mi
+      sidecar:
+        resources:
+          requests:
+            cpu: 1m
+            memory: 64Mi
+          limits:
+            memory: 100Mi
+
+    kubeScheduler:
+      service:
+        port: 10259
+        targetPort: 10259
+      serviceMonitor:
+        https: true
+        insecureSkipVerify: true
+
+    kube-state-metrics:
+      resources:
+        limits:
+          memory: 40Mi
+        requests:
+          cpu: 1m
+          memory: 32Mi
+
+    prometheus-node-exporter:
+      resources:
+        limits:
+          memory: 50Mi
+        requests:
+          cpu: 10m
+          memory: 32Mi
+
+    prometheusOperator:
+      resources:
+        limits:
+          memory: 192Mi
+        requests:
+          cpu: 10m
+          memory: 128Mi
+
+    prometheus:
+      ingress:
+        enabled: true
+        hosts:
+          - prometheus.kubi.${DOMAIN_LOCAL}
+        annotations:
+          hajimari.io/icon: mdi:database
+          hajimari.io/appName: Prometheus
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+      prometheusSpec:
+        image:
+          tag: v2.44.0
+        externalUrl: https://prometheus.kubi.${DOMAIN_LOCAL}
+        podMonitorSelector:
+          matchLabels:
+            app.kubernetes.io/component: monitoring
+        retention: 7d
+        retentionSize: 5GB
+        nodeSelector:
+          kubernetes.io/arch: amd64
+        resources:
+          requests:
+            cpu: 250m
+            memory: 4Gi
+          limits:
+            memory: 8Gi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 10Gi
