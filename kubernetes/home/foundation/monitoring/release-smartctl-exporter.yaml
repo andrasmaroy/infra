@@ -18,6 +18,7 @@ spec:
       version: 0.6.0
   values:
     nodeSelector:
+      kubernetes.io/arch: amd64
       node.longhorn.io/create-default-disk: "true"
     prometheusRules:
       enabled: true
