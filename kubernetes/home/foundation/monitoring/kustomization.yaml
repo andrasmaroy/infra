@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - release-smartctl-exporter.yaml
   - image-updates.yaml
   - alerts.yaml
 
