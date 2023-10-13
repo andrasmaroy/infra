@@ -4,3 +4,24 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - repository.yaml
+
+secretGenerator:
+  - name: alertmanager-secrets
+    namespace: monitoring
+    envs:
+      - alertmanager-secrets.sops.env
+  - name: cluster-info
+    namespace: monitoring
+    envs:
+      - cluster-info.sops.env
+  - name: grafana-admin
+    namespace: monitoring
+    envs:
+      - grafana-admin.sops.env
+
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+
+configurations:
+  - kustomizeconfig.yaml
