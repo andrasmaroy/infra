@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - repository.yaml
-  - release.yaml
+  - release-prometheus-stack.yaml
   - release-smartctl-exporter.yaml
   - image-updates.yaml
   - alerts.yaml
