@@ -4,5 +4,7 @@
   when: inventory_hostname != "apu2c2"
 - import_tasks: rpi_cgroups.yml
   when: inventory_hostname in groups["raspberry_pi"]
+- import_tasks: smartmontools.yml
+  when: inventory_hostname not in groups["raspberry_pi"]
 - import_tasks: kubelet.yml
 - meta: flush_handlers

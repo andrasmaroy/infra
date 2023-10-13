@@ -1,0 +1,6 @@
+---
+
+- name: Install dependencies
+  apt:
+    pkg:
+      - smartmontools
