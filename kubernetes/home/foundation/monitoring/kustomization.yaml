@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - alerts.yaml
 
 secretGenerator:
   - name: alertmanager-secrets
