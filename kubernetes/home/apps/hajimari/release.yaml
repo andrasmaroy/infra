@@ -52,6 +52,8 @@ spec:
           hajimari.io/icon: mdi:view-dashboard
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: home.kubi.${DOMAIN_LOCAL}
             paths:

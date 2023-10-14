@@ -63,6 +63,8 @@ spec:
           hajimari.io/icon: mdi:emby
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: jelly.kubi.${DOMAIN_LOCAL}
             paths:
@@ -74,6 +76,8 @@ spec:
           hajimari.io/enable: "false"
           traefik.ingress.kubernetes.io/router.entrypoints: webpublic
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: play.${DOMAIN_PUBLIC}
             paths:

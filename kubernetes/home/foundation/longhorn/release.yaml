@@ -28,3 +28,15 @@ spec:
         hajimari.io/appName: longhorn
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: networking.k8s.io
+              kind: Ingress
+              name: longhorn-ingress
+              version: v1
+            patch:
+              - op: add
+                path: /metadata/labels/probe
+                value: enabled

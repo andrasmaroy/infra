@@ -94,3 +94,15 @@ spec:
       nameservers:
         - 127.0.0.1
         - ${ROUTER_IP}
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: networking.k8s.io
+              kind: Ingress
+              name: pihole
+              version: v1
+            patch:
+              - op: add
+                path: /metadata/labels/probe
+                value: enabled

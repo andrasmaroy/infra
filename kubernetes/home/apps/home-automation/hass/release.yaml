@@ -71,6 +71,8 @@ spec:
           hajimari.io/appName: Home Assistant
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: hass.kubi.${DOMAIN_LOCAL}
             paths:

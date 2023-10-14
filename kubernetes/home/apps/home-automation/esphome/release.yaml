@@ -37,6 +37,8 @@ spec:
           hajimari.io/icon: mdi:car-esp
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: esphome.kubi.${DOMAIN_LOCAL}
             paths:

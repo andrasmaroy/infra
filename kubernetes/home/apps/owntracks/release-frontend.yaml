@@ -39,6 +39,8 @@ spec:
           hajimari.io/appName: Owntracks
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: owntracks.kubi.${DOMAIN_LOCAL}
             paths:

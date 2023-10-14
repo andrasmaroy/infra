@@ -247,6 +247,8 @@ spec:
           hajimari.io/appName: Alert Manager
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
       alertmanagerSpec:
         externalUrl: https://alertmanager.kubi.${DOMAIN_LOCAL}
         resources:
@@ -307,6 +309,8 @@ spec:
           hajimari.io/appName: Grafana
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
       resources:
         requests:
           cpu: 10m
@@ -363,6 +367,8 @@ spec:
           hajimari.io/appName: Prometheus
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
       prometheusSpec:
         image:
           tag: v2.44.0

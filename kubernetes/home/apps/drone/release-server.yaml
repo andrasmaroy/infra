@@ -57,3 +57,15 @@ spec:
       DRONE_SERVER_PROTO: https
       DRONE_STATUS_DISABLED: true
   interval: 1m0s
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: networking.k8s.io
+              kind: Ingress
+              name: drone-server
+              version: v1
+            patch:
+              - op: add
+                path: /metadata/labels/probe
+                value: enabled

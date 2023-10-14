@@ -49,3 +49,15 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: webpublic
         traefik.ingress.kubernetes.io/router.tls: "true"
       host: vault.${DOMAIN_PUBLIC}
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: networking.k8s.io
+              kind: Ingress
+              name: vaultwarden
+              version: v1
+            patch:
+              - op: add
+                path: /metadata/labels/probe
+                value: enabled

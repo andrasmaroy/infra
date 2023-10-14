@@ -53,6 +53,8 @@ spec:
           hajimari.io/icon: mdi:movie
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
+        labels:
+          probe: enabled
         hosts:
           - host: radarr.kubi.${DOMAIN_LOCAL}
             paths:
