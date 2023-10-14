@@ -29,3 +29,31 @@ spec:
         enabled: true
         labels:
           release: prom
+    extraManifests:
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: ingress
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: http_2xx
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            ingress:
+              namespaceSelector:
+                any: true
+              relabelingConfigs:
+                - action: keep
+                  regex: /
+                  sourceLabels:
+                    - __meta_kubernetes_ingress_path
+              selector:
+                matchLabels:
+                  probe: enabled
