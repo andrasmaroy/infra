@@ -11,3 +11,16 @@ spec:
       namespace: monitoring
   providerRef:
     name: alertmanager
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: prometheus-smartctl-exporter
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: prometheus-smartctl-exporter
+      namespace: monitoring
+  providerRef:
+    name: alertmanager
