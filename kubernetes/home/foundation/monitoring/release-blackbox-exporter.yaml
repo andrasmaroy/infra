@@ -29,6 +29,29 @@ spec:
         enabled: true
         labels:
           release: prom
+    prometheusRule:
+      enabled: true
+      additionalLabels:
+        release: prom
+      namespace: monitoring
+      rules:
+        - alert: ProbeUnsuccessful
+          expr: min(probe_success) by(instance) != 1
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Endpoint `{{$labels.instance}}` unsuccessful probe"
+            description: "The probe against endpoint `{{$labels.instance}}` has been unsuccessful during the last 2m"
+        - alert: ProbeHighDuration
+          expr: avg(probe_duration_seconds) by(instance) > 1
+          for: 5m
+          labels:
+            service: probe
+            severity: warning
+          annotations:
+            summary: "Endpoint `{{$labels.instance}}` probe took more than 1 second"
+            description: "The probe against endpoint `{{$labels.instance}}` took {{$value}} seconds during the last 5m"
     extraManifests:
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
