@@ -20,10 +20,10 @@ spec:
     pspEnabled: false
     resources:
       limits:
-        memory: 42Mi
+        memory: 100Mi
       requests:
-        cpu: 5m
-        memory: 20Mi
+        cpu: 50m
+        memory: 64Mi
     serviceMonitor:
       selfMonitor:
         enabled: true
