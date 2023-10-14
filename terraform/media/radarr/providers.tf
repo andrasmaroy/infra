@@ -6,7 +6,7 @@ terraform {
     }
     radarr = {
       source  = "devopsarr/radarr"
-      version = "1.8.0"
+      version = "2.1.0"
     }
   }
   required_version = "~> 1.3.0"
