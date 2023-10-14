@@ -6,6 +6,7 @@ resources:
   - repository.yaml
   - release-prometheus-stack.yaml
   - release-smartctl-exporter.yaml
+  - release-blackbox-exporter.yaml
   - image-updates.yaml
   - alerts.yaml
 
