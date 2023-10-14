@@ -18,6 +18,12 @@ spec:
       version: 8.4.0
   values:
     pspEnabled: false
+    resources:
+      limits:
+        memory: 42Mi
+      requests:
+        cpu: 5m
+        memory: 20Mi
     serviceMonitor:
       selfMonitor:
         enabled: true
