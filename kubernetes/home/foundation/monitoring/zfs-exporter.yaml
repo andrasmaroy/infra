@@ -1,0 +1,17 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  labels:
+    app.kubernetes.io/instance: prometheus-zfs-exporter
+    app.kubernetes.io/name: prometheus-zfs-exporter
+    kubernetes.io/service-name: prometheus-zfs-exporter
+    release: prom
+  name: prometheus-zfs-exporter
+  namespace: monitoring
+spec:
+  staticConfigs:
+    - labels:
+        job: zfs-exporter
+      targets:
+        - nas.${DOMAIN_LOCAL}:9134
