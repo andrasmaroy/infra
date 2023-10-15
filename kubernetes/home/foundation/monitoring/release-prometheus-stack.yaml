@@ -265,9 +265,9 @@ spec:
         resources:
           requests:
             cpu: 5m
-            memory: 32Mi
+            memory: 40Mi
           limits:
-            memory: 50Mi
+            memory: 64Mi
         storage:
           volumeClaimTemplate:
             spec:
