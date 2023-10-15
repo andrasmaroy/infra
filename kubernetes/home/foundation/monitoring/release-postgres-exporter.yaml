@@ -21,6 +21,12 @@ spec:
       datasourceSecret:
         name: postgres-secrets
         key: connection-string
+    resources:
+      limits:
+        memory: 20Mi
+      requests:
+        cpu: 5m
+        memory: 12Mi
     serviceMonitor:
       enabled: true
       labels:
