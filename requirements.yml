@@ -1,6 +1,8 @@
 ---
 
 roles:
+  - name: aroberts.zfs_exporter
+    version: v1.0.0
   - name: geerlingguy.nfs
     version: 2.0.0
   - name: maxhoesel.nut_netclient

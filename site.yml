@@ -13,6 +13,7 @@
   roles:
     - luks_tpm
     - zfs
+    - aroberts.zfs_exporter
     - netatalk
     - users
     - geerlingguy.nfs
