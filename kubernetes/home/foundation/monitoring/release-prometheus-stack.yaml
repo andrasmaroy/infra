@@ -318,6 +318,12 @@ spec:
             gnetId: 13659
             revision: 1
             datasource: Prometheus
+          zfs-overview:
+            url: https://raw.githubusercontent.com/45Drives/monitoring-stack/master/roles/grafana/files/zfs-overview.json
+            datasource: Prometheus
+          zfs-detailed-stats:
+            url: https://raw.githubusercontent.com/45Drives/monitoring-stack/master/roles/grafana/files/zfs-detailed-stats.json
+            datasource: Prometheus
       ingress:
         enabled: true
         hosts:
