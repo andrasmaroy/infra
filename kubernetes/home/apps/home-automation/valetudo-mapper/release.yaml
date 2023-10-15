@@ -48,7 +48,9 @@ spec:
         type: emptyDir
         mountPath: /root
         medium: Memory
-    resource:
+    resources:
       limits:
-        cpu: 100m
-        memory: 256Mi
+        memory: 96Mi
+      requests:
+        cpu: 1m
+        memory: 64Mi
