@@ -5,7 +5,6 @@ metadata:
   labels:
     app.kubernetes.io/instance: prometheus-zfs-exporter
     app.kubernetes.io/name: prometheus-zfs-exporter
-    kubernetes.io/service-name: prometheus-zfs-exporter
     release: prom
   name: prometheus-zfs-exporter
   namespace: monitoring
@@ -15,3 +14,31 @@ spec:
         job: zfs-exporter
       targets:
         - nas.${DOMAIN_LOCAL}:9134
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app.kubernetes.io/instance: prometheus-zfs-exporter
+    app.kubernetes.io/name: prometheus-zfs-exporter
+    release: prom
+  name: prometheus-zfs-exporter
+  namespace: monitoring
+spec:
+  groups:
+    - name: prometheus-blackbox-exporter
+      rules:
+        - alert: ZpoolDegradedState
+          annotations:
+            description: "Zpool:{{ $labels.zpool }} has experienced a failure but is still functioniong. The fault tolerance of the pool might be compromised, as a subsequent fault in another device might be unrecoverable"
+            summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
+          expr: node_zfs_zpool_state{state="degraded"} == 1
+          labels:
+            severity: critical
+        - alert: ZpoolFaultedState
+          annotations:
+            description: "Zpool:{{ $labels.zpool }} is in FAULTED state and is completely inaccessible. No data can be recovered until the necessary devices are attached or repaired"
+            summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
+          expr: node_zfs_zpool_state{state="faulted"} == 1
+          labels:
+            severity: critical
