@@ -40,7 +40,7 @@ spec:
     additionalPrometheusRulesMap:
       kubernetes-resource-usage.rules:
         groups:
-          - name: kubernetes-resources
+          - name: kubernetes-rightsizing
             rules:
               - alert: PodNearMemoryLimit
                 annotations:
@@ -112,8 +112,6 @@ spec:
                 for: 15m
                 labels:
                   severity: critical
-          - name: kubernetes-rightsizing
-            rules:
               - alert: PodHighMemoryUsage
                 annotations:
                   description: >-
@@ -237,6 +235,19 @@ spec:
                 for: 15m
                 labels:
                   severity: warning
+          - name: temperature
+            rules:
+              - alert: PodNearMemoryLimit
+                annotations:
+                  description: >-
+                    Temperature has been {{ $value }} for more than 5 minutes
+                    for {{ $labels.chip }} on {{ $labels.nodename }}
+                  summary: Temperature alert - {{ $labels.nodename }}
+                expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
+                for: 5m
+                labels:
+                  severity: critical
+
     alertmanager:
       ingress:
         enabled: true
