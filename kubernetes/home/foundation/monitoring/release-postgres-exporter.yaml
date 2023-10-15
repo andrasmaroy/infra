@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prometheus-postgres-exporter
+  namespace: monitoring
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: prometheus-postgres-exporter
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: monitoring
+      version: 5.1.0  # {"$imagepolicy": "flux-system:prometheus-postgres-exporter:tag"}
+  values:
+    config:
+      datasourceSecret:
+        name: postgres-secrets
+        key: connection-string
+    serviceMonitor:
+      enabled: true
+      labels:
+        app.kubernetes.io/instance: prometheus-postgres-exporter
+        app.kubernetes.io/name: prometheus-postgres-exporter
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: monitoring.coreos.com
+              kind: ServiceMonitor
+              name: prometheus-postgres-exporter
+              version: v1
+            patch:
+              - op: replace
+                path: /metadata/labels/release
+                value: prom

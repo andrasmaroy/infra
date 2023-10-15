@@ -11,3 +11,5 @@ nameReference:
         kind: HelmRelease
       - path: spec/valuesFrom/name
         kind: HelmRelease
+      - path: spec/values/config/datasourceSecret/name
+        kind: HelmRelease

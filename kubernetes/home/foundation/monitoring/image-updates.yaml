@@ -61,3 +61,24 @@ spec:
   policy:
     semver:
       range: '*'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: prometheus-postgres-exporter
+  namespace: flux-system
+spec:
+  image: ghcr.io/prometheus-community/charts/prometheus-postgres-exporter
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: prometheus-postgres-exporter
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: prometheus-postgres-exporter
+  policy:
+    semver:
+      range: '*'
