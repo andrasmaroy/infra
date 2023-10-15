@@ -318,6 +318,10 @@ spec:
             gnetId: 13659
             revision: 1
             datasource: Prometheus
+          node-temperatures:
+            gnetId: 15202
+            revision: 1
+            datasource: Prometheus
           zfs-overview:
             url: https://raw.githubusercontent.com/45Drives/monitoring-stack/master/roles/grafana/files/zfs-overview.json
             datasource: Prometheus
