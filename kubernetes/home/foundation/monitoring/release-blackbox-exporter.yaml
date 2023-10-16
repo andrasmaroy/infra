@@ -180,6 +180,7 @@ spec:
             staticConfig:
               static:
                 - pihole.${DOMAIN_LOCAL}:3493
+                - valetudo-mapper.home-automation.svc.cluster.local:3000
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
         metadata:
