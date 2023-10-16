@@ -1,0 +1,20 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/part-of: vernemq
+    release: prom
+  name: vernemq
+  namespace: monitoring
+spec:
+  endpoints:
+    - port: metrics
+  namespaceSelector:
+    matchNames:
+      - vernemq
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: vernemq
+      app.kubernetes.io/name: vernemq

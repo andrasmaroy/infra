@@ -11,6 +11,7 @@ resources:
   - zfs-exporter.yaml
   - cert-manager.yaml
   - traefik.yaml
+  - vernemq.yaml
   - image-updates.yaml
   - alerts.yaml
 
