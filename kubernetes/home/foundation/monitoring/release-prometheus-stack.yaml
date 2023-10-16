@@ -276,18 +276,22 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-      extraSecretMounts:
-        - name: secret-files
-          mountPath: /etc/secrets
-          subPath: ""
-          secretName: alertmanager-secrets
-          readOnly: true
+        volumes:
+          - name: alertmanager-secrets
+            secret:
+              secretName: alertmanager-secrets
+              defaultMode: 420
+        volumeMounts:
+          - name: alertmanager-secrets
+            readOnly: true
+            mountPath: /etc/alertmanager/secrets/smtp-auth-password
+            subPath: smtp-auth-password
       config:
         global:
           smtp_from: "AlertManager <alertmanager@${DOMAIN_PUBLIC}>"
           smtp_smarthost: "smtp.sendgrid.net:587"
           smtp_auth_username: apikey
-          smtp_auth_password_file: /etc/secrets/smtp-auth-password
+          smtp_auth_password_file: /etc/alertmanager/secrets/smtp-auth-password
           resolve_timeout: 5m
         route:
           routes:
