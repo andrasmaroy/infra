@@ -25,6 +25,11 @@ spec:
             preferred_ip_protocol: ip4
             query_name: ${DOMAIN_PUBLIC}
             query_type: A
+        tcp:
+          prober: tcp
+          tcp:
+            preferred_ip_protocol: ip4
+            tls: false
     pspEnabled: false
     resources:
       limits:
@@ -126,3 +131,22 @@ spec:
             staticConfig:
               static:
                 - ${METALLB_ADDRESS}
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: tcp
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: tcp
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - pihole.${DOMAIN_LOCAL}:3493
