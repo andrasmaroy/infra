@@ -9,6 +9,7 @@ resources:
   - release-blackbox-exporter.yaml
   - release-postgres-exporter.yaml
   - zfs-exporter.yaml
+  - traefik.yaml
   - image-updates.yaml
   - alerts.yaml
 

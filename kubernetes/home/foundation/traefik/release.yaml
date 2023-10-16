@@ -41,9 +41,6 @@ spec:
         tls:
           enabled: true
           options: default@kubernetescrd
-    podAnnotations:
-      prometheus.io/port: "8082"
-      prometheus.io/scrape: "true"
     priorityClassName: "system-cluster-critical"
     tolerations: []
     deployment:
