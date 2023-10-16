@@ -23,10 +23,10 @@ spec:
         key: connection-string
     resources:
       limits:
-        memory: 20Mi
+        memory: 32Mi
       requests:
         cpu: 5m
-        memory: 12Mi
+        memory: 16Mi
     serviceMonitor:
       enabled: true
       labels:

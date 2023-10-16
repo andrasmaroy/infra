@@ -426,7 +426,7 @@ spec:
       prometheusConfigReloader:
         resources:
           limits:
-            memory: 40Mi
+            memory: 50Mi
           requests:
             cpu: 1m
             memory: 32Mi
