@@ -337,6 +337,10 @@ spec:
             gnetId: 9628
             revision: 7
             datasource: Prometheus
+          traefik:
+            gnetId: 17347
+            revision: 7
+            datasource: Prometheus
           zfs-overview:
             url: https://raw.githubusercontent.com/45Drives/monitoring-stack/master/roles/grafana/files/zfs-overview.json
             datasource: Prometheus
