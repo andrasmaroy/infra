@@ -237,13 +237,25 @@ spec:
                   severity: warning
           - name: temperature
             rules:
-              - alert: PodNearMemoryLimit
+              - alert: TemperatureHigh
                 annotations:
                   description: >-
                     Temperature has been {{ $value }} for more than 5 minutes
                     for {{ $labels.chip }} on {{ $labels.nodename }}
                   summary: Temperature alert - {{ $labels.nodename }}
                 expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
+                for: 5m
+                labels:
+                  severity: critical
+          - name: vernemq
+            rules:
+              - alert: NoMQTTConnections
+                annotations:
+                  description: >-
+                    There were 0 active MQTT connections for more then 5
+                    minutes on {{ $labels.container }}.
+                  summary: No MQTT connections on {{ $labels.container }}
+                expr: sum by (__name__,container,job)(active_mqtt_connections) == 0
                 for: 5m
                 labels:
                   severity: critical
@@ -276,18 +288,22 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-      extraSecretMounts:
-        - name: secret-files
-          mountPath: /etc/secrets
-          subPath: ""
-          secretName: alertmanager-secrets
-          readOnly: true
+        volumes:
+          - name: alertmanager-secrets
+            secret:
+              secretName: alertmanager-secrets
+              defaultMode: 420
+        volumeMounts:
+          - name: alertmanager-secrets
+            readOnly: true
+            mountPath: /etc/alertmanager/secrets/smtp-auth-password
+            subPath: smtp-auth-password
       config:
         global:
           smtp_from: "AlertManager <alertmanager@${DOMAIN_PUBLIC}>"
           smtp_smarthost: "smtp.sendgrid.net:587"
           smtp_auth_username: apikey
-          smtp_auth_password_file: /etc/secrets/smtp-auth-password
+          smtp_auth_password_file: /etc/alertmanager/secrets/smtp-auth-password
           resolve_timeout: 5m
         route:
           routes:
@@ -336,6 +352,14 @@ spec:
           postgres:
             gnetId: 9628
             revision: 7
+            datasource: Prometheus
+          traefik:
+            gnetId: 17347
+            revision: 7
+            datasource: Prometheus
+          vernemq:
+            gnetId: 16479
+            revision: 1
             datasource: Prometheus
           zfs-overview:
             url: https://raw.githubusercontent.com/45Drives/monitoring-stack/master/roles/grafana/files/zfs-overview.json
@@ -402,7 +426,7 @@ spec:
       prometheusConfigReloader:
         resources:
           limits:
-            memory: 40Mi
+            memory: 50Mi
           requests:
             cpu: 1m
             memory: 32Mi

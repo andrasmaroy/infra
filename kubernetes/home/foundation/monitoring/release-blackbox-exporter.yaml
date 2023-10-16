@@ -17,6 +17,41 @@ spec:
         namespace: monitoring
       version: 8.4.0  # {"$imagepolicy": "flux-system:prometheus-blackbox-exporter:tag"}
   values:
+    config:
+      modules:
+        dns:
+          prober: dns
+          dns:
+            preferred_ip_protocol: ip4
+            query_name: ${DOMAIN_PUBLIC}
+            query_type: A
+        tcp:
+          prober: tcp
+          tcp:
+            preferred_ip_protocol: ip4
+            tls: false
+        tls:
+          prober: tcp
+          tcp:
+            preferred_ip_protocol: ip4
+            tls: true
+        otr:
+          prober: http
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: "ip4"
+            method: POST
+            basic_auth:
+              username: ${EMAIL_ADDRESS:0:6}
+              password_file: /etc/secrets/otr-password
+            body: '{"_type":"cmd","action":"dump"}'
+    extraSecretMounts:
+      - name: auth
+        mountPath: /etc/secrets
+        secretName: blackbox-secrets
+        readOnly: true
+        defaultMode: 420
     pspEnabled: false
     resources:
       limits:
@@ -52,6 +87,14 @@ spec:
           annotations:
             summary: "Endpoint `{{$labels.instance}}` probe took more than 1 second"
             description: "The probe against endpoint `{{$labels.instance}}` took {{$value}} seconds during the last 5m"
+        - alert: CertificateWillExpireSoon
+          expr: round((last_over_time(probe_ssl_earliest_cert_expiry[10m]) - time()) / 86400, 0.1) < 7
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: SSL certificate will expire in a week (instance {{ $labels.instance }})
+            description: "SSL certificate expires in less than 7 days\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
     extraManifests:
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
@@ -80,3 +123,99 @@ spec:
               selector:
                 matchLabels:
                   probe: enabled
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: http-static
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: http_2xx
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - http://zigstargw.iot.${DOMAIN_LOCAL}
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: pihole
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: dns
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - ${METALLB_ADDRESS}
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: tcp
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: tcp
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - pihole.${DOMAIN_LOCAL}:3493
+                - valetudo-mapper.home-automation.svc.cluster.local:3000
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: tls
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: tls
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - mqtt.${DOMAIN_LOCAL}:8883
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: otr
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: otr
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - https://otr.${DOMAIN_PUBLIC}

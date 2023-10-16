@@ -9,6 +9,9 @@ resources:
   - release-blackbox-exporter.yaml
   - release-postgres-exporter.yaml
   - zfs-exporter.yaml
+  - cert-manager.yaml
+  - traefik.yaml
+  - vernemq.yaml
   - image-updates.yaml
   - alerts.yaml
 
@@ -29,6 +32,10 @@ secretGenerator:
     namespace: monitoring
     envs:
       - postgres-secrets.sops.env
+  - name: blackbox-secrets
+    namespace: monitoring
+    envs:
+      - blackbox-secrets.sops.env
 
 generatorOptions:
   annotations:

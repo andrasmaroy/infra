@@ -7,9 +7,11 @@ nameReference:
     fieldSpecs:
       - path: spec/values/grafana/admin/existingSecret
         kind: HelmRelease
-      - path: spec/values/alertmanager/extraSecretMounts/secretName
+      - path: spec/values/alertmanager/alertmanagerSpec/volumes/secret/secretName
         kind: HelmRelease
       - path: spec/valuesFrom/name
         kind: HelmRelease
       - path: spec/values/config/datasourceSecret/name
+        kind: HelmRelease
+      - path: spec/values/extraSecretMounts/secretName
         kind: HelmRelease
