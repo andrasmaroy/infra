@@ -30,6 +30,11 @@ spec:
           tcp:
             preferred_ip_protocol: ip4
             tls: false
+        tls:
+          prober: tcp
+          tcp:
+            preferred_ip_protocol: ip4
+            tls: true
     pspEnabled: false
     resources:
       limits:
@@ -150,3 +155,22 @@ spec:
             staticConfig:
               static:
                 - pihole.${DOMAIN_LOCAL}:3493
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: tls
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: tls
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - mqtt.${DOMAIN_LOCAL}:8883
