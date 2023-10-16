@@ -237,13 +237,25 @@ spec:
                   severity: warning
           - name: temperature
             rules:
-              - alert: PodNearMemoryLimit
+              - alert: TemperatureHigh
                 annotations:
                   description: >-
                     Temperature has been {{ $value }} for more than 5 minutes
                     for {{ $labels.chip }} on {{ $labels.nodename }}
                   summary: Temperature alert - {{ $labels.nodename }}
                 expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
+                for: 5m
+                labels:
+                  severity: critical
+          - name: vernemq
+            rules:
+              - alert: NoMQTTConnections
+                annotations:
+                  description: >-
+                    There were 0 active MQTT connections for more then 5
+                    minutes on {{ $labels.container }}.
+                  summary: No MQTT connections on {{ $labels.container }}
+                expr: sum by (__name__,container,job)(active_mqtt_connections) == 0
                 for: 5m
                 labels:
                   severity: critical
