@@ -13,3 +13,5 @@ nameReference:
         kind: HelmRelease
       - path: spec/values/config/datasourceSecret/name
         kind: HelmRelease
+      - path: spec/values/extraSecretMounts/secretName
+        kind: HelmRelease
