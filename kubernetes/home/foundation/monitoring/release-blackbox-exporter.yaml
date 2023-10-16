@@ -17,6 +17,14 @@ spec:
         namespace: monitoring
       version: 8.4.0  # {"$imagepolicy": "flux-system:prometheus-blackbox-exporter:tag"}
   values:
+    config:
+      modules:
+        dns:
+          prober: dns
+          dns:
+            preferred_ip_protocol: ip4
+            query_name: ${DOMAIN_PUBLIC}
+            query_type: A
     pspEnabled: false
     resources:
       limits:
@@ -80,3 +88,22 @@ spec:
               selector:
                 matchLabels:
                   probe: enabled
+      - apiVersion: monitoring.coreos.com/v1
+        kind: Probe
+        metadata:
+          name: pihole
+          namespace: monitoring
+          labels:
+            app.kubernetes.io/instance: prometheus-blackbox-exporter
+            app.kubernetes.io/name: prometheus-blackbox-exporter
+            release: prom
+        spec:
+          interval: 30s
+          module: dns
+          prober:
+            url: prometheus-blackbox-exporter.monitoring.svc:9115
+          scrapeTimeout: 30s
+          targets:
+            staticConfig:
+              static:
+                - ${METALLB_ADDRESS}
