@@ -26,10 +26,10 @@ spec:
         release: prom
     resources:
       limits:
-        memory: 20Mi
+        memory: 24Mi
       requests:
         cpu: 1m
-        memory: 12Mi
+        memory: 16Mi
     serviceMonitor:
       enabled: true
       extraLabels:
