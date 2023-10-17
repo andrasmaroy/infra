@@ -15,15 +15,18 @@ spec:
         kind: HelmRepository
         name: traefik
         namespace: kube-system
-      version: 16.0.0
+      version: 24.0.0
   values:
     image:
       name: docker.io/traefik
-      tag: 2.6.1  # {"$imagepolicy": "flux-system:traefik:tag"}
+      tag: 2.10.4  # {"$imagepolicy": "flux-system:traefik:tag"}
     additionalArguments:
       - --api.insecure=true
-    rbac:
-      enabled: true
+    instanceLabelOverride: traefik
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: letsencrypt-traefik
     ports:
       web:
         expose: true
@@ -42,7 +45,6 @@ spec:
           enabled: true
           options: default@kubernetescrd
     priorityClassName: "system-cluster-critical"
-    tolerations: []
     deployment:
       kind: DaemonSet
     ingressRoute:
