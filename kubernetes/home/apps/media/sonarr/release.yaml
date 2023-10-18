@@ -19,6 +19,10 @@ spec:
     env: {}  # Necessary for the generic TZ patch to not fail
     controllers:
       main:
+        pod:
+          securityContext:
+            fsGroup: 997
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             nameOverride: sonarr
@@ -38,6 +42,7 @@ spec:
                   - SETGID
                 drop:
                   - ALL
+              readOnlyRootFilesystem: true
             ports:
               - containerPort: 8989
                 name: http
