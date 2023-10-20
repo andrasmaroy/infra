@@ -26,7 +26,7 @@ spec:
         release: prom
     resources:
       limits:
-        memory: 24Mi
+        memory: 26Mi
       requests:
         cpu: 1m
         memory: 16Mi
