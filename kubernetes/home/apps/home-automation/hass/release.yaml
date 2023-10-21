@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: docker.io/homeassistant/home-assistant
-      tag: "2023.10.3" # {"$imagepolicy": "flux-system:home-assistant:tag"}
+      tag: "2023.10.4" # {"$imagepolicy": "flux-system:home-assistant:tag"}
       pullPolicy: IfNotPresent
     env:
       S6_READ_ONLY_ROOT: 1
