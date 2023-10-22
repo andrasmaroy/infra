@@ -305,6 +305,14 @@ spec:
           smtp_auth_username: apikey
           smtp_auth_password_file: /etc/alertmanager/secrets/smtp-auth-password
           resolve_timeout: 5m
+        inhibit_rules:
+          - source_matchers:
+              - 'alertname != PodHighMemoryUsage'
+            target_matchers:
+              - 'alertname = PodNearMemoryLimit'
+            equal:
+              - 'container'
+              - 'pod'
         route:
           routes:
             - receiver: 'email'
