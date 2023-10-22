@@ -307,12 +307,32 @@ spec:
           resolve_timeout: 5m
         inhibit_rules:
           - source_matchers:
-              - 'alertname != PodHighMemoryUsage'
+              - 'alertname!="PodHighMemoryUsage"'
             target_matchers:
-              - 'alertname = PodNearMemoryLimit'
+              - 'alertname="PodNearMemoryLimit"'
             equal:
               - 'container'
               - 'pod'
+          - source_matchers:
+              - 'severity="critical"'
+            target_matchers:
+              - 'severity=~"warning|info"'
+            equal:
+              - 'namespace'
+              - 'alertname'
+          - source_matchers:
+              - 'severity="warning"'
+            target_matchers:
+              - 'severity="info"'
+            equal:
+              - 'namespace'
+              - 'alertname'
+          - source_matchers:
+              - 'alertname="InfoInhibitor"'
+            target_matchers:
+              - 'severity="info"'
+            equal:
+              - 'namespace'
         route:
           routes:
             - receiver: 'email'
