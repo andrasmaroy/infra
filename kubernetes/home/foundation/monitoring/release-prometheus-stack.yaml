@@ -61,7 +61,7 @@ spec:
                           kube_pod_container_resource_limits{job="kube-state-metrics",resource="memory"}
                       )
                     )
-                  ) * 100 > 80
+                  ) * 100 > 90
                 for: 15m
                 labels:
                   severity: critical
