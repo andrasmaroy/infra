@@ -63,6 +63,10 @@ spec:
 
     controllers:
       main:
+        pod:
+          securityContext:
+            fsGroup: 997
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             env:
@@ -95,6 +99,9 @@ spec:
                 drop:
                   - ALL
               readOnlyRootFilesystem: true
+              runAsGroup: 997
+              runAsNonRoot: true
+              runAsUser: 1001
         initContainers:
           remove-session-lock:
             command:
