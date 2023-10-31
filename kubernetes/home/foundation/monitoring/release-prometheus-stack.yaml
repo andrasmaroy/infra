@@ -47,7 +47,7 @@ spec:
                   description: >-
                     Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
                     {{ $value }}% of memory limit for longer than 15 minutes.
-                  summary: Pod memory usage above 80% of limit for more than 15 minutes.
+                  summary: Pod memory usage above 90% of limit for more than 15 minutes.
                 expr: |-
                   (
                     sum by (cluster, namespace, pod, container) (
