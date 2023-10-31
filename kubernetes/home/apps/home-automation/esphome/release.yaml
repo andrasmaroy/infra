@@ -14,57 +14,76 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    image:
-      repository: docker.io/esphome/esphome
-      tag: "2023.9.3" # {"$imagepolicy": "flux-system:esphome:tag"}
-      pullPolicy: IfNotPresent
-    env:
-      ESPHOME_DASHBOARD_USE_PING: false
-      ESPHOME_DASHBOARD_RELATIVE_URL: "/"
-      HOME: "/config"
-      readOnlyRootFilesystem: true
-    service:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
       main:
-        ports:
-          http:
-            port: 6052
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: nas
+        containers:
+          main:
+            env:
+              ESPHOME_DASHBOARD_USE_PING: false
+              ESPHOME_DASHBOARD_RELATIVE_URL: "/"
+              HOME: "/config"
+              TZ: ${TZ}
+            image:
+              repository: docker.io/esphome/esphome
+              tag: "2023.10.4"  # {"$imagepolicy": "flux-system:esphome:tag"}
+              pullPolicy: IfNotPresent
+            nameOverride: esphome
+            ports:
+              - containerPort: 6052
+                name: http
+                protocol: TCP
+            securityContext:
+              readOnlyRootFilesystem: true
+            resources:
+              limits:
+                memory: 1Gi
+              requests:
+                cpu: 100m
+
     ingress:
       main:
-        enabled: true
         annotations:
           hajimari.io/icon: mdi:car-esp
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
-        labels:
-          probe: enabled
+        enabled: true
         hosts:
           - host: esphome.kubi.${DOMAIN_LOCAL}
             paths:
               - path: /
                 pathType: Prefix
-    nodeSelector:
-      kubernetes.io/hostname: nas
+                service:
+                  name: main
+        labels:
+          probe: enabled
+
     persistence:
       config:
         enabled: true
         type: emptyDir
       devices:
         enabled: true
+        globalMounts:
+          - path: /config/living-room-ac.yaml
+            subPath: living-room-ac.yaml
         name: esphome-devices
         type: configMap
-        subPath:
-          - path: living-room-ac.yaml
-            mountPath: /config/living-room-ac.yaml
       secrets:
         enabled: true
-        type: secret
+        globalMounts:
+          - path: /config/secrets.yaml
+            subPath: secrets.yaml
         name: esphome
-        mountPath: /config/secrets.yaml
-        subPath: secrets.yaml
-    resources:
-      limits:
-        memory: 1Gi
-      requests:
-        cpu: 100m
+        type: secret
+
+    service:
+      main:
+        ports:
+          http:
+            port: 6052

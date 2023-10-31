@@ -10,7 +10,7 @@ nameReference:
   - kind: Secret
     version: v1
     fieldSpecs:
-      - path: spec/values/envFrom/secretRef/name
+      - path: spec/values/controllers/main/containers/main/envFrom/secretRef/name
         kind: HelmRelease
       - path: spec/basicAuth/secret
         kind: Middleware

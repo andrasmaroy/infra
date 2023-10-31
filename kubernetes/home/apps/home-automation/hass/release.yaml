@@ -1,3 +1,4 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -13,44 +14,109 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    image:
-      repository: docker.io/homeassistant/home-assistant
-      tag: "2023.7.3" # {"$imagepolicy": "flux-system:home-assistant:tag"}
-      pullPolicy: IfNotPresent
-    env:
-      S6_READ_ONLY_ROOT: 1
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
-        add:
-          - NET_RAW
-      readOnlyRootFilesystem: true
-    initContainers:
-      get-hacs:
-        command:
-          - '/bin/bash'
-          - '-c'
-        args:
-          - '[ ! -f /config/.HA_VERSION ] && echo {{ .Values.image.tag }} > /config/.HA_VERSION; if [ ! -d /config/custom_components/hacs ]; then wget -O - https://get.hacs.xyz | bash -; fi'
-        image: vandot/alpine-bash
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - mountPath: /config
-            name: config
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+        containers:
+          main:
+            env:
+              S6_READ_ONLY_ROOT: 1
+              TZ: ${TZ}
+            image:
+              repository: docker.io/homeassistant/home-assistant
+              tag: "2023.7.3"  # {"$imagepolicy": "flux-system:home-assistant:tag"}
+              pullPolicy: IfNotPresent
+            nameOverride: hass
+            ports:
+              - containerPort: 5683
+                name: coiot
+                protocol: UDP
+              - containerPort: 8123
+                name: http
+                protocol: TCP
+            resources:
+              limits:
+                memory: 1400Mi
+              requests:
+                memory: 1Gi
+                cpu: 50m
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - NET_RAW
+              readOnlyRootFilesystem: true
+        initContainers:
+          get-hacs:
+            command:
+              - '/bin/bash'
+              - '-c'
+            args:
+              - '[ ! -f /config/.HA_VERSION ] && echo 2023.7.3 > /config/.HA_VERSION; if [ ! -d /config/custom_components/hacs ]; then wget -O - https://get.hacs.xyz | bash -; fi'
+            image:
+              repository: docker.io/vandot/alpine-bash
+              tag: latest
+            securityContext:
+              runAsUser: 0
+
+    ingress:
+      main:
+        annotations:
+          hajimari.io/icon: mdi:home-assistant
+          hajimari.io/appName: Home Assistant
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        enabled: true
+        hosts:
+          - host: hass.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+        labels:
+          probe: enabled
+
+    persistence:
+      config:
+        enabled: true
+        retain: true
+        size: 1Gi
+        storageClass: longhorn
+      run:
+        enabled: true
+        medium: Memory
+        type: emptyDir
+      secrets:
+        advancedMounts:
+          main:
+            main:
+              - path: /config/secrets.yaml
+                readOnly: true
+                subPath: secrets.yaml
+        enabled: true
+        globalMounts: []
+        name: home-assistant
+        type: secret
+
     service:
       main:
         ports:
           http:
             port: 8123
       coiot:
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        controller: main
         enabled: true
-        primary: false
+        externalIPs:
+          - ${METALLB_ADDRESS}
         ports:
           coiot:
             enabled: true
@@ -58,47 +124,5 @@ spec:
             port: 5683
             targetPort: 5683
             protocol: UDP
-        annotations:
-          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        primary: false
         type: LoadBalancer
-        externalIPs:
-          - ${METALLB_ADDRESS}
-    ingress:
-      main:
-        enabled: true
-        annotations:
-          hajimari.io/icon: mdi:home-assistant
-          hajimari.io/appName: Home Assistant
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.tls: "true"
-        labels:
-          probe: enabled
-        hosts:
-          - host: hass.kubi.${DOMAIN_LOCAL}
-            paths:
-              - path: /
-                pathType: Prefix
-    persistence:
-      config:
-        enabled: true
-        mountPath: /config
-        storageClass: longhorn
-        size: 1Gi
-        retain: true
-      tmp:
-        enabled: true
-        type: emptyDir
-        mountPath: /run
-        medium: Memory
-      secrets:
-        enabled: true
-        type: secret
-        name: home-assistant
-        mountPath: /config/secrets.yaml
-        subPath: secrets.yaml
-    resources:
-      limits:
-        memory: 1400Mi
-      requests:
-        memory: 1Gi
-        cpu: 50m
