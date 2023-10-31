@@ -15,72 +15,78 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    initContainers:
-      create-config-folders:
-        command:
-          - sh
-          - '-c'
-          - chown -R 82:82 /config
-        image: busybox
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - mountPath: /config
-            name: config
-    image:
-      repository: docker.io/grocy/backend
-      tag: "v4.0.3" # {"$imagepolicy": "flux-system:grocy-backend:tag"}
-      pullPolicy: IfNotPresent
-    command:
-      - sh
-      - '-c'
-    args:
-      - 'cp /var/www/data/config.php /config/config.php && php-fpm81'
-    env:
-      GROCY_CALENDAR_FIRST_DAY_OF_WEEK: '1'
-      GROCY_CURRENCY: HUF
-      GROCY_DATAPATH: /config
-      GROCY_FEATURE_FLAG_BATTERIES: 'false'
-      GROCY_FEATURE_FLAG_CALENDAR: 'false'
-      GROCY_FEATURE_FLAG_CHORES: 'false'
-      GROCY_FEATURE_FLAG_TASKS: 'false'
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-      runAsUser: 82
-      runAsGroup: 82
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        pod:
+          securityContext:
+            fsGroup: 82
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          main:
+            args:
+              - 'cp /var/www/data/config.php /config/config.php && php-fpm81'
+            command:
+              - sh
+              - '-c'
+            env:
+              GROCY_CALENDAR_FIRST_DAY_OF_WEEK: '1'
+              GROCY_CURRENCY: HUF
+              GROCY_DATAPATH: /config
+              GROCY_FEATURE_FLAG_BATTERIES: 'false'
+              GROCY_FEATURE_FLAG_CALENDAR: 'false'
+              GROCY_FEATURE_FLAG_CHORES: 'false'
+              GROCY_FEATURE_FLAG_TASKS: 'false'
+              TZ: ${TZ}
+            image:
+              repository: docker.io/grocy/backend
+              tag: "v4.0.3"  # {"$imagepolicy": "flux-system:grocy-backend:tag"}
+              pullPolicy: IfNotPresent
+            nameOverride: backend
+            ports:
+              - containerPort: 9000
+                name: http
+                protocol: TCP
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+              runAsUser: 82
+              runAsGroup: 82
+            resources:
+              limits:
+                memory: 64Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+
+    ingress:
+      main:
+        enabled: false
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        retain: true
+        size: 1Gi
+        storageClass: longhorn
+      tmp:
+        enabled: true
+        medium: Memory
+        type: emptyDir
+      viewcache:
+        enabled: true
+        globalMounts:
+          - path: /config/viewcache
+        medium: Memory
+        type: emptyDir
+
     service:
       main:
         ports:
           http:
             port: 9000
-    ingress:
-      main:
-        enabled: false
-    persistence:
-      config:
-        enabled: true
-        mountPath: /config
-        storageClass: longhorn
-        size: 1Gi
-        retain: true
-      tmp:
-        enabled: true
-        type: emptyDir
-        mountPath: /tmp
-        medium: Memory
-      viewcache:
-        enabled: true
-        type: emptyDir
-        mountPath: /config/viewcache
-        medium: Memory
-    resources:
-      limits:
-        memory: 64Mi
-      requests:
-        cpu: 10m
-        memory: 32Mi
