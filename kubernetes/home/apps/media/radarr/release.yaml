@@ -13,69 +13,93 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    image:
-      repository: docker.io/spritsail/radarr
-      tag: "5.0.3" # {"$imagepolicy": "flux-system:radarr:tag"}
-      pullPolicy: IfNotPresent
-    env:
-      ANALYTICS: "false"
-      SGID: 568
-      SUID: 568
-    probes:
-      liveness:
-        custom: true
-        spec:
-          exec:
-            command:
-              - /bin/sh
-              - '-c'
-              - 'wget -qO /dev/null http://localhost:7878/api/v3/system/status?apiKey=`xmlstarlet sel -t -v /Config/ApiKey /config/config.xml`'
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
-        add:
-          - SETUID
-          - SETGID
-    service:
+    env: {} # Necessary for the generic TZ patch to not fail
+    controllers:
       main:
-        ports:
-          http:
-            port: 7878
+        pod:
+          securityContext:
+            fsGroup: 997
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          main:
+            env:
+              ANALYTICS: "false"
+              SGID: 997
+              TZ: ${TZ}
+            image:
+              repository: docker.io/spritsail/radarr
+              tag: "5.0.3" # {"$imagepolicy": "flux-system:radarr:tag"}
+              pullPolicy: IfNotPresent
+            nameOverride: radarr
+            ports:
+              - containerPort: 7878
+                name: http
+                protocol: TCP
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - '-c'
+                      - 'wget -qO /dev/null http://localhost:7878/api/v3/system/status?apiKey=`xmlstarlet sel -t -v /Config/ApiKey /config/config.xml`'
+                  initialDelaySeconds: 60
+                  timeoutSeconds: 5
+            resources:
+              limits:
+                memory: 512Mi
+              requests:
+                memory: 256Mi
+                cpu: 10m
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - SETUID
+                  - SETGID
+              readOnlyRootFilesystem: true
+
     ingress:
       main:
-        enabled: true
         annotations:
           hajimari.io/icon: mdi:movie
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.tls: "true"
-        labels:
-          probe: enabled
+        enabled: true
         hosts:
           - host: radarr.kubi.${DOMAIN_LOCAL}
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+        labels:
+          probe: enabled
+
     persistence:
       config:
         enabled: true
         mountPath: /config
-        storageClass: longhorn
-        size: 1Gi
         retain: true
+        size: 1Gi
+        storageClass: longhorn
       media:
         enabled: true
-        type: nfs
+        mountPath: /media
         path: /tank/Media/Movies
         server: nas
-        mountPath: /media
-    resources:
-      limits:
-        memory: 512Mi
-      requests:
-        memory: 256Mi
-        cpu: 10m
+        type: nfs
+      tmp:
+        enabled: true
+        mountPath: /tmp
+        type: emptyDir
+
+    service:
+      main:
+        ports:
+          http:
+            port: 7878
