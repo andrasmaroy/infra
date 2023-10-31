@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 51.7.0  # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
+      version: 52.1.0 # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
   valuesFrom:
     - kind: Secret
       name: cluster-info
@@ -45,8 +44,7 @@ spec:
               - alert: PodNearMemoryLimit
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory limit for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of memory limit for longer than 15 minutes.
                   summary: Pod memory usage above 80% of limit for more than 15 minutes.
                 expr: |-
                   (
@@ -68,8 +66,7 @@ spec:
               - alert: PodHighCPUUsage
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of CPU request for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of CPU request for longer than 15 minutes.
                   summary: Pod CPU usage has been high for more than 15 minutes.
                 expr: |-
                   (
@@ -91,9 +88,7 @@ spec:
               - alert: LowCPUPodCPUUsageExceeded
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is
-                    overutilizing {{ $value }}% of low CPU request for longer
-                    than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is overutilizing {{ $value }}% of low CPU request for longer than 15 minutes.
                   summary: Pod CPU usage has been high for more than 15 minutes.
                 expr: |-
                   (
@@ -115,8 +110,7 @@ spec:
               - alert: PodHighMemoryUsage
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory requests for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of memory requests for longer than 15 minutes.
                   summary: Pod memory usage has been high for more than 15 minutes.
                 expr: |-
                   (
@@ -138,8 +132,7 @@ spec:
               - alert: PodLowMemoryUsage
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory requests for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of memory requests for longer than 15 minutes.
                   summary: Pod memory usage has been low for more than 15 minutes.
                 expr: |-
                   (
@@ -161,8 +154,7 @@ spec:
               - alert: NoMemoryRequestOnPod
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    memory request set.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no memory request set.
                   summary: Pod has no memory request set
                 expr: |-
                   sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
@@ -174,8 +166,7 @@ spec:
               - alert: NoMemoryLimitOnPod
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    memory limit set.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no memory limit set.
                   summary: Pod has no memory limit set
                 expr: |-
                   sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
@@ -187,8 +178,7 @@ spec:
               - alert: NoCPURequestOnPod
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    CPU request set.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no CPU request set.
                   summary: Pod has no CPU request set
                 expr: |-
                   sum by (cluster, namespace, pod, container) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
@@ -200,8 +190,7 @@ spec:
               - alert: CPULimitOnPod
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has CPU
-                    limit set.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has CPU limit set.
                   summary: Pod has no memory limit set
                 expr: |-
                   (
@@ -215,8 +204,7 @@ spec:
               - alert: PodCPURequestUnderutilized
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of CPU requests for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of CPU requests for longer than 15 minutes.
                   summary: Pod CPU usage has been low for more than 15 minutes.
                 expr: |-
                   (
@@ -240,8 +228,7 @@ spec:
               - alert: TemperatureHigh
                 annotations:
                   description: >-
-                    Temperature has been {{ $value }} for more than 5 minutes
-                    for {{ $labels.chip }} on {{ $labels.nodename }}
+                    Temperature has been {{ $value }} for more than 5 minutes for {{ $labels.chip }} on {{ $labels.nodename }}
                   summary: Temperature alert - {{ $labels.nodename }}
                 expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
                 for: 5m
@@ -252,14 +239,12 @@ spec:
               - alert: NoMQTTConnections
                 annotations:
                   description: >-
-                    There were 0 active MQTT connections for more then 5
-                    minutes on {{ $labels.container }}.
+                    There were 0 active MQTT connections for more then 5 minutes on {{ $labels.container }}.
                   summary: No MQTT connections on {{ $labels.container }}
                 expr: sum by (__name__,container,job)(active_mqtt_connections) == 0
                 for: 5m
                 labels:
                   severity: critical
-
     alertmanager:
       ingress:
         enabled: true
@@ -348,7 +333,6 @@ spec:
             email_configs:
               - to: "${EMAIL_ADDRESS}"
                 send_resolved: true
-
     grafana:
       defaultDashboardsTimezone: "${TZ}"
       adminUser: null
@@ -419,7 +403,6 @@ spec:
             memory: 64Mi
           limits:
             memory: 100Mi
-
     kubeScheduler:
       service:
         port: 10259
@@ -427,7 +410,6 @@ spec:
       serviceMonitor:
         https: true
         insecureSkipVerify: true
-
     kube-state-metrics:
       resources:
         limits:
@@ -435,7 +417,6 @@ spec:
         requests:
           cpu: 1m
           memory: 32Mi
-
     prometheus-node-exporter:
       resources:
         limits:
@@ -443,7 +424,6 @@ spec:
         requests:
           cpu: 10m
           memory: 32Mi
-
     prometheusOperator:
       resources:
         limits:
@@ -458,7 +438,6 @@ spec:
           requests:
             cpu: 1m
             memory: 32Mi
-
     prometheus:
       ingress:
         enabled: true

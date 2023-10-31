@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,11 +13,11 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     image:
       repository: docker.io/owntracks/recorder
-      tag: 0.9.1  # {"$imagepolicy": "flux-system:owntracks-recorder:tag"}
+      tag: 0.9.6 # {"$imagepolicy": "flux-system:owntracks-recorder:tag"}
     securityContext:
       capabilities:
         drop:
