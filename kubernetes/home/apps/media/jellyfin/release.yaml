@@ -29,7 +29,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/jellyfin/jellyfin
-              tag: 10.8.5   # {"$imagepolicy": "flux-system:jellyfin:tag"}
+              tag: 10.8.11  # {"$imagepolicy": "flux-system:jellyfin:tag"}
               pullPolicy: IfNotPresent
             nameOverride: jellyfin
             ports:
