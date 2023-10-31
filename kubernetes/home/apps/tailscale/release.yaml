@@ -14,62 +14,70 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 1.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.0.3 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/tailscale/tailscale
-      tag: "v1.50.1" # {"$imagepolicy": "flux-system:tailscale:tag"}
-      pullPolicy: IfNotPresent
-    env:
-      TS_ACCEPT_DNS: "false"
-      TS_AUTHKEY:
-        valueFrom:
-          secretKeyRef:
-            name: tailscale-auth
-            key: TS_AUTHKEY
-      TS_EXTRA_ARGS: "--advertise-exit-node"
-      TS_KUBE_SECRET: subnet-router
-      TS_ROUTES:
-        valueFrom:
-          secretKeyRef:
-            name: tailscale-auth
-            key: TS_ROUTES
-      TS_USERSPACE: "true"
+    env: {} # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        type: statefulset
+        containers:
+          main:
+            env:
+              TS_ACCEPT_DNS: "false"
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-auth
+                    key: TS_AUTHKEY
+              TS_EXTRA_ARGS: "--advertise-exit-node"
+              TS_KUBE_SECRET: subnet-router
+              TS_ROUTES:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-auth
+                    key: TS_ROUTES
+              TS_USERSPACE: "true"
+              TZ: ${TZ}
+            image:
+              repository: ghcr.io/tailscale/tailscale
+              tag: "v1.50.1" # {"$imagepolicy": "flux-system:tailscale:tag"}
+              pullPolicy: IfNotPresent
+            nameOverride: foo-router
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - '-c'
+                      - "tailscale --socket=/tmp/tailscaled.sock status --peers=false --active=true --json | grep -q '^    \"Online\": true,$'"
+                  initialDelaySeconds: 60
+                  timeoutSeconds: 5
+            resources:
+              limits:
+                memory: 128Mi
+              requests:
+                cpu: 25m
+                memory: 32Mi
+            securityContext:
+              readOnlyRootFilesystem: true
+              runAsGroup: 1000
+              runAsUser: 1000
     persistence:
       cache:
         enabled: true
-        type: emptyDir
-        mountPath: /.cache
+        globalMounts:
+          - path: /.cache
         medium: Memory
+        type: emptyDir
       tmp:
         enabled: true
         type: emptyDir
-        mountPath: /tmp
-    probes:
-      liveness:
-        custom: true
-        spec:
-          exec:
-            command:
-              - /bin/sh
-              - '-c'
-              - "tailscale --socket=/tmp/tailscaled.sock status --peers=false --active=true --json | grep -q '^    \"Online\": true,$'"
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-    securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      readOnlyRootFilesystem: true
+
     service:
       main:
         enabled: false
+
     serviceAccount:
       name: tailscale
-    resources:
-      limits:
-        memory: 128Mi
-      requests:
-        cpu: 25m
-        memory: 32Mi
