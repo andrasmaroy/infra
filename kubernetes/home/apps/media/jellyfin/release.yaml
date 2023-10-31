@@ -61,6 +61,7 @@ spec:
               capabilities:
                 drop:
                   - ALL
+              readOnlyRootFilesystem: true
 
     ingress:
       main:
@@ -120,6 +121,10 @@ spec:
       cache:
         enabled: true
         mountPath: /cache
+        type: emptyDir
+      tmp:
+        enabled: true
+        mountPath: /tmp
         type: emptyDir
 
     service:
