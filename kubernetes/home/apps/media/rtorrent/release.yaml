@@ -102,21 +102,6 @@ spec:
               runAsGroup: 997
               runAsNonRoot: true
               runAsUser: 1001
-        initContainers:
-          remove-session-lock:
-            command:
-              - sh
-              - '-c'
-            args:
-              - 'rm -rf /config/.local/share/rtorrent/.session/rtorrent.lock && chown -vR 1001:1001 /config'
-            image:
-              repository: docker.io/busybox
-              tag: latest
-            securityContext:
-              runAsUser: 0
-            volumeMounts:
-              - mountPath: /config
-                name: config
 
     ingress:
       main:
