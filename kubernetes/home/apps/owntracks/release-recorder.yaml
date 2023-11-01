@@ -45,7 +45,6 @@ spec:
               capabilities:
                 drop:
                   - ALL
-              readOnlyRootFilesystem: true
             resources:
               limits:
                 memory: 50Mi
@@ -101,10 +100,6 @@ spec:
         retain: true
         size: 1Gi
         storageClass: longhorn
-      tmp:
-        enabled: true
-        medium: Memory
-        type: emptyDir
 
     service:
       main:
