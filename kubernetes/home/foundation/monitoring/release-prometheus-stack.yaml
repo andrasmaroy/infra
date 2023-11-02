@@ -37,9 +37,27 @@ spec:
     defaultRules:
       disabled:
         KubeClientCertificateExpiration: true
+        KubePodCrashLooping: true
     additionalPrometheusRulesMap:
       kubernetes-resource-usage.rules:
         groups:
+          - name: kubernetes-apps
+            rules:
+              - alert: KubePodCrashLooping
+                annotations:
+                  description: >-
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{
+                    $labels.container }}) is in waiting state (reason:
+                    "CrashLoopBackOff").
+                  runbook_url: >-
+                    https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping
+                  summary: Pod is crash looping.
+                expr: >-
+                  max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff",
+                  job="kube-state-metrics", namespace=~".*"}[5m]) >= 1
+                for: 5m
+                labels:
+                  severity: critical
           - name: kubernetes-rightsizing
             rules:
               - alert: PodNearMemoryLimit
