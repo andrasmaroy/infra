@@ -29,7 +29,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/homeassistant/home-assistant
-              tag: "2023.7.3"  # {"$imagepolicy": "flux-system:home-assistant:tag"}
+              tag: "2023.11.0"  # {"$imagepolicy": "flux-system:home-assistant:tag"}
               pullPolicy: IfNotPresent
             nameOverride: hass
             ports:
