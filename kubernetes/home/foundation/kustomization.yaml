@@ -8,5 +8,6 @@ resources:
   - longhorn
   - cert-manager
   - traefik
+  - cnpg
   - vernemq
   - monitoring
