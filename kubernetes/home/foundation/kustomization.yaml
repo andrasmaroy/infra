@@ -9,5 +9,6 @@ resources:
   - cert-manager
   - traefik
   - cnpg
+  - emqx
   - vernemq
   - monitoring

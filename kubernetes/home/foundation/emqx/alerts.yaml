@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: emqx-operator
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: emqx-operator
+      namespace: emqx-operator-system
+  providerRef:
+    name: alertmanager
