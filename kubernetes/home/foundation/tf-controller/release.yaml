@@ -15,4 +15,4 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
-      version: 0.15.1
+      version: 0.11.0
