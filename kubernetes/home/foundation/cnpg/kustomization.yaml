@@ -6,3 +6,5 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
+  - tf-user.sops.yaml
+  - cluster.yaml

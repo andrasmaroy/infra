@@ -1,0 +1,42 @@
+apiVersion: v1
+data:
+    password: ENC[AES256_GCM,data:ju6VLqa6X5wWAQIG1hM/V/90fapX9YO92O+zmPr0NczL9VRpYgqEUZvsHVGT5e41suWBidSBHfbKHdCMOEUlgmw8ftZEwAZ0DQyh+iIu/1QGnaBY84898g==,iv:c/zzXwlYiFnw5ZXp81zk/TB6eyAE7EmKvspA8JWH8Jk=,tag:mrRjzsRPBPiHnWyTFQ/+fg==,type:str]
+    username: ENC[AES256_GCM,data:ZPVw5azImrFi0PJc,iv:q3+y8qCxZpD1OQs4xjLCjjySQV8wipcSGOGnpQ9up/c=,tag:Lke6grY8hVp+rT2dJvb0Ng==,type:str]
+kind: Secret
+type: kubernetes.io/basic-auth
+metadata:
+    name: core-terraform
+    namespace: cnpg-system
+    labels:
+        cnpg.io/reload: "true"
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2023-11-09T16:01:08Z"
+    mac: ENC[AES256_GCM,data:o0zJqEsrJ2ESaCFoqAc/mYVQYImBXxosYuZYTAg1bKTOl4E6emIwSmynn13d5Lw48mYQiSGtgDu+r+a9LydvmNLSYhaeRkGZD9gDE6nHohKaq8Ozjr22KhFZR761XRRQg4wnjrJNQh9UkF/1oHmsypz91kpon/G5MINchDd4ixg=,iv:WM7pxRpQfI/qqygvO//v4YaJ7ALoVYXh67VuLW6C+Aw=,tag:JPAsqIhL9SkwRuAGO28z6Q==,type:str]
+    pgp:
+        - created_at: "2023-11-09T15:36:34Z"
+          enc: |
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA/2zKbmHCsRnAQ/9HHWQ6mocVS+HkQQXk8bvuwV3j8bgoMrIUnIS3jPbzapR
+            c7GRJFSAXnZH4iY2j64Qeo27g23OVmhZYAjv2tkm8lgXl6Z7sKYFfK1rt/JYIlMQ
+            6606hr6/ecawzHmmFw9/NhqxeEWSK2okkl7fDGY5TrLp3iMEk5TA74pYF1hLZyu1
+            LG/MB2w8bqzH+WFv5I6jWOodTCHn2Bb/y8Ejup48OdQG6zHjMCySlna4hgD1lI3J
+            pVJeZTU85z5lpLm7fr0q9Uxx/hnPQO3fs9U39x5QcDEjR2hkAc6qeUiHf/zGSH/Y
+            kwp8AanexTfBJ2WiCVicoCfr52iDhyGrX9X+m8KPaORKbcYKhTe/NMxjGFG9tdlU
+            r7eII5tlsxXLSFus6fHAMMuRDj6Z3ctbuxwUul4KliExh2+FWOTYglLMWPIp6K9X
+            Q1g3H4ZH+Wa9jzEcFMXEjpEsEzf63UkM1eLWDnl9cQhhOhWE6tKpsza/8s0c7dCp
+            4DPG83NT6hEzdT4ysgRpsH6zD4QyIJJETVRuGW62jjvJYoRZInpFWyxuvlzfawpY
+            YEQ+XLVNEQhQ3SLVWy+0lTy7ZofytHLGgbwzkqMnKWH+5Qu6jhCg3umCSVSq6nIT
+            ZQG5yUlphVKOYVr8T7SrtDH7YVQPJpRYzGBVEiFaE3WHre5PyeQv0DDCnAiGUmPS
+            XgEhKBD7ttPAYtu1ScHhOoKKvX9qf7rjYKAchKm90uHZuCDyk5I0fDOIJemENVuT
+            yzVV+Rhz45dCAiDNdjPNfAykaCjLHfk4h6Eo1Q1qh9iaif2diJbN6txvVR3Qcts=
+            =8qHp
+            -----END PGP MESSAGE-----
+          fp: 976AA83A5066FFE4CF485376F76C07C5F5BB0BEB
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

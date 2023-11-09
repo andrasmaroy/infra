@@ -15,4 +15,15 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
-      version: 0.15.1
+      version: 0.11.0
+  values:
+    allowCrossNamespaceRefs: true
+    runner:
+      serviceAccount:
+        allowedNamespaces:
+          - cnpg-system
+          - flux-system
+          - home-automation
+          - media
+          - tailscale
+          - vaultwarden

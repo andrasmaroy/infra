@@ -1,0 +1,37 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: core-db
+  namespace: cnpg-system
+spec:
+  bootstrap:
+    initdb:
+      database: terraform
+      secret:
+        name: core-terraform
+
+  env:
+    - name: TZ
+      value: ${TZ}
+
+  instances: 3
+
+  managed:
+    roles:
+      - bypassrls: true
+        createdb: true
+        createrole: true
+        ensure: present
+        login: true
+        name: terraform
+        passwordSecret:
+          name: core-terraform
+        superuser: true
+
+  monitoring:
+    enablePodMonitor: true
+
+  storage:
+    size: 2Gi
+    storageClass: service-replicated-longhorn
