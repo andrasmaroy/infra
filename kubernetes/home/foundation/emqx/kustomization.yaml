@@ -6,3 +6,12 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
+secretGenerator:
+  - name: emqx-auth
+    namespace: emqx-operator-system
+    files:
+      - acl.csv=acl.sops.csv
+      - user.csv=user.sops.csv
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
