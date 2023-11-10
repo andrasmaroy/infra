@@ -7,6 +7,13 @@ resources:
   - release.yaml
   - alerts.yaml
   - tf-auth-db.yaml
+  - seed.yaml
+
+configMapGenerator:
+  - name: seed-script
+    namespace: emqx-operator-system
+    files:
+      - seed.sql
 
 secretGenerator:
   - name: emqx-auth
@@ -24,3 +31,6 @@ secretGenerator:
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+
+configurations:
+  - kustomizeconfig.yaml
