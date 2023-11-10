@@ -1,0 +1,106 @@
+---
+apiVersion: apps.emqx.io/v2beta1
+kind: EMQX
+metadata:
+  name: emqx
+  namespace: emqx-operator-system
+spec:
+  image: docker.io/emqx:5.3.0
+  bootstrapAPIKeys:
+    - secretRef:
+        key:
+          secretName: monitoring-api-key
+          secretKey: key
+        secret:
+          secretName: monitoring-api-key
+          secretKey: secret
+  coreTemplate:
+    spec:
+      envFrom:
+        - secretRef:
+            name: dashboard-password
+        - secretRef:
+            name: auth-db-emqx
+      env:
+        - name: EMQX_AUTHENTICATION__1__BACKEND
+          value: postgresql
+        - name: EMQX_AUTHENTICATION__1__ENABLE
+          value: 'true'
+        - name: EMQX_AUTHENTICATION__1__MECHANISM
+          value: password_based
+        - name: EMQX_AUTHENTICATION__1__QUERY
+          value: >
+            SELECT password_hash, salt, is_superuser
+            FROM mqtt_user
+            WHERE username = $${username} LIMIT 1
+        - name: EMQX_AUTHORIZATION__NO_MATCH
+          value: deny
+        - name: EMQX_AUTHORIZATION__SOURCES__1__ENABLE
+          value: 'true'
+        - name: EMQX_AUTHORIZATION__SOURCES__1__QUERY
+          value: >
+            SELECT permission, action, topic
+            FROM mqtt_acl
+            WHERE username = $${username}
+        - name: EMQX_AUTHORIZATION__SOURCES__1__TYPE
+          value: postgresql
+        - name: EMQX_LISTENERS__TCP__DEFAULT__ENABLE
+          value: 'false'
+        - name: EMQX_LISTENERS__WS__DEFAULT__ENABLE
+          value: 'false'
+        - name: EMQX_TELEMETRY__ENABLE
+          value: 'false'
+      extraVolumes:
+        - name: emqx-tls
+          secret:
+            secretName: letsencrypt-emqx
+      extraVolumeMounts:
+        - mountPath: /opt/emqx/etc/certs/key.pem
+          name: emqx-tls
+          readOnly: true
+          subPath: tls.key
+        - mountPath: /opt/emqx/etc/certs/cert.pem
+          name: emqx-tls
+          readOnly: true
+          subPath: tls.crt
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+  listenersServiceTemplate:
+    metadata:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+    spec:
+      externalIPs:
+        - ${METALLB_ADDRESS}
+      type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    hajimari.io/appName: EMQX
+    hajimari.io/group: EMQX
+    hajimari.io/icon: mdi:hub-outline
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+  labels:
+    probe: enabled
+  name: emqx-dashboard
+  namespace: emqx-operator-system
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: emqx.kubi.${DOMAIN_LOCAL}
+      http:
+        paths:
+          - backend:
+              service:
+                name: emqx-dashboard
+                port:
+                  number: 18083
+            path: /
+            pathType: Prefix

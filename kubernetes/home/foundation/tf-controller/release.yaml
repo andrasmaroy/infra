@@ -22,6 +22,7 @@ spec:
       serviceAccount:
         allowedNamespaces:
           - cnpg-system
+          - emqx-operator-system
           - flux-system
           - home-automation
           - media

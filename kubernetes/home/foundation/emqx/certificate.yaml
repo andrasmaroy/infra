@@ -2,13 +2,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: letsenrypt-vernemq
-  namespace: vernemq
+  name: letsenrypt-emqx
+  namespace: emqx-operator-system
 spec:
   commonName: mqtt.${DOMAIN_LOCAL}
   dnsNames:
     - 'mqtt.${DOMAIN_LOCAL}'
-  secretName: letsencrypt-vernemq
+  secretName: letsencrypt-emqx
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
