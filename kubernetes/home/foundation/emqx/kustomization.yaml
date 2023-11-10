@@ -6,12 +6,21 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
+  - tf-auth-db.yaml
+
 secretGenerator:
   - name: emqx-auth
     namespace: emqx-operator-system
     files:
       - acl.csv=acl.sops.csv
       - user.csv=user.sops.csv
+  - name: core-db-terraform
+    namespace: emqx-operator-system
+    options:
+      disableNameSuffixHash: true
+    envs:
+      - ../cnpg/tf-user.sops.env
+
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
