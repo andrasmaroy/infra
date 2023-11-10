@@ -8,6 +8,7 @@ resources:
   - alerts.yaml
   - tf-auth-db.yaml
   - seed.yaml
+  - certificate.yaml
 
 configMapGenerator:
   - name: seed-script

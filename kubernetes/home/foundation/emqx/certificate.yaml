@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsenrypt-emqx
+  namespace: emqx-operator-system
+spec:
+  commonName: mqtt.${DOMAIN_LOCAL}
+  dnsNames:
+    - 'mqtt.${DOMAIN_LOCAL}'
+  secretName: letsencrypt-emqx
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+    group: cert-manager.io
