@@ -11,5 +11,4 @@ resources:
   - cnpg
   - tf-controller
   - emqx
-  - vernemq
   - monitoring
