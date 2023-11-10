@@ -10,6 +10,7 @@ resources:
   - seed.yaml
   - certificate.yaml
   - dashboard-password.sops.yaml
+  - cluster.yaml
 
 configMapGenerator:
   - name: seed-script
