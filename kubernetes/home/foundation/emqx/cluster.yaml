@@ -6,6 +6,14 @@ metadata:
   namespace: emqx-operator-system
 spec:
   image: docker.io/emqx:5.3.0
+  bootstrapAPIKeys:
+    - secretRef:
+        key:
+          secretName: monitoring-api-key
+          secretKey: key
+        secret:
+          secretName: monitoring-api-key
+          secretKey: secret
   coreTemplate:
     spec:
       envFrom:

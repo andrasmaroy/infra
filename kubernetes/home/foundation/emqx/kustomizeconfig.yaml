@@ -5,3 +5,10 @@ nameReference:
     fieldSpecs:
       - path: spec/template/spec/volumes/configMap/name
         kind: Job
+  - kind: Secret
+    version: v1
+    fieldSpecs:
+      - path: spec/bootstrapAPIKeys/secretRef/key/secretName
+        kind: EMQX
+      - path: spec/bootstrapAPIKeys/secretRef/secret/secretName
+        kind: EMQX
