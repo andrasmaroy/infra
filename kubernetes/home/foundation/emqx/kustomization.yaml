@@ -9,6 +9,7 @@ resources:
   - tf-auth-db.yaml
   - seed.yaml
   - certificate.yaml
+  - dashboard-password.sops.yaml
 
 configMapGenerator:
   - name: seed-script
