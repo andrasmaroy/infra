@@ -6,5 +6,18 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
-  - tf-user.sops.yaml
   - cluster.yaml
+
+secretGenerator:
+  - name: core-terraform
+    namespace: cnpg-system
+    envs:
+      - tf-user.sops.env
+    type: kubernetes.io/basic-auth
+
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    cnpg.io/reload: "true"
