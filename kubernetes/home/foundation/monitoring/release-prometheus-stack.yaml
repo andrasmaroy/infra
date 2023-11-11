@@ -499,6 +499,7 @@ spec:
         retention: 7d
         retentionSize: 5GB
         nodeSelector:
+          kubernetes.io/hostname: nas
           kubernetes.io/arch: amd64
         resources:
           requests:
@@ -509,7 +510,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: service-replicated-longhorn
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
