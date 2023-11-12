@@ -21,7 +21,7 @@ spec:
     database:
       type: postgresql
       wal: false
-      existingSecret: vaultwarden
+      existingSecret: vaultwarden-db
     vaultwarden:
       domain: https://vault.${DOMAIN_PUBLIC}
       allowSignups: false
