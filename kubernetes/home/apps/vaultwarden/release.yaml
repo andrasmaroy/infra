@@ -18,6 +18,8 @@ spec:
       version: 1.0.0
   values:
     env: {}  # Necessary for the generic TZ patch to not fail
+    image:
+      tag: 1.30.0
     database:
       type: postgresql
       wal: false
