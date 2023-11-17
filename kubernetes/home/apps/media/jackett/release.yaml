@@ -30,7 +30,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/spritsail/jackett
-              tag: "0.21.1179" # {"$imagepolicy": "flux-system:jackett:tag"}
+              tag: "0.21.1226" # {"$imagepolicy": "flux-system:jackett:tag"}
               pullPolicy: IfNotPresent
             nameOverride: jackett
             ports:
