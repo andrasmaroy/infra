@@ -5,6 +5,7 @@ metadata:
   name: auth-db
   namespace: emqx-operator-system
 spec:
+  interval: 1m
   approvePlan: auto
   destroyResourcesOnDeletion: true
   path: ./kubernetes/home/foundation/emqx/terraform
