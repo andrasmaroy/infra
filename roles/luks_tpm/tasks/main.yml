@@ -34,7 +34,7 @@
 
     # Combine the two 32 byte blobs to form a 64 byte blob.
     - name: Combine generated keys
-      ansible.builtin.command:
+      ansible.builtin.shell:
         chdir: /root
         cmd: cat random1.bin random2.bin > random.bin
 
