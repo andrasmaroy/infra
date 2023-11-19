@@ -28,3 +28,4 @@
     mode: 0644
     owner: root
   notify: Update initramfs
+  when: inventory_hostname == "u59"
