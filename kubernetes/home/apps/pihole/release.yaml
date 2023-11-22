@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -17,9 +16,9 @@ spec:
         namespace: pihole
       version: 2.18.0
   values:
-    env: {}  # Necessary for the generic TZ patch to not fail
+    env: {} # Necessary for the generic TZ patch to not fail
     image:
-      tag: "2023.10.0"  # {"$imagepolicy": "flux-system:pihole:tag"}
+      tag: "2023.11.0" # {"$imagepolicy": "flux-system:pihole:tag"}
     strategyType: Recreate
     serviceDns:
       type: LoadBalancer
