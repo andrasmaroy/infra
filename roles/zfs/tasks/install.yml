@@ -23,3 +23,11 @@
   community.general.modprobe:
     name: zfs
     state: present
+
+- name: Include kernel module in initrd
+  community.general.ini_file:
+    path: /etc/dkms/zfs.conf
+    section: null
+    option: REMAKE_INITRD
+    value: "'yes'"
+    no_extra_spaces: true
