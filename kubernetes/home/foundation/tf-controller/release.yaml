@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
-      version: 0.11.0
+      version: v0.15.0-rc.6
   values:
     allowCrossNamespaceRefs: true
     runner:
