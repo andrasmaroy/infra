@@ -5,6 +5,7 @@ metadata:
   name: service-replicated-longhorn
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
+reclaimPolicy: Retain
 parameters:
   numberOfReplicas: "1"
   dataLocality: "best-effort"

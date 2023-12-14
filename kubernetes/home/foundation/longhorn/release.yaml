@@ -19,6 +19,8 @@ spec:
   values:
     defaultSettings:
       createDefaultDiskLabeledNodes: true
+    persistence:
+      reclaimPolicy: Retain
     ingress:
       enabled: true
       host: longhorn.kubi.${DOMAIN_LOCAL}
