@@ -23,6 +23,9 @@ spec:
           securityContext:
             fsGroup: 997
             fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 44
+              - 105
         containers:
           main:
             env:
