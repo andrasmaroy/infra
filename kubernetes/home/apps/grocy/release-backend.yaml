@@ -27,7 +27,7 @@ spec:
         containers:
           main:
             args:
-              - 'cp /var/www/data/config.php /config/config.php && php-fpm81'
+              - 'cp /var/www/data/config.php /config/config.php && php-fpm82'
             command:
               - sh
               - '-c'
