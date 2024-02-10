@@ -14,9 +14,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    env: {}  # Necessary for the generic TZ patch to not fail
+    env: {} # Necessary for the generic TZ patch to not fail
     controllers:
       main:
         pod:
@@ -31,7 +31,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/esphome/esphome
-              tag: "2023.10.5"  # {"$imagepolicy": "flux-system:esphome:tag"}
+              tag: "2023.12.9" # {"$imagepolicy": "flux-system:esphome:tag"}
               pullPolicy: IfNotPresent
             nameOverride: esphome
             ports:
@@ -45,7 +45,6 @@ spec:
                 memory: 1Gi
               requests:
                 cpu: 100m
-
     ingress:
       main:
         annotations:
@@ -62,7 +61,6 @@ spec:
                   name: main
         labels:
           probe: enabled
-
     persistence:
       config:
         enabled: true
@@ -81,7 +79,6 @@ spec:
             subPath: secrets.yaml
         name: esphome
         type: secret
-
     service:
       main:
         ports:

@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,9 +14,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 2.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    env: {}  # Necessary for the generic TZ patch to not fail
+    env: {} # Necessary for the generic TZ patch to not fail
     controllers:
       main:
         containers:
@@ -27,7 +26,7 @@ spec:
               ZIGBEE2MQTT_DATA: /data
             image:
               repository: docker.io/koenkk/zigbee2mqtt
-              tag: "1.34.0"  # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
+              tag: "1.35.3" # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
               pullPolicy: IfNotPresent
             nameOverride: zigbee2mqtt
             ports:
@@ -40,7 +39,6 @@ spec:
               requests:
                 cpu: 10m
                 memory: 80Mi
-
     ingress:
       main:
         annotations:
@@ -57,7 +55,6 @@ spec:
                   name: main
         labels:
           probe: enabled
-
     persistence:
       data:
         accessMode: ReadWriteOnce
@@ -81,7 +78,6 @@ spec:
             subPath: configuration.yaml
         name: zigbee2mqtt
         type: configMap
-
     service:
       main:
         ports:
