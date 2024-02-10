@@ -391,6 +391,10 @@ spec:
             gnetId: 13659
             revision: 1
             datasource: Prometheus
+          cnpg:
+            gnetId: 20417
+            revision: 1
+            datasource: Prometheus
           node-temperatures:
             gnetId: 15202
             revision: 1
