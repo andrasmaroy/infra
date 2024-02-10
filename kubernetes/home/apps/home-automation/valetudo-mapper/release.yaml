@@ -35,10 +35,10 @@ spec:
                 protocol: TCP
             resources:
               limits:
-                memory: 96Mi
+                memory: 256Mi
               requests:
                 cpu: 1m
-                memory: 64Mi
+                memory: 80Mi
             securityContext:
               capabilities:
                 drop:

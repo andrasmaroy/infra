@@ -5,7 +5,7 @@ metadata:
   name: emqx
   namespace: emqx-operator-system
 spec:
-  image: docker.io/emqx:5.3.0
+  image: docker.io/emqx:5.4.1
   bootstrapAPIKeys:
     - secretRef:
         key:

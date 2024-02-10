@@ -391,6 +391,10 @@ spec:
             gnetId: 13659
             revision: 1
             datasource: Prometheus
+          cnpg:
+            gnetId: 20417
+            revision: 1
+            datasource: Prometheus
           node-temperatures:
             gnetId: 15202
             revision: 1
@@ -493,9 +497,7 @@ spec:
         image:
           tag: v2.44.0
         externalUrl: https://prometheus.kubi.${DOMAIN_LOCAL}
-        podMonitorSelector:
-          matchLabels:
-            app.kubernetes.io/component: monitoring
+        podMonitorSelectorNilUsesHelmValues: false
         retention: 7d
         retentionSize: 5GB
         nodeSelector:
@@ -507,6 +509,7 @@ spec:
             memory: 4Gi
           limits:
             memory: 8Gi
+        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:

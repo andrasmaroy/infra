@@ -23,6 +23,9 @@ spec:
           securityContext:
             fsGroup: 997
             fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 44
+              - 105
         containers:
           main:
             env:
@@ -106,7 +109,7 @@ spec:
       config:
         enabled: true
         retain: true
-        size: 10Gi
+        size: 20Gi
         storageClass: longhorn
       media:
         enabled: true
