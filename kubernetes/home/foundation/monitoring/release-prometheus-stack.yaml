@@ -493,9 +493,7 @@ spec:
         image:
           tag: v2.44.0
         externalUrl: https://prometheus.kubi.${DOMAIN_LOCAL}
-        podMonitorSelector:
-          matchLabels:
-            app.kubernetes.io/component: monitoring
+        podMonitorSelectorNilUsesHelmValues: false
         retention: 7d
         retentionSize: 5GB
         nodeSelector:
@@ -507,6 +505,7 @@ spec:
             memory: 4Gi
           limits:
             memory: 8Gi
+        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
