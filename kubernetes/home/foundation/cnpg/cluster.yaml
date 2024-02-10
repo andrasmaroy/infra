@@ -32,6 +32,10 @@ spec:
   monitoring:
     enablePodMonitor: true
 
+  postgresql:
+    parameters:
+      max_slot_wal_keep_size: '500MB'
+
   storage:
     size: 15Gi
     storageClass: service-replicated-longhorn
