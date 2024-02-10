@@ -455,6 +455,9 @@ spec:
           memory: 32Mi
 
     prometheus-node-exporter:
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 3
       resources:
         limits:
           memory: 50Mi
