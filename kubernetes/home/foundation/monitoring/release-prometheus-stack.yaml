@@ -455,9 +455,9 @@ spec:
           memory: 32Mi
 
     prometheus-node-exporter:
-      updateStrategy:
-        rollingUpdate:
-          maxUnavailable: 3
+      nodeSelector:
+        kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
       resources:
         limits:
           memory: 50Mi
