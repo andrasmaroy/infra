@@ -118,6 +118,8 @@ spec:
             subPath: Shows/Complete
           - path: /mnt/movies
             subPath: Movies/Complete
+          - path: /jellyfin/jellyfin-web/main.jellyfin.bundle.js
+            subPath: main.jellyfin.bundle.js
         path: /tank/Media
         server: nas
         type: nfs
