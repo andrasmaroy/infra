@@ -94,6 +94,10 @@ spec:
         path: /tank/Media/Shows
         server: nas
         type: nfs
+      tmp:
+        enabled: true
+        mountPath: /tmp
+        type: emptyDir
 
     service:
       main:
