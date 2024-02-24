@@ -42,7 +42,7 @@ spec:
                   - SETGID
                 drop:
                   - ALL
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
             ports:
               - containerPort: 8989
                 name: http
