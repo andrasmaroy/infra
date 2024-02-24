@@ -42,7 +42,7 @@ spec:
                   - SETGID
                 drop:
                   - ALL
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
             ports:
               - containerPort: 8989
                 name: http
@@ -55,7 +55,7 @@ spec:
                     command:
                       - /bin/sh
                       - -c
-                      - 'wget -qO /dev/null http://127.0.0.1:8989/api/system/status?apiKey=`xmlstarlet sel -t -v /Config/ApiKey /config/config.xml`'
+                      - 'wget -qO /dev/null http://127.0.0.1:8989/api/v3/system/status?apiKey=`xmlstarlet sel -t -v /Config/ApiKey /config/config.xml`'
                   initialDelaySeconds: 60
                   timeoutSeconds: 5
             resources:
