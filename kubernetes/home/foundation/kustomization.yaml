@@ -9,6 +9,6 @@ resources:
   - cert-manager
   - traefik
   - cnpg
-  - tf-controller
+  # - tf-controller
   - emqx
   - monitoring
