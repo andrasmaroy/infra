@@ -8,7 +8,7 @@ resource "radarr_import_list_trakt_list" "main" {
   minimum_availability = "tba"
   monitor              = "movieOnly"
   name                 = "Trakt"
-  quality_profile_id   = 4
+  quality_profile_id   = 7
   root_folder_path     = radarr_root_folder.main.path
   username             = nonsensitive(local.secrets.trakt.username)
 }
