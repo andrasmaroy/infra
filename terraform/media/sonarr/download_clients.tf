@@ -13,6 +13,18 @@ resource "sonarr_download_client_flood" "main" {
   username                = nonsensitive(local.secrets.rtorrent.username)
 }
 
+resource "sonarr_download_client_torrent_blackhole" "main" {
+  enable                     = true
+  priority                   = 50
+  name                       = "Tdarr Blackhole"
+  magnet_file_extension      = ".magnet"
+  save_magnet_files          = false
+  read_only                  = false
+  watch_folder               = "/media/Transcode/Blackhole"
+  torrent_folder             = "/media/Transcode/"
+  remove_completed_downloads = true
+}
+
 resource "sonarr_download_client_config" "main" {
   enable_completed_download_handling = true
   auto_redownload_failed             = true
