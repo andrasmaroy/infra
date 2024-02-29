@@ -10,6 +10,7 @@ resource "radarr_indexer_torznab" "main" {
   enable_automatic_search   = true
   enable_interactive_search = true
   enable_rss                = true
+  download_client_id        = radarr_download_client_flood.main.id
   name                      = each.value.name
   priority                  = 25
 }
