@@ -39,7 +39,7 @@ spec:
                   name: dropbox-app
             image:
               repository: ghcr.io/andrasmaroy/ynab4-to-gsheet
-              tag: latest
+              tag: main
               pullPolicy: Always
             probes:
               liveness:
