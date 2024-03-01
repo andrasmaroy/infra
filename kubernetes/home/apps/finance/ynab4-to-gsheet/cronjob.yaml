@@ -1,0 +1,57 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ynab4-to-gsheet
+  namespace: finance
+spec:
+  schedule: 0 2 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - env:
+                - name: BUDGET
+                  value: HUF Budget~06A6A692.ynab4
+                - name: BUDGET_EXTRA_TXN__EUR
+                  value: EUR Budget~2F032916.ynab4
+                - name: BUDGET_EXTRA_TXN__USD
+                  value: USD Budget~22F69526.ynab4
+                - name: DROPBOX_OAUTH_TOKEN_FILENAME
+                  value: /secrets/dropbox-token.json
+                - name: GSPREAD_AUTHORIZED_USER_FILENAME
+                  value: /secrets/google-token.json
+                - name: GSPREAD_CREDENTIALS_FILENAME
+                  value: /secrets/google-credentials.json
+                - name: GSPREAD_SHEET_NAME
+                  value: Income/Budget/NW/FIRE Spreadsheet
+                - name: TZ
+                  value: Europe/Budapest
+              envFrom:
+                - secretRef:
+                    name: dropbox-app
+              image: ghcr.io/andrasmaroy/ynab4-to-gsheet:main
+              imagePullPolicy: Always
+              name: ynab4-to-gsheet
+              resources:
+                limits:
+                  memory: 256Mi
+                requests:
+                  cpu: 1m
+                  memory: 128Mi
+              securityContext:
+                capabilities:
+                  drop:
+                    - ALL
+                readOnlyRootFilesystem: true
+              volumeMounts:
+                - mountPath: /secrets
+                  name: secrets
+                  readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: secrets
+              secret:
+                secretName: ynab4-to-gsheet
