@@ -21,6 +21,8 @@ spec:
     controllers:
       main:
         type: cronjob
+        cronjob:
+          schedule: "0 2 * * *"
         containers:
           main:
             env:
@@ -39,8 +41,6 @@ spec:
               repository: ghcr.io/andrasmaroy/ynab4-to-gsheet
               tag: latest
               pullPolicy: Always
-            cronjob:
-              schedule: "0 2 * * *"
             probes:
               liveness:
                 enabled: false
