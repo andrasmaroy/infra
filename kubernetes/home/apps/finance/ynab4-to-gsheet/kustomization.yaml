@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - release.yaml
+  - alerts.yaml
+
+secretGenerator:
+  - name: ynab4-to-gsheet
+    namespace: finance
+    files:
+      - dropbox-token.json=dropbox-token.sops.json
+      - google-credentials.json=google-credentials.sops.json
+      - google-token.json=google-token.sops.json
+  - name: dropbox-app
+    namespace: finance
+    envs:
+      - dropbox-app.sops.env
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+configurations:
+  - kustomizeconfig.yaml

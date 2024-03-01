@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ynab4-to-gsheet
+  namespace: finance
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        type: cronjob
+        containers:
+          main:
+            env:
+              TZ: ${TZ}
+              BUDGET: 'HUF Budget~06A6A692.ynab4'
+              BUDGET_EXTRA_TXN__USD: 'USD Budget~22F69526.ynab4'
+              BUDGET_EXTRA_TXN__EUR: 'EUR Budget~2F032916.ynab4'
+              GSPREAD_SHEET_NAME: 'Income/Budget/NW/FIRE Spreadsheet'
+              DROPBOX_OAUTH_TOKEN_FILENAME: /secrets/dropbox-token.json
+              GSPREAD_AUTHORIZED_USER_FILENAME: /secrets/google-token.json
+              GSPREAD_CREDENTIALS_FILENAME: /secrets/google-credentials.json
+            envFrom:
+              - secretRef:
+                  name: dropbox-app
+            image:
+              repository: ghcr.io/andrasmaroy/ynab4-to-gsheet
+              tag: latest
+              pullPolicy: Always
+            cronjob:
+              schedule: "0 2 * * *"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              limits:
+                memory: 256Mi
+              requests:
+                cpu: 1m
+                memory: 128Mi
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+
+    persistence:
+      config:
+        enabled: true
+        globalMounts:
+          - path: /secrets
+            readOnly: true
+        name: ynab4-to-gsheet
+        type: secret
+    service:
+      main:
+        enabled: false

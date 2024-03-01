@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: YNAB4-to-gsheet
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: YNAB4-to-gsheet
+      namespace: finance
+  providerRef:
+    name: alertmanager
