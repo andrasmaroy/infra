@@ -6,7 +6,7 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
-  # - tf-auth-db.yaml
+  - tf-auth-db.yaml
   - seed.yaml
   - certificate.yaml
   - dashboard-password.sops.yaml
