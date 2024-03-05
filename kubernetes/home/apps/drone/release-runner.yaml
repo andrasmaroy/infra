@@ -37,3 +37,12 @@ spec:
     env:
       DRONE_NAMESPACE_DEFAULT: drone
       DRONE_RPC_HOST: drone-server:8080
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: NotIn
+                  values:
+                    - nas
