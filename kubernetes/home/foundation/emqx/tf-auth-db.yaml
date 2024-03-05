@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1m
   approvePlan: auto
-  destroyResourcesOnDeletion: true
+  destroyResourcesOnDeletion: false
   path: ./kubernetes/home/foundation/emqx/terraform
   sourceRef:
     kind: GitRepository
