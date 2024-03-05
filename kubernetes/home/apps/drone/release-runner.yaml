@@ -36,14 +36,13 @@ spec:
         - drone
     env:
       DRONE_NAMESPACE_DEFAULT: drone
+      DRONE_POLICY_FILE: /policy.yml
       DRONE_RPC_HOST: drone-server:8080
-    affinity:
-      nodeAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: NotIn
-                  values:
-                    - nas
+    extraVolumes:
+      - name: policy
+        configMap:
+          name: policy
+    extraVolumeMounts:
+      - name: policy
+        mountPath: /policy.yaml
+        subPath: policy.yaml

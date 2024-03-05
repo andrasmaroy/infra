@@ -1,0 +1,6 @@
+---
+kind: policy
+name: default
+
+node_selector:
+  nvme: "true"

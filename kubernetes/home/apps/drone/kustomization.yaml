@@ -9,6 +9,11 @@ resources:
   - image-updates.yaml
   - alerts.yaml
 
+configMapGenerator:
+  - name: policy
+    namespace: drone
+    files:
+      - policy.yaml
 secretGenerator:
   - name: server
     namespace: drone
