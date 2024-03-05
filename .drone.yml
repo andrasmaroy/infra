@@ -104,4 +104,4 @@ steps:
         - failure
 
 node_selector:
-  kubernetes.io/arch: amd64
+  kubernetes.io/hostname: '!nas'
