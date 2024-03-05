@@ -14,3 +14,6 @@ luks_passphrase: !vault |
 # cryptsetup luksUUID <luks_device>
 luks_uuid: 773686c3-a0e6-45f3-9ce5-9f5aba0e9b54
 luks_target: nvme0n1p3_crypt
+
+node_label:
+  - "nvme=true"
