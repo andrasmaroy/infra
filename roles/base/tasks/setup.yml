@@ -51,3 +51,9 @@
     name: ssh
     state: restarted
   when: sshd_config_changed.changed
+
+- name: Set inotify max instance
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: '1024'
+    sysctl_set: true
