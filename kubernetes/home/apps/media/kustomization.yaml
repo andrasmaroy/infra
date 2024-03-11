@@ -8,3 +8,4 @@ resources:
   - sonarr
   - rtorrent
   - jellyfin
+  - tdarr
