@@ -31,14 +31,12 @@ echo "PAYLOAD: ${PAYLOAD}"
 if [ -n "$EVENT_TYPE" ] && [ "$EVENT_TYPE" != "Test" ]; then
   # Don't call tdarr when download client is blackhole
   if [ -z "$BLACKHOLE_CLIENT_NAME" ] || [ "$BLACKHOLE_CLIENT_NAME" != "$DOWNLOAD_CLIENT" ]; then
-    curl \
-      --data "${PAYLOAD}" \
-      --fail \
-      --header 'content-type: application/json' \
-      --location \
-      --request POST \
-      --show-error \
-      --silent \
+    wget \
+      -q \
+      -S \
+      -O - \
+      --header="content-type: application/json" \
+      --post-data="${PAYLOAD}" \
       "${TDARR_URL}/api/v2/scan-files"
   fi
 fi
