@@ -10,3 +10,11 @@ resource "sonarr_notification_webhook" "main" {
   on_series_delete                   = true
   on_upgrade                         = true
 }
+
+resource "sonarr_notification_custom_script" "tdarr" {
+  name = "Tdarr"
+  path = "/sonarr/tdarr_connect.sh"
+
+  on_download = true
+  on_upgrade  = true
+}
