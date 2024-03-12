@@ -28,7 +28,11 @@ spec:
             nameOverride: sonarr
             env:
               ANALYTICS: "false"
+              BLACKHOLE_CLIENT_NAME: "Tdarr Blackhole"
               SGID: 997
+              TDARR_PATH_TRANSLATE: "/media/Complete|/shows/Complete"
+              TDARR_DB_ID: "KyJQCdjzB"
+              TDARR_URL: http://tdarr.media.svc.cluster.local:8265
               TZ: ${TZ}
             image:
               pullPolicy: IfNotPresent
@@ -84,19 +88,24 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /config
         retain: true
         size: 1Gi
         storageClass: longhorn
       media:
         enabled: true
-        mountPath: /media
         path: /tank/Media/Shows
         server: nas
         type: nfs
+      tdarr-connect:
+        enabled: true
+        globalMounts:
+          - path: /sonarr/tdarr_connect.sh
+            subPath: tdarr_connect.sh
+        defaultMode: 0755
+        name: tdarr-connect
+        type: configMap
       tmp:
         enabled: true
-        mountPath: /tmp
         type: emptyDir
 
     service:
