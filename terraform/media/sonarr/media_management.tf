@@ -3,7 +3,7 @@ resource "sonarr_media_management" "main" {
   chown_group                 = ""
   create_empty_folders        = false
   delete_empty_folders        = false
-  download_propers_repacks    = "preferAndUpgrade"
+  download_propers_repacks    = "doNotPrefer"
   enable_media_info           = true
   episode_title_required      = "always"
   extra_file_extensions       = "srt"
