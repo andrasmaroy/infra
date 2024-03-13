@@ -8,6 +8,7 @@ resource "sonarr_delay_profile" "main" {
   tags                                = []
   torrent_delay                       = 120
   usenet_delay                        = 0
+  order                               = 50
 }
 
 resource "sonarr_delay_profile" "DoVi" {
@@ -20,6 +21,7 @@ resource "sonarr_delay_profile" "DoVi" {
   tags                                = [sonarr_tag.DoVi.id]
   torrent_delay                       = 1440
   usenet_delay                        = 0
+  order                               = 1
 }
 
 resource "sonarr_delay_profile" "DoViAtmos" {
@@ -32,4 +34,5 @@ resource "sonarr_delay_profile" "DoViAtmos" {
   tags                                = [sonarr_tag.DoViAtmos.id]
   torrent_delay                       = 1440
   usenet_delay                        = 0
+  order                               = 2
 }
