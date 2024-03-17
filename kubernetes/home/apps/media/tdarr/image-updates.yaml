@@ -1,0 +1,48 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: tdarr
+  namespace: flux-system
+spec:
+  image: ghcr.io/haveagitgat/tdarr
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: tdarr-node
+  namespace: flux-system
+spec:
+  image: ghcr.io/andrasmaroy/tdarr_node
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: tdarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: tdarr
+  filterTags:
+    pattern: '^(?P<major>\d+)\.(?P<minor>\d+)\.0?(?P<patch>\d+)$'
+    extract: '$major.$minor.$patch'
+  policy:
+    semver:
+      range: '*'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: tdarr-node
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: tdarr-node
+  filterTags:
+    pattern: '^(?P<major>\d+)\.(?P<minor>\d+)\.0?(?P<patch>\d+)$'
+    extract: '$major.$minor.$patch'
+  policy:
+    semver:
+      range: '*'

@@ -41,7 +41,7 @@ spec:
             image:
               pullPolicy: IfNotPresent
               repository: ghcr.io/haveagitgat/tdarr
-              tag: 2.15.01
+              tag: 2.15.01  # {"$imagepolicy": "flux-system:tdarr:tag"}
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -98,7 +98,7 @@ spec:
             image:
               pullPolicy: IfNotPresent
               repository: ghcr.io/andrasmaroy/tdarr_node
-              tag: 2.15.01
+              tag: 2.15.01  # {"$imagepolicy": "flux-system:tdarr-node:tag"}
             resources:
               limits:
                 gpu.intel.com/i915: 1
