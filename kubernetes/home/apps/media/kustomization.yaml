@@ -8,3 +8,14 @@ resources:
   - sonarr
   - rtorrent
   - jellyfin
+  - tdarr
+
+configMapGenerator:
+  - files:
+      - tdarr_connect.sh=tdarr_connect.sh
+    name: tdarr-connect
+    namespace: media
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      disableNameSuffixHash: true

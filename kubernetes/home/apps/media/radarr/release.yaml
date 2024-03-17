@@ -26,7 +26,11 @@ spec:
           main:
             env:
               ANALYTICS: "false"
+              BLACKHOLE_CLIENT_NAME: "Tdarr Blackhole"
               SGID: 997
+              TDARR_PATH_TRANSLATE: "/media/Complete|/movies/Complete"
+              TDARR_DB_ID: "2rSTdOI7e"
+              TDARR_URL: http://tdarr.media.svc.cluster.local:8265
               TZ: ${TZ}
             image:
               repository: docker.io/spritsail/radarr
@@ -93,6 +97,14 @@ spec:
         path: /tank/Media/Movies
         server: nas
         type: nfs
+      tdarr-connect:
+        enabled: true
+        globalMounts:
+          - path: /radarr/tdarr_connect.sh
+            subPath: tdarr_connect.sh
+        defaultMode: 0755
+        name: tdarr-connect
+        type: configMap
       tmp:
         enabled: true
         mountPath: /tmp

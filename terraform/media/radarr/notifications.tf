@@ -11,3 +11,12 @@ resource "radarr_notification_webhook" "main" {
   on_rename                        = true
   on_upgrade                       = true
 }
+
+resource "radarr_notification_custom_script" "tdarr" {
+  name = "Tdarr"
+  path = "/radarr/tdarr_connect.sh"
+
+  on_download     = true
+  on_movie_delete = false
+  on_upgrade      = true
+}

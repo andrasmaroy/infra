@@ -6,7 +6,7 @@ resource "radarr_media_management" "main" {
   copy_using_hardlinks                        = true
   create_empty_movie_folders                  = false
   delete_empty_folders                        = false
-  download_propers_and_repacks                = "preferAndUpgrade"
+  download_propers_and_repacks                = "doNotPrefer"
   enable_media_info                           = true
   extra_file_extensions                       = "srt"
   file_date                                   = "none"
