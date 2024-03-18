@@ -27,3 +27,8 @@ output "home_assistant_api_key" {
   value     = sendgrid_api_key.main["Home Assistant"].api_key
   sensitive = true
 }
+
+output "tdarr_api_key" {
+  value     = sendgrid_api_key.main["Tdarr"].api_key
+  sensitive = true
+}

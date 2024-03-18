@@ -1,5 +1,5 @@
 resource "sendgrid_api_key" "main" {
-  for_each = toset(["Drone", "Uptime Kuma", "Alert Manager", "Vaultwarden", "Jellyfin", "Home Assistant"])
+  for_each = toset(["Drone", "Uptime Kuma", "Alert Manager", "Vaultwarden", "Jellyfin", "Home Assistant", "Tdarr"])
   name     = each.key
   scopes = [
     "mail.send",
