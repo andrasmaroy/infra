@@ -63,7 +63,7 @@ spec:
               limits:
                 memory: 2Gi
               requests:
-                cpu: 100m
+                cpu: 1
                 memory: 1500Mi
       node:
         enabled: true
