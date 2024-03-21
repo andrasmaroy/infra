@@ -4,6 +4,7 @@ kind: Kustomization
 bases:
   - ../base
 resources:
+  - priorityclass.yaml
   - metallb
   - longhorn
   - cert-manager
