@@ -20,6 +20,7 @@ spec:
     controllers:
       main:
         pod:
+          priorityClassName: public
           securityContext:
             fsGroup: 997
             fsGroupChangePolicy: "OnRootMismatch"
