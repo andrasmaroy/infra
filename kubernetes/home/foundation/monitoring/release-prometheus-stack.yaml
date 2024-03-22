@@ -319,7 +319,7 @@ spec:
         limits:
           memory: 40Mi
         requests:
-          cpu: 1m
+          cpu: 3m
           memory: 32Mi
 
     prometheus-node-exporter:

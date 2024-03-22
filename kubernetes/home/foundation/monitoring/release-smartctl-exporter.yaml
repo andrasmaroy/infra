@@ -28,7 +28,7 @@ spec:
       limits:
         memory: 26Mi
       requests:
-        cpu: 1m
+        cpu: 5m
         memory: 16Mi
     serviceMonitor:
       enabled: true
