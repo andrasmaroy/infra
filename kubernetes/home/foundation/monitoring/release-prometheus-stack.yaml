@@ -130,129 +130,6 @@ spec:
                 for: 15m
                 labels:
                   severity: critical
-              - alert: PodHighMemoryUsage
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory requests for longer than 15 minutes.
-                  summary: Pod memory usage has been high for more than 15 minutes.
-                expr: |-
-                  (
-                    sum by (cluster, namespace, pod, container) (
-                      avg_over_time(
-                        container_memory_working_set_bytes{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
-                      )
-                    )
-                  /
-                    (
-                      sum by (cluster, namespace, pod, container) (
-                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"}
-                      )
-                    )
-                  ) * 100 > (100 + 100 / 3)
-                for: 15m
-                labels:
-                  severity: warning
-              - alert: PodLowMemoryUsage
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory requests for longer than 15 minutes.
-                  summary: Pod memory usage has been low for more than 15 minutes.
-                expr: |-
-                  (
-                    sum by (cluster, namespace, pod, container) (
-                      avg_over_time(
-                        container_memory_working_set_bytes{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
-                      )
-                    )
-                  /
-                    (
-                      sum by (cluster, namespace, pod, container) (
-                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"}
-                      )
-                    )
-                  ) * 100 < (100 / 3)
-                for: 15m
-                labels:
-                  severity: warning
-              - alert: NoMemoryRequestOnPod
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    memory request set.
-                  summary: Pod has no memory request set
-                expr: |-
-                  sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
-                  unless
-                  sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="memory"})
-                for: 1m
-                labels:
-                  severity: warning
-              - alert: NoMemoryLimitOnPod
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    memory limit set.
-                  summary: Pod has no memory limit set
-                expr: |-
-                  sum by (namespace, pod, container) (kube_pod_container_info{container!="",namespace!="longhorn-system",namespace!="kube-system",namespace!="media"})
-                  unless
-                  sum by (namespace, pod, container) (kube_pod_container_resource_limits{resource="memory"})
-                for: 1m
-                labels:
-                  severity: warning
-              - alert: NoCPURequestOnPod
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has no
-                    CPU request set.
-                  summary: Pod has no CPU request set
-                expr: |-
-                  sum by (cluster, namespace, pod, container) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
-                  unless
-                  sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="cpu"})
-                for: 1m
-                labels:
-                  severity: warning
-              - alert: CPULimitOnPod
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} has CPU
-                    limit set.
-                  summary: Pod has no memory limit set
-                expr: |-
-                  (
-                    sum by (cluster, namespace, pod, container) (
-                      kube_pod_container_resource_limits{job="kube-state-metrics",resource="cpu"}
-                    )
-                  )
-                for: 1m
-                labels:
-                  severity: warning
-              - alert: PodCPURequestUnderutilized
-                annotations:
-                  description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of CPU requests for longer than 15 minutes.
-                  summary: Pod CPU usage has been low for more than 15 minutes.
-                expr: |-
-                  (
-                    sum by (cluster, namespace, pod, container) (
-                      rate(
-                        container_cpu_usage_seconds_total{image!="",job="kubelet",metrics_path="/metrics/cadvisor"}[15m]
-                      )
-                    )
-                  /
-                    (
-                      sum by (cluster, namespace, pod, container) (
-                          kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"} >= 0.1
-                      )
-                    )
-                  ) * 100 < (100 / 3) > 0
-                for: 15m
-                labels:
-                  severity: warning
           - name: temperature
             rules:
               - alert: TemperatureHigh
@@ -262,18 +139,6 @@ spec:
                     for {{ $labels.chip }} on {{ $labels.nodename }}
                   summary: Temperature alert - {{ $labels.nodename }}
                 expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
-                for: 5m
-                labels:
-                  severity: critical
-          - name: vernemq
-            rules:
-              - alert: NoMQTTConnections
-                annotations:
-                  description: >-
-                    There were 0 active MQTT connections for more then 5
-                    minutes on {{ $labels.container }}.
-                  summary: No MQTT connections on {{ $labels.container }}
-                expr: sum by (__name__,container,job)(active_mqtt_connections) == 0
                 for: 5m
                 labels:
                   severity: critical
@@ -394,6 +259,9 @@ spec:
           cnpg:
             gnetId: 20417
             revision: 1
+            datasource: Prometheus
+          kubernetes-rightsizing:
+            url: https://raw.githubusercontent.com/andrasmaroy/infra/main/kubernetes/home/foundation/monitoring/dashboards/kubernetes-rightsizing.json
             datasource: Prometheus
           node-temperatures:
             gnetId: 15202
