@@ -48,8 +48,8 @@ spec:
               limits:
                 memory: 32Mi
               requests:
-                cpu: 10m
-                memory: 8Mi
+                cpu: 1m
+                memory: 16Mi
 
     ingress:
       main:

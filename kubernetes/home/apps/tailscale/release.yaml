@@ -61,7 +61,7 @@ spec:
                 memory: 128Mi
               requests:
                 cpu: 25m
-                memory: 32Mi
+                memory: 64Mi
             securityContext:
               readOnlyRootFilesystem: true
               runAsGroup: 1000
