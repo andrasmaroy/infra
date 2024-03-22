@@ -63,3 +63,12 @@ spec:
               - op: add
                 path: /metadata/labels/probe
                 value: enabled
+          - target:
+              group: apps
+              kind: Deployment
+              name: vaultwarden
+              version: v1
+            patch:
+              - op: add
+                path: /spec/template/spec/priorityClassName
+                value: public

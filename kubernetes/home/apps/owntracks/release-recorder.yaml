@@ -19,6 +19,8 @@ spec:
     env: {}  # Necessary for the generic TZ patch to not fail
     controllers:
       main:
+        pod:
+          priorityClassName: public
         containers:
           main:
             env:

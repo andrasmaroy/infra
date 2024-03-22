@@ -19,6 +19,8 @@ spec:
     env: {} # Necessary for the generic TZ patch to not fail
     controllers:
       main:
+        pod:
+          priorityClassName: public
         type: statefulset
         containers:
           main:
@@ -42,7 +44,7 @@ spec:
               repository: ghcr.io/tailscale/tailscale
               tag: "v1.52.0" # {"$imagepolicy": "flux-system:tailscale:tag"}
               pullPolicy: IfNotPresent
-            nameOverride: foo-router
+            nameOverride: subnet-router
             probes:
               liveness:
                 custom: true
