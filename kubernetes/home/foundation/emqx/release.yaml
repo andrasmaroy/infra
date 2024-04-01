@@ -15,4 +15,4 @@ spec:
         kind: HelmRepository
         name: emqx
         namespace: emqx-operator-system
-      version: 2.2.14
+      version: 2.2.18
