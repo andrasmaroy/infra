@@ -54,10 +54,10 @@ spec:
                   timeoutSeconds: 5
             resources:
               limits:
-                memory: 512Mi
-              requests:
                 memory: 256Mi
-                cpu: 10m
+              requests:
+                memory: 180Mi
+                cpu: 5m
             securityContext:
               capabilities:
                 drop:
