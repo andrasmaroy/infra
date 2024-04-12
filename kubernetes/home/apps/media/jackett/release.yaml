@@ -51,9 +51,9 @@ spec:
                   timeoutSeconds: 5
             resources:
               limits:
-                memory: 168Mi
+                memory: 192Mi
               requests:
-                memory: 130Mi
+                memory: 155Mi
                 cpu: 3m
             securityContext:
               capabilities:
