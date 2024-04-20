@@ -41,7 +41,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/grocy/backend
-              tag: "v4.0.3" # {"$imagepolicy": "flux-system:grocy-backend:tag"}
+              tag: "v4.2.0" # {"$imagepolicy": "flux-system:grocy-backend:tag"}
               pullPolicy: IfNotPresent
             nameOverride: backend
             ports:
