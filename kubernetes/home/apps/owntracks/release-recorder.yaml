@@ -49,10 +49,10 @@ spec:
                   - ALL
             resources:
               limits:
-                memory: 50Mi
+                memory: 64Mi
               requests:
-                cpu: 10m
-                memory: 16Mi
+                cpu: 1m
+                memory: 45Mi
 
     ingress:
       main:
