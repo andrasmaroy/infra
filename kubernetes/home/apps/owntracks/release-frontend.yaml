@@ -27,7 +27,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/owntracks/frontend
-              tag: 2.15.2 # {"$imagepolicy": "flux-system:owntracks-frontend:tag"}
+              tag: 2.15.3 # {"$imagepolicy": "flux-system:owntracks-frontend:tag"}
             nameOverride: owntracks-frontend
             ports:
               - containerPort: 8080
