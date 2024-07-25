@@ -53,10 +53,10 @@ spec:
         - pihole.kubi.${DOMAIN_LOCAL}
     resources:
       limits:
-        memory: 256Mi
+        memory: 280Mi
       requests:
         cpu: 100m
-        memory: 128Mi
+        memory: 240Mi
     persistentVolumeClaim:
       enabled: true
       size: 1Gi
