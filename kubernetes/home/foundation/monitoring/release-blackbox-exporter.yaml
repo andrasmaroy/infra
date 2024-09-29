@@ -200,6 +200,7 @@ spec:
             staticConfig:
               static:
                 - mqtt.${DOMAIN_LOCAL}:8883
+                - jelly.${DOMAIN_LOCAL}:8920
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
         metadata:
