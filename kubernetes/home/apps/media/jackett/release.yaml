@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 3.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     controllers:
@@ -30,7 +30,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/spritsail/jackett
-              tag: "0.22.136"  # {"$imagepolicy": "flux-system:jackett:tag"}
+              tag: "0.22.707" # {"$imagepolicy": "flux-system:jackett:tag"}
               pullPolicy: IfNotPresent
             nameOverride: jackett
             ports:
@@ -63,7 +63,6 @@ spec:
                   - SETUID
                   - SETGID
               readOnlyRootFilesystem: true
-
     ingress:
       main:
         annotations:
@@ -80,7 +79,6 @@ spec:
                   name: main
         labels:
           probe: enabled
-
     persistence:
       config:
         enabled: true
@@ -92,7 +90,6 @@ spec:
         enabled: true
         mountPath: /tmp
         type: emptyDir
-
     service:
       main:
         ports:

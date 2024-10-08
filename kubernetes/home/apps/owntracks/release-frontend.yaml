@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -14,9 +13,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 3.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    env: {}  # Necessary for the generic TZ patch to not fail
+    env: {} # Necessary for the generic TZ patch to not fail
     controllers:
       main:
         containers:
@@ -28,7 +27,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/owntracks/frontend
-              tag: 2.12.0  # {"$imagepolicy": "flux-system:owntracks-frontend:tag"}
+              tag: 2.15.3 # {"$imagepolicy": "flux-system:owntracks-frontend:tag"}
             nameOverride: owntracks-frontend
             ports:
               - containerPort: 8080
@@ -48,7 +47,6 @@ spec:
               requests:
                 cpu: 10m
                 memory: 4Mi
-
     ingress:
       main:
         enabled: true
@@ -66,7 +64,6 @@ spec:
                 pathType: Prefix
                 service:
                   name: main
-
     persistence:
       config:
         enabled: true
@@ -75,7 +72,6 @@ spec:
             subPath: config.js
         name: owntracks-frontend
         type: configMap
-
     service:
       main:
         ports:

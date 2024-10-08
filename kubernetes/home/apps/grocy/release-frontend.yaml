@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,9 +14,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 3.5.0 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
-    env: {}  # Necessary for the generic TZ patch to not fail
+    env: {} # Necessary for the generic TZ patch to not fail
     controllers:
       main:
         pod:
@@ -30,7 +29,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/grocy/frontend
-              tag: "v4.0.3"  # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
+              tag: "v4.2.0" # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
               pullPolicy: IfNotPresent
             nameOverride: frontend
             ports:
@@ -50,7 +49,6 @@ spec:
               requests:
                 cpu: 1m
                 memory: 16Mi
-
     ingress:
       main:
         annotations:
@@ -68,7 +66,6 @@ spec:
                   name: main
         labels:
           probe: enabled
-
     persistence:
       config:
         enabled: false
@@ -76,7 +73,6 @@ spec:
         enabled: true
         medium: Memory
         type: emptyDir
-
     service:
       main:
         ports:
