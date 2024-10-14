@@ -1,0 +1,128 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: omada
+  namespace: networking
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        containers:
+          main:
+            nameOverride: omada
+            env:
+              TZ: ${TZ}
+            image:
+              pullPolicy: IfNotPresent
+              repository: docker.io/mbentley/omada-controller
+              tag: "5.13"
+            securityContext:
+              allowPrivilegeEscalation: false
+            ports:
+              - containerPort: 8088
+                name: http
+                protocol: TCP
+              - containerPort: 27001
+                name: app-discovery
+                protocol: UDP
+              - containerPort: 29810
+                name: discovery
+                protocol: UDP
+              - containerPort: 29811
+                name: manager-v1
+                protocol: TCP
+              - containerPort: 29812
+                name: adopt-v1
+                protocol: TCP
+              - containerPort: 29813
+                name: upgrade-v1
+                protocol: TCP
+              - containerPort: 29814
+                name: manager-v2
+                protocol: TCP
+              - containerPort: 29815
+                name: transfer-v2
+                protocol: TCP
+              - containerPort: 29816
+                name: rtty
+                protocol: TCP
+    ingress:
+      main:
+        annotations:
+          hajimari.io/icon: mdi:router-network-wireless
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        enabled: true
+        hosts:
+          - host: omada.kubi.${DOMAIN_LOCAL}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+        labels:
+          probe: enabled
+
+    persistence:
+      data:
+        accessMode: ReadWriteOnce
+        enabled: true
+        globalMounts:
+          - path: /opt/tplink/EAPController/data
+        retain: true
+        size: 1Gi
+        storageClass: longhorn
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8088
+      controller:
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        controller: main
+        enabled: true
+        externalIPs:
+          - ${METALLB_ADDRESS}
+        ports:
+          manager-v1:
+            port: 29811
+          adopt-v1:
+            port: 29812
+          upgrade-v1:
+            port: 29813
+          manager-v2:
+            port: 29814
+          transfer-v2:
+            port: 29815
+          rtty:
+            port: 29816
+        type: LoadBalancer
+      discovery:
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        controller: main
+        enabled: true
+        externalIPs:
+          - ${METALLB_ADDRESS}
+        ports:
+          app-discovery:
+            port: 27001
+            protocol: UDP
+          discovery:
+            port: 29810
+            protocol: UDP
+        type: LoadBalancer
