@@ -26,7 +26,7 @@ spec:
               TZ: ${TZ}
             image:
               pullPolicy: IfNotPresent
-              repository: docker.io/mbentley/omada-controller
+              repository: docker.io/mbentley/omada-controller   # {"$imagepolicy": "flux-system:omada:tag"}
               tag: "5.13"
             securityContext:
               allowPrivilegeEscalation: false
