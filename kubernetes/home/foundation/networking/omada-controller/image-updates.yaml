@@ -17,8 +17,8 @@ spec:
   imageRepositoryRef:
     name: omada
   filterTags:
-    pattern: '^(?P<major>\d+)\.(?P<minor>\d+)$'
-    extract: '$major.$minor'
+    pattern: '^(?P<semver>\d+\.\d+\.\d+)\.\d+$'
+    extract: '$semver'
   policy:
     semver:
       range: '*'
