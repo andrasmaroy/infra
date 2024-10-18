@@ -58,6 +58,12 @@ spec:
               - containerPort: 29816
                 name: rtty
                 protocol: TCP
+            resources:
+              limits:
+                memory: 2253Mi
+              requests:
+                cpu: 15m
+                memory: 2Gi
     ingress:
       main:
         annotations:
