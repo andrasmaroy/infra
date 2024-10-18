@@ -58,6 +58,18 @@ spec:
               - containerPort: 29816
                 name: rtty
                 protocol: TCP
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - '/healthcheck.sh'
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 30
             resources:
               limits:
                 memory: 2253Mi
