@@ -36,6 +36,9 @@ spec:
               - containerPort: 5683
                 name: coiot
                 protocol: UDP
+              - containerPort: 21063
+                name: homekit
+                protocol: TCP
               - containerPort: 8123
                 name: http
                 protocol: TCP
@@ -125,4 +128,15 @@ spec:
             targetPort: 5683
             protocol: UDP
         primary: false
+        type: LoadBalancer
+      homekit:
+        annotations:
+          metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+        controller: main
+        enabled: true
+        externalIPs:
+          - ${METALLB_ADDRESS}
+        ports:
+          homekit:
+            port: 21063
         type: LoadBalancer
