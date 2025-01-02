@@ -19,6 +19,10 @@ spec:
   values:
     config:
       modules:
+        http_2xx:
+          http:
+            headers:
+              User-Agent: "Prometheus/Blackbox-exporter:0.24.0"
         dns:
           prober: dns
           dns:
