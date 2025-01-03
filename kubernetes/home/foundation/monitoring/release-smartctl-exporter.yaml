@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 0.7.0  # {"$imagepolicy": "flux-system:prometheus-smartctl-exporter:tag"}
+      version: 0.13.0 # {"$imagepolicy": "flux-system:prometheus-smartctl-exporter:tag"}
   values:
     nodeSelector:
       kubernetes.io/arch: amd64
