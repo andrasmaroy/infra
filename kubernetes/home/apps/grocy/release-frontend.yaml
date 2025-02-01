@@ -29,7 +29,7 @@ spec:
             env:
               TZ: ${TZ}
             image:
-              repository: docker.io/grocy/frontend
+              repository: ghcr.io/andrasmaroy/grocy-frontend
               tag: "v4.0.3"  # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
               pullPolicy: IfNotPresent
             nameOverride: frontend

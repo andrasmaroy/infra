@@ -5,7 +5,7 @@ metadata:
   name: grocy-frontend
   namespace: flux-system
 spec:
-  image: docker.io/grocy/frontend
+  image: ghcr.io/andrasmaroy/grocy-frontend
   interval: 24h0m0s
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta1
@@ -14,7 +14,7 @@ metadata:
   name: grocy-backend
   namespace: flux-system
 spec:
-  image: docker.io/grocy/backend
+  image: ghcr.io/andrasmaroy/grocy-backend
   interval: 24h0m0s
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta1
