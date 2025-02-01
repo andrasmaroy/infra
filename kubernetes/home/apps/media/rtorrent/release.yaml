@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 2.0.3 # {"$imagepolicy": "flux-system:app-template:tag"}
+      version: 3.6.1 # {"$imagepolicy": "flux-system:app-template:tag"}
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     configMaps:
@@ -60,7 +60,6 @@ spec:
             print = (cat, "Logging to ", (cfg.logfile))
             log.open_file = "log", (cfg.logfile)
             log.add_output = "info", "log"
-
     controllers:
       main:
         pod:
@@ -102,7 +101,6 @@ spec:
               runAsGroup: 997
               runAsNonRoot: true
               runAsUser: 1001
-
     ingress:
       main:
         annotations:
@@ -120,7 +118,6 @@ spec:
                   name: main
         labels:
           probe: enabled
-
     persistence:
       config:
         enabled: true
@@ -208,7 +205,6 @@ spec:
         path: /tank/Media/Music/Downloads
         server: nas
         type: nfs
-
     service:
       main:
         ports:

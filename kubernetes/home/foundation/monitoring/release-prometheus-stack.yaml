@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 56.6.2  # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
+      version: 68.4.4 # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
   valuesFrom:
     - kind: Secret
       name: cluster-info
@@ -46,15 +45,12 @@ spec:
               - alert: KubePodCrashLooping
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{
-                    $labels.container }}) is in waiting state (reason:
-                    "CrashLoopBackOff").
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: "CrashLoopBackOff").
                   runbook_url: >-
                     https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping
                   summary: Pod is crash looping.
                 expr: >-
-                  max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff",
-                  job="kube-state-metrics", namespace=~".*"}[5m]) >= 1
+                  max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff", job="kube-state-metrics", namespace=~".*"}[5m]) >= 1
                 for: 5m
                 labels:
                   severity: critical
@@ -63,8 +59,7 @@ spec:
               - alert: PodNearMemoryLimit
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of memory limit for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of memory limit for longer than 15 minutes.
                   summary: Pod memory usage above 90% of limit for more than 15 minutes.
                 expr: |-
                   (
@@ -86,8 +81,7 @@ spec:
               - alert: PodHighCPUUsage
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using
-                    {{ $value }}% of CPU request for longer than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value }}% of CPU request for longer than 15 minutes.
                   summary: Pod CPU usage has been high for more than 15 minutes.
                 expr: |-
                   (
@@ -109,9 +103,7 @@ spec:
               - alert: LowCPUPodCPUUsageExceeded
                 annotations:
                   description: >-
-                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is
-                    overutilizing {{ $value }}% of low CPU request for longer
-                    than 15 minutes.
+                    Pod {{ $labels.namespace }}/{{ $labels.pod }} is overutilizing {{ $value }}% of low CPU request for longer than 15 minutes.
                   summary: Pod CPU usage has been high for more than 15 minutes.
                 expr: |-
                   (
@@ -135,14 +127,12 @@ spec:
               - alert: TemperatureHigh
                 annotations:
                   description: >-
-                    Temperature has been {{ $value }} for more than 5 minutes
-                    for {{ $labels.chip }} on {{ $labels.nodename }}
+                    Temperature has been {{ $value }} for more than 5 minutes for {{ $labels.chip }} on {{ $labels.nodename }}
                   summary: Temperature alert - {{ $labels.nodename }}
                 expr: (node_hwmon_temp_celsius > 75) * on (instance) group_left (nodename) node_uname_info{nodename=~".+"}
                 for: 5m
                 labels:
                   severity: critical
-
     alertmanager:
       ingress:
         enabled: true
@@ -231,7 +221,6 @@ spec:
             email_configs:
               - to: "${EMAIL_ADDRESS}"
                 send_resolved: true
-
     grafana:
       defaultDashboardsTimezone: "${TZ}"
       adminUser: null
@@ -305,7 +294,6 @@ spec:
             memory: 100Mi
           limits:
             memory: 128Mi
-
     kubeScheduler:
       service:
         port: 10259
@@ -313,7 +301,6 @@ spec:
       serviceMonitor:
         https: true
         insecureSkipVerify: true
-
     kube-state-metrics:
       resources:
         limits:
@@ -321,7 +308,6 @@ spec:
         requests:
           cpu: 3m
           memory: 32Mi
-
     prometheus-node-exporter:
       nodeSelector:
         kubernetes.io/os: linux
@@ -332,7 +318,6 @@ spec:
         requests:
           cpu: 10m
           memory: 32Mi
-
     prometheusOperator:
       resources:
         limits:
@@ -347,7 +332,6 @@ spec:
           requests:
             cpu: 1m
             memory: 32Mi
-
     prometheus:
       ingress:
         enabled: true
