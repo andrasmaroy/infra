@@ -29,7 +29,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/grocy/frontend
-              tag: "v4.2.0" # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
+              tag: "v4.0.3" # {"$imagepolicy": "flux-system:grocy-frontend:tag"}
               pullPolicy: IfNotPresent
             nameOverride: frontend
             ports:
