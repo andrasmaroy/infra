@@ -400,3 +400,32 @@ spec:
                 target_label: __tmp_prometheus_job_name
                 replacement: $1
                 action: replace
+            metric_relabel_configs:
+              - source_labels: [__name__]
+                regex: node_memory_buffer_bytes
+                target_label: __name__
+                replacement: node_memory_Buffers_bytes
+              - source_labels: [__name__]
+                regex: node_memory_cache_bytes
+                target_label: __name__
+                replacement: node_memory_Cached_bytes
+              - source_labels: [__name__]
+                regex: node_memory_free_bytes
+                target_label: __name__
+                replacement: node_memory_MemFree_bytes
+              - source_labels: [__name__]
+                regex: node_memory_size_bytes
+                target_label: __name__
+                replacement: node_memory_MemTotal_bytes
+              - source_labels: [__name__]
+                regex: node_network_receive_drop_total
+                target_label: __name__
+                replacement: node_network_receive_drop_excluding_lo
+              - source_labels: [__name__]
+                regex: node_network_transmit_drop_total
+                target_label: __name__
+                replacement: node_network_transmit_drop_excluding_lo
+              - source_labels: [__name__]
+                regex: node_cpu_temperature_celsius
+                target_label: __name__
+                replacement: node_hwmon_temp_celsius
