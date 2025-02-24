@@ -418,6 +418,10 @@ spec:
                 target_label: __name__
                 replacement: node_memory_MemTotal_bytes
               - source_labels: [__name__]
+                regex: node_memory_laundry_bytes
+                target_label: __name__
+                replacement: node_memory_MemAvailable_bytes
+              - source_labels: [__name__]
                 regex: node_network_receive_drop_total
                 target_label: __name__
                 replacement: node_network_receive_drop_excluding_lo
