@@ -385,3 +385,9 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
+        additionalScrapeConfigs:
+          - job_name: node-exporter/opnsense
+            static_configs:
+              - targets:
+                  - ${ROUTER_IP}:9100
+            scrape_interval: 30s
