@@ -390,4 +390,13 @@ spec:
             static_configs:
               - targets:
                   - ${ROUTER_IP}:9100
+                labels:
+                  job: node-exporter
             scrape_interval: 30s
+            relabel_configs:
+              - source_labels: [job]
+                separator: ;
+                regex: (.*)
+                target_label: __tmp_prometheus_job_name
+                replacement: $1
+                action: replace
