@@ -26,7 +26,7 @@ spec:
               ZIGBEE2MQTT_DATA: /data
             image:
               repository: docker.io/koenkk/zigbee2mqtt
-              tag: "2.2.0" # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
+              tag: "2.2.1" # {"$imagepolicy": "flux-system:zigbee2mqtt:tag"}
               pullPolicy: IfNotPresent
             nameOverride: zigbee2mqtt
             ports:
