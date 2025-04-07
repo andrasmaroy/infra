@@ -34,7 +34,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/spritsail/radarr
-              tag: "5.22.0" # {"$imagepolicy": "flux-system:radarr:tag"}
+              tag: "5.22.1" # {"$imagepolicy": "flux-system:radarr:tag"}
               pullPolicy: IfNotPresent
             nameOverride: radarr
             ports:
