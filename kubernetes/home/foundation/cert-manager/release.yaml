@@ -15,9 +15,11 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: cert-manager
-      version: v1.12.16
+      version: v1.16.4
   values:
-    installCRDs: true
+    crds:
+      enabled: true
+      keep: true
     dns01RecursiveNameservers: "1.1.1.1:53,9.9.9.9:53"
     dns01RecursiveNameserversOnly: true
     resources:
