@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: cert-manager
-      version: v1.16.4
+      version: v1.17.1
   values:
     crds:
       enabled: true
