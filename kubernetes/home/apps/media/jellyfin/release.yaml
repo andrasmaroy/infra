@@ -33,7 +33,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/jellyfin/jellyfin
-              tag: 10.8.11  # {"$imagepolicy": "flux-system:jellyfin:tag"}
+              tag: 10.10.7  # {"$imagepolicy": "flux-system:jellyfin:tag"}
               pullPolicy: IfNotPresent
             nameOverride: jellyfin
             ports:
@@ -119,8 +119,6 @@ spec:
             subPath: Shows/Complete
           - path: /mnt/movies
             subPath: Movies/Complete
-          - path: /jellyfin/jellyfin-web/main.jellyfin.bundle.js
-            subPath: main.jellyfin.bundle.js
         path: /tank/Media
         server: nas
         type: nfs
