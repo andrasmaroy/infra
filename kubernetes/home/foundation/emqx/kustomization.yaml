@@ -34,6 +34,14 @@ secretGenerator:
     namespace: emqx-operator-system
     envs:
       - monitoring-api-key.sops.env
+  - name: acl
+    namespace: emqx-operator-system
+    files:
+      - acl.conf=acl.sops.conf
+  - name: auth-bootstrap
+    namespace: emqx-operator-system
+    files:
+      - auth-built-in-db-bootstrap.csv=auth-built-in-db-bootstrap.sops.csv
 
 generatorOptions:
   annotations:

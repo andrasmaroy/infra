@@ -12,3 +12,5 @@ nameReference:
         kind: EMQX
       - path: spec/bootstrapAPIKeys/secretRef/secret/secretName
         kind: EMQX
+      - path: spec/coreTemplate/spec/extraVolumes/secret/secretName
+        kind: EMQX

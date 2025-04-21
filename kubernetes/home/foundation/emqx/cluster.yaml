@@ -54,6 +54,12 @@ spec:
         - name: emqx-tls
           secret:
             secretName: letsencrypt-emqx
+        - name: acl
+          secret:
+            secretName: acl
+        - name: auth-bootstrap
+          secret:
+            secretName: auth-bootstrap
       extraVolumeMounts:
         - mountPath: /opt/emqx/etc/certs/key.pem
           name: emqx-tls
@@ -63,6 +69,14 @@ spec:
           name: emqx-tls
           readOnly: true
           subPath: tls.crt
+        - mountPath: /opt/emqx/etc/acl.conf
+          name: acl
+          readOnly: true
+          subPath: acl.conf
+        - mountPath: /opt/emqx/etc/auth-built-in-db-bootstrap.csv
+          name: auth-bootstrap
+          readOnly: true
+          subPath: auth-built-in-db-bootstrap.csv
       resources:
         requests:
           cpu: 100m
