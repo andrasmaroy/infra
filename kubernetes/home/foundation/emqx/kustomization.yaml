@@ -11,12 +11,6 @@ resources:
   - cluster.yaml
 
 secretGenerator:
-  - name: core-db-terraform
-    namespace: emqx-operator-system
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../cnpg/tf-user.sops.env
   - name: monitoring-api-key
     namespace: emqx-operator-system
     envs:
