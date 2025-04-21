@@ -6,34 +6,23 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
-  - tf-auth-db.yaml
-  - seed.yaml
   - certificate.yaml
   - dashboard-password.sops.yaml
   - cluster.yaml
 
-configMapGenerator:
-  - name: seed-script
-    namespace: emqx-operator-system
-    files:
-      - seed.sql
-
 secretGenerator:
-  - name: emqx-auth
-    namespace: emqx-operator-system
-    files:
-      - acl.csv=acl.sops.csv
-      - user.csv=user.sops.csv
-  - name: core-db-terraform
-    namespace: emqx-operator-system
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - ../cnpg/tf-user.sops.env
   - name: monitoring-api-key
     namespace: emqx-operator-system
     envs:
       - monitoring-api-key.sops.env
+  - name: acl
+    namespace: emqx-operator-system
+    files:
+      - acl.conf=acl.sops.conf
+  - name: auth-bootstrap
+    namespace: emqx-operator-system
+    files:
+      - auth-built-in-db-bootstrap.csv=auth-built-in-db-bootstrap.sops.csv
 
 generatorOptions:
   annotations:
