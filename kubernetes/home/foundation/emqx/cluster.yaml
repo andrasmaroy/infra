@@ -5,7 +5,7 @@ metadata:
   name: emqx
   namespace: emqx-operator-system
 spec:
-  image: docker.io/emqx:5.4.1
+  image: docker.io/emqx:5.7.2
   bootstrapAPIKeys:
     - secretRef:
         key:
@@ -19,31 +19,23 @@ spec:
       envFrom:
         - secretRef:
             name: dashboard-password
-        - secretRef:
-            name: auth-db-emqx
       env:
         - name: EMQX_AUTHENTICATION__1__BACKEND
-          value: postgresql
+          value: built_in_database
         - name: EMQX_AUTHENTICATION__1__ENABLE
           value: 'true'
         - name: EMQX_AUTHENTICATION__1__MECHANISM
           value: password_based
-        - name: EMQX_AUTHENTICATION__1__QUERY
-          value: >
-            SELECT password_hash, salt, is_superuser
-            FROM mqtt_user
-            WHERE username = $${username} LIMIT 1
+        - name: EMQX_AUTHENTICATION__1__USER_ID_TYPE
+          value: username
         - name: EMQX_AUTHORIZATION__NO_MATCH
           value: deny
         - name: EMQX_AUTHORIZATION__SOURCES__1__ENABLE
           value: 'true'
-        - name: EMQX_AUTHORIZATION__SOURCES__1__QUERY
-          value: >
-            SELECT permission, action, topic
-            FROM mqtt_acl
-            WHERE username = $${username}
+        - name: EMQX_AUTHORIZATION__SOURCES__1__PATH
+          value: /opt/emqx/etc/acl.conf
         - name: EMQX_AUTHORIZATION__SOURCES__1__TYPE
-          value: postgresql
+          value: file
         - name: EMQX_LISTENERS__TCP__DEFAULT__ENABLE
           value: 'false'
         - name: EMQX_LISTENERS__WS__DEFAULT__ENABLE
