@@ -6,24 +6,11 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
-  - tf-auth-db.yaml
-  - seed.yaml
   - certificate.yaml
   - dashboard-password.sops.yaml
   - cluster.yaml
 
-configMapGenerator:
-  - name: seed-script
-    namespace: emqx-operator-system
-    files:
-      - seed.sql
-
 secretGenerator:
-  - name: emqx-auth
-    namespace: emqx-operator-system
-    files:
-      - acl.csv=acl.sops.csv
-      - user.csv=user.sops.csv
   - name: core-db-terraform
     namespace: emqx-operator-system
     options:

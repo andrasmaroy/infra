@@ -1,10 +1,5 @@
 ---
 nameReference:
-  - kind: ConfigMap
-    version: v1
-    fieldSpecs:
-      - path: spec/template/spec/volumes/configMap/name
-        kind: Job
   - kind: Secret
     version: v1
     fieldSpecs:
