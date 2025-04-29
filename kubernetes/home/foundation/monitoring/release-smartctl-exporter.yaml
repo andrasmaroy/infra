@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 0.15.0 # {"$imagepolicy": "flux-system:prometheus-smartctl-exporter:tag"}
+      version: 0.15.1 # {"$imagepolicy": "flux-system:prometheus-smartctl-exporter:tag"}
   values:
     nodeSelector:
       kubernetes.io/arch: amd64
