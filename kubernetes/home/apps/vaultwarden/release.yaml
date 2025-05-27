@@ -35,7 +35,7 @@ spec:
         existingSecret: vaultwarden
       smtp:
         enabled: true
-        host: smtp.sendgrid.net
+        host: mail.smtp2go.com
         from: "vaultwarden@${DOMAIN_PUBLIC}"
         existingSecret: vaultwarden
     resources:

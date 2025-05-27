@@ -184,8 +184,8 @@ spec:
       config:
         global:
           smtp_from: "AlertManager <alertmanager@${DOMAIN_PUBLIC}>"
-          smtp_smarthost: "smtp.sendgrid.net:587"
-          smtp_auth_username: apikey
+          smtp_smarthost: "mail.smtp2go.com:587"
+          smtp_auth_username: "alertmanager@${DOMAIN_PUBLIC}"
           smtp_auth_password_file: /etc/alertmanager/secrets/smtp-auth-password
           resolve_timeout: 5m
         inhibit_rules:
