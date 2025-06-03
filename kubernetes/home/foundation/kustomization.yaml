@@ -5,6 +5,7 @@ bases:
   - ../base
 resources:
   - priorityclass.yaml
+  - nexus
   - metallb
   - networking
   - longhorn

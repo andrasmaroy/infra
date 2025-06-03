@@ -1,0 +1,34 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nexus
+  namespace: nexus
+spec:
+  interval: 1m0s
+  timeout: 15m0s
+  chart:
+    spec:
+      chart: nexus3
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: stevehipwell
+        namespace: nexus
+      version: 5.10.0
+  values:
+    ingress:
+      enabled: true
+      hosts:
+        - nexus.kubi.${DOMAIN_LOCAL}
+      annotations:
+        hajimari.io/icon: simple-icons:sonatype
+        hajimari.io/group: foundation
+        hajimari.io/appName: nexus
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      size: 50Gi

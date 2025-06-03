@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: stevehipwell
+  namespace: nexus
+spec:
+  interval: 5m0s
+  type: "oci"
+  url: oci://ghcr.io/stevehipwell/helm-charts
