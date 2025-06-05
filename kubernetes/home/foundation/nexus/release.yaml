@@ -27,12 +27,12 @@ spec:
           hosts:
             - nexus-dockerio.kubi.${DOMAIN_LOCAL}
         - port: 8083
-          name: dockerio
+          name: ghcrio
           containerPort: 8083
           hosts:
             - nexus-ghcrio.kubi.${DOMAIN_LOCAL}
         - port: 8084
-          name: dockerio
+          name: quayio
           containerPort: 8084
           hosts:
             - nexus-quayio.kubi.${DOMAIN_LOCAL}
