@@ -17,6 +17,11 @@ spec:
         namespace: nexus
       version: 5.10.0
   values:
+    service:
+      additionalPorts:
+        - port: 18079
+          name: dockerio
+          containerPort: 18079
     ingress:
       enabled: true
       hosts:
