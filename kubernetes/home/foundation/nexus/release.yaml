@@ -24,6 +24,8 @@ spec:
         - port: 18079
           name: dockerio
           containerPort: 18079
+          hosts:
+            - nexus-dockerio.kubi.${DOMAIN_LOCAL}
     ingress:
       enabled: true
       hosts:
