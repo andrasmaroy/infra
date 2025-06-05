@@ -6,7 +6,6 @@ bases:
 resources:
   - priorityclass.yaml
   - nexus
-  - artifactory
   - metallb
   - networking
   - longhorn
