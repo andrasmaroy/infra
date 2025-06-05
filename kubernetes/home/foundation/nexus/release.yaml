@@ -17,6 +17,8 @@ spec:
         namespace: nexus
       version: 5.10.0
   values:
+    bashImage:
+      repository: docker.io/bash
     ingress:
       enabled: true
       hosts:
