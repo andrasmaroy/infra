@@ -21,11 +21,21 @@ spec:
       repository: docker.io/bash
     service:
       additionalPorts:
-        - port: 18079
+        - port: 8082
           name: dockerio
-          containerPort: 18079
+          containerPort: 8082
           hosts:
             - nexus-dockerio.kubi.${DOMAIN_LOCAL}
+        - port: 8083
+          name: dockerio
+          containerPort: 8083
+          hosts:
+            - nexus-ghcrio.kubi.${DOMAIN_LOCAL}
+        - port: 8084
+          name: dockerio
+          containerPort: 8084
+          hosts:
+            - nexus-quayio.kubi.${DOMAIN_LOCAL}
     ingress:
       enabled: true
       hosts:
