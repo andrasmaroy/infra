@@ -19,6 +19,23 @@ spec:
   values:
     bashImage:
       repository: docker.io/bash
+    service:
+      additionalPorts:
+        - port: 8082
+          name: dockerio
+          containerPort: 8082
+          hosts:
+            - nexus-dockerio.kubi.${DOMAIN_LOCAL}
+        - port: 8083
+          name: ghcrio
+          containerPort: 8083
+          hosts:
+            - nexus-ghcrio.kubi.${DOMAIN_LOCAL}
+        - port: 8084
+          name: quayio
+          containerPort: 8084
+          hosts:
+            - nexus-quayio.kubi.${DOMAIN_LOCAL}
     ingress:
       enabled: true
       hosts:
