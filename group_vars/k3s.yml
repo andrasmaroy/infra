@@ -4,6 +4,18 @@
 k3s_registration_address: "kubi-api.{{ domain_local }}"
 k3s_become: true
 k3s_release_version: v1.22.6+k3s1
+k3s_registries:
+  configs: null
+  mirrors:
+    docker.io:
+      endpoint:
+        - "https://nexus-dockerio.kubi.{{ domain_local }}"
+    ghcr.io:
+      endpoint:
+        - "https://nexus-ghcrio.kubi.{{ domain_local }}"
+    quay.io:
+      endpoint:
+        - "https://nexus-quayio.kubi.{{ domain_local }}"
 
 node_label:
   - "node.longhorn.io/create-default-disk=true"
