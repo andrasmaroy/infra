@@ -47,3 +47,76 @@ spec:
         values:
           - DockerToken
           - NexusAuthenticatingRealm
+      repos:
+        - name: docker.io
+          format: docker
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://registry-1.docker.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+          docker:
+            v1Enabled: false
+            forceBasicAuth: false
+            httpPort: 8082
+          dockerProxy:
+            indexType: HUB
+            cacheForeignLayers: false
+        - name: ghcr.io
+          format: docker
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://ghcr.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+          docker:
+            v1Enabled: false
+            forceBasicAuth: false
+            httpPort: 8083
+          dockerProxy:
+            indexType: REGISTRY
+            cacheForeignLayers: false
+        - name: quay.io
+          format: docker
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://quay.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+          docker:
+            v1Enabled: false
+            forceBasicAuth: false
+            httpPort: 8084
+          dockerProxy:
+            indexType: REGISTRY
+            cacheForeignLayers: false
