@@ -6,6 +6,7 @@ resources:
   - auth.sops.yaml
   - repository.yaml
   - release.yaml
+  - cronjob.yaml
   - alerts.yaml
   - image-updates.yaml
 

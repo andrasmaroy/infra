@@ -1,0 +1,54 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: repo-cleanup
+  namespace: nexus
+spec:
+  schedule: 0 0 4 * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - env:
+                - name: NEXUS_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: nexus-auth
+                      key: username
+                - name: NEXUS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: nexus-auth
+                      key: password
+                - name: TZ
+                  value: ${TZ}
+              image: docker.io/dwdraju/alpine-curl-jq:latest
+              imagePullPolicy: IfNotPresent
+              name: repo-cleanup
+              command:
+                - '/repo-cleanup.sh'
+              resources:
+                limits:
+                  memory: 256Mi
+                requests:
+                  cpu: 1m
+                  memory: 128Mi
+              securityContext:
+                capabilities:
+                  drop:
+                    - ALL
+                readOnlyRootFilesystem: true
+              volumeMounts:
+                - mountPath: /repo-cleanup.sh
+                  name: repo-cleanup
+                  readOnly: true
+                  subPath: repo-cleanup.sh
+          restartPolicy: Never
+          volumes:
+            - name: repo-cleanup
+              configMap:
+                name: repo-cleanup
+                defaultMode: 0755
