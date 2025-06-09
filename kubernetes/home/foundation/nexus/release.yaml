@@ -34,3 +34,16 @@ spec:
       enabled: true
       storageClass: longhorn
       size: 50Gi
+
+    rootPassword:
+      secret: nexus-auth
+
+    config:
+      enabled: true
+      anonymous:
+        enabled: true
+      realms:
+        enabled: true
+        values:
+          - DockerToken
+          - NexusAuthenticatingRealm
