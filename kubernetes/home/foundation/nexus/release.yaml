@@ -137,3 +137,173 @@ spec:
           dockerProxy:
             indexType: REGISTRY
             cacheForeignLayers: false
+        - name: jetstack
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://charts.jetstack.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: cnpg
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://cloudnative-pg.github.io/charts
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: emqx
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://repos.emqx.io/charts
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: tf-controller
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://flux-iac.github.io/tofu-controller
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: hajimari
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://hajimari.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: traefik
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://helm.traefik.io/traefik
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: kubernetes-dashboard
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://kubernetes.github.io/dashboard
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: longhorn
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://charts.longhorn.io
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: metallb
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://metallb.github.io/metallb
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
+        - name: gissilabs
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://gissilabs.github.io/charts/
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
