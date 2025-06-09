@@ -8,3 +8,13 @@ resources:
   - release.yaml
   - alerts.yaml
   - image-updates.yaml
+
+configMapGenerator:
+  - files:
+      - repo-cleanup.sh=repo-cleanup.sh
+    name: repo-cleanup
+    namespace: nexus
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      disableNameSuffixHash: true
