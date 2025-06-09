@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: stevehipwell
         namespace: nexus
-      version: 5.10.0
+      version: 5.10.0   # {"$imagepolicy": "flux-system:nexus-chart:tag"}
   values:
     bashImage:
       repository: docker.io/bash

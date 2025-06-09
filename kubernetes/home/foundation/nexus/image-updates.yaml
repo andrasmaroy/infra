@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: nexus-chart
+  namespace: flux-system
+spec:
+  image: ghcr.io/stevehipwell/helm-charts/nexus3
+  interval: 24h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: nexus-chart
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: nexus-chart
+  policy:
+    semver:
+      range: '*'

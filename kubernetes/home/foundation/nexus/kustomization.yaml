@@ -7,3 +7,4 @@ resources:
   - repository.yaml
   - release.yaml
   - alerts.yaml
+  - image-updates.yaml
