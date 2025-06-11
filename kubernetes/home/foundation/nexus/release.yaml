@@ -56,6 +56,13 @@ spec:
       storageClass: longhorn
       size: 50Gi
 
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 150m
+        memory: 3Gi
+
     rootPassword:
       secret: nexus-auth
 
