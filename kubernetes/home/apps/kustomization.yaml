@@ -15,7 +15,6 @@ resources:
   - kubernetes-dashboard
   - home-automation
   - media
-  - pihole
   - vaultwarden
   - tailscale
   - grocy

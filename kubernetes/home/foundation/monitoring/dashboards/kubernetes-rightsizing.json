@@ -1435,7 +1435,6 @@
             "metallb-system",
             "monitoring",
             "owntracks",
-            "pihole",
             "stash",
             "tailscale",
             "vaultwarden"
@@ -1454,7 +1453,6 @@
             "metallb-system",
             "monitoring",
             "owntracks",
-            "pihole",
             "stash",
             "tailscale",
             "vaultwarden"

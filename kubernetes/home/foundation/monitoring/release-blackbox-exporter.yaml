@@ -149,25 +149,6 @@ spec:
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
         metadata:
-          name: pihole
-          namespace: monitoring
-          labels:
-            app.kubernetes.io/instance: prometheus-blackbox-exporter
-            app.kubernetes.io/name: prometheus-blackbox-exporter
-            release: prom
-        spec:
-          interval: 30s
-          module: dns
-          prober:
-            url: prometheus-blackbox-exporter.monitoring.svc:9115
-          scrapeTimeout: 30s
-          targets:
-            staticConfig:
-              static:
-                - ${METALLB_ADDRESS}
-      - apiVersion: monitoring.coreos.com/v1
-        kind: Probe
-        metadata:
           name: tcp
           namespace: monitoring
           labels:
@@ -183,7 +164,6 @@ spec:
           targets:
             staticConfig:
               static:
-                - pihole.${DOMAIN_LOCAL}:3493
                 - valetudo-mapper.home-automation.svc.cluster.local:3000
       - apiVersion: monitoring.coreos.com/v1
         kind: Probe
