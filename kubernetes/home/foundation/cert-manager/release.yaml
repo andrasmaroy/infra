@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: cert-manager
-      version: v1.17.1
+      version: v1.17.1  # {"$imagepolicy": "flux-system:cert-manager-chart:tag"}
   values:
     crds:
       enabled: true

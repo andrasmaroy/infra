@@ -148,23 +148,6 @@ spec:
           dockerProxy:
             indexType: REGISTRY
             cacheForeignLayers: false
-        - name: jetstack
-          format: helm
-          type: proxy
-          online: true
-          storage:
-            blobStoreName: default
-            strictContentTypeValidation: true
-          proxy:
-            remoteUrl: https://charts.jetstack.io
-            contentMaxAge: -1
-            metadataMaxAge: 1440
-          negativeCache:
-            enabled: false
-            timeToLive: 1440
-          httpClient:
-            blocked: false
-            autoBlock: true
         - name: cnpg
           format: helm
           type: proxy
