@@ -6,4 +6,4 @@ metadata:
   namespace: kube-system
 spec:
   interval: 5m0s
-  url: https://helm.traefik.io/traefik
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/traefik/

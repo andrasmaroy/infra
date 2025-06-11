@@ -6,4 +6,4 @@ metadata:
   namespace: hajimari
 spec:
   interval: 5m0s
-  url: https://hajimari.io
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/hajimari/

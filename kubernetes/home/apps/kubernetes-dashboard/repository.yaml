@@ -6,4 +6,4 @@ metadata:
   namespace: kubernetes-dashboard
 spec:
   interval: 5m0s
-  url: https://kubernetes.github.io/dashboard
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/kubernetes-dashboard/

@@ -6,4 +6,4 @@ metadata:
   namespace: cnpg-system
 spec:
   interval: 5m0s
-  url: https://cloudnative-pg.github.io/charts
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/cnpg/

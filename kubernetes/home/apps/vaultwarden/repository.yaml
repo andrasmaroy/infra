@@ -6,4 +6,4 @@ metadata:
   namespace: vaultwarden
 spec:
   interval: 5m0s
-  url: https://gissilabs.github.io/charts/
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/gissilabs/

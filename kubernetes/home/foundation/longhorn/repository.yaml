@@ -6,4 +6,4 @@ metadata:
   namespace: longhorn-system
 spec:
   interval: 5m0s
-  url: https://charts.longhorn.io
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/longhorn/

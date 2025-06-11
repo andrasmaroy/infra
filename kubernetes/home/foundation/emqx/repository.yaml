@@ -6,4 +6,4 @@ metadata:
   namespace: emqx-operator-system
 spec:
   interval: 5m0s
-  url: https://repos.emqx.io/charts
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/emqx/
