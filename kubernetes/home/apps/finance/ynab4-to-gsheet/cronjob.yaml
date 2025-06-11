@@ -28,7 +28,7 @@ spec:
                 - name: GSPREAD_SHEET_NAME
                   value: Income/Budget/NW/FIRE Spreadsheet
                 - name: TZ
-                  value: Europe/Budapest
+                  value: ${TZ}
               envFrom:
                 - secretRef:
                     name: dropbox-app
@@ -37,10 +37,10 @@ spec:
               name: ynab4-to-gsheet
               resources:
                 limits:
-                  memory: 256Mi
+                  memory: 168Mi
                 requests:
-                  cpu: 1m
-                  memory: 128Mi
+                  cpu: 2m
+                  memory: 100Mi
               securityContext:
                 capabilities:
                   drop:
