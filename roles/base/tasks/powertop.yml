@@ -1,0 +1,19 @@
+---
+
+- name: Install powertop
+  apt:
+    name: powertop
+    state: present
+
+- name: Copy systemd unit file
+  ansible.builtin.copy:
+    src: powertop.service
+    dest: /etc/systemd/system/powertop.service
+    mode: 0644
+  notify: Reload powertop
+
+- name: Enable the powertop service
+  ansible.builtin.service:
+    name: powertop
+    state: stopped
+    enabled: true
