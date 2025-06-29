@@ -39,7 +39,7 @@ spec:
                 memory: 160Mi
               requests:
                 cpu: 10m
-                memory: 80Mi
+                memory: 120Mi
 
     ingress:
       main:
