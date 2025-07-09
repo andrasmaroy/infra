@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-      version: 16.0.16 # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
+      version: 16.0.17 # {"$imagepolicy": "flux-system:postgresql-ha:tag"}
   values:
     env: {} # Necessary for the generic TZ patch to not fail
     fullnameOverride: postgresql-ha
