@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 11.2.1 # {"$imagepolicy": "flux-system:prometheus-blackbox-exporter:tag"}
+      version: 11.2.2 # {"$imagepolicy": "flux-system:prometheus-blackbox-exporter:tag"}
   values:
     config:
       modules:
