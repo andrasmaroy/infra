@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 76.3.0 # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
+      version: 76.4.0 # {"$imagepolicy": "flux-system:kube-prometheus-stack:tag"}
   valuesFrom:
     - kind: Secret
       name: cluster-info
