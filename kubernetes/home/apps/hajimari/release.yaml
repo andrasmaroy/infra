@@ -21,7 +21,7 @@ spec:
     image:
       tag: v0.3.1  # {"$imagepolicy": "flux-system:hajimari:tag"}
     hajimari:
-      alwaysTargetBlank: true
+      alwaysTargetBlank: false
       defaultEnable: true
       namespaceSelector:
         any: true
