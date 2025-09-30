@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: monitoring
-      version: 7.2.0 # {"$imagepolicy": "flux-system:prometheus-postgres-exporter:tag"}
+      version: 7.2.1 # {"$imagepolicy": "flux-system:prometheus-postgres-exporter:tag"}
   values:
     config:
       datasourceSecret:
