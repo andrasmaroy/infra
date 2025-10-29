@@ -18,7 +18,7 @@ spec:
   values:
     image:
       name: docker.io/traefik
-      tag: 2.11.29 # {"$imagepolicy": "flux-system:traefik:tag"}
+      tag: 2.11.30 # {"$imagepolicy": "flux-system:traefik:tag"}
     additionalArguments:
       - --api.insecure=true
     instanceLabelOverride: traefik
