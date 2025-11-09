@@ -40,7 +40,7 @@ spec:
             image:
               pullPolicy: IfNotPresent
               repository: ghcr.io/haveagitgat/tdarr
-              tag: 2.51.03 # {"$imagepolicy": "flux-system:tdarr:tag"}
+              tag: 2.52.01 # {"$imagepolicy": "flux-system:tdarr:tag"}
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
