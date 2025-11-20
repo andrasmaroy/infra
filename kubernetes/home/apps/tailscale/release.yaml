@@ -42,7 +42,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: ghcr.io/tailscale/tailscale
-              tag: "v1.90.6" # {"$imagepolicy": "flux-system:tailscale:tag"}
+              tag: "v1.90.8" # {"$imagepolicy": "flux-system:tailscale:tag"}
               pullPolicy: IfNotPresent
             nameOverride: subnet-router
             probes:
