@@ -50,8 +50,12 @@ spec:
                 - mountPath: /secrets
                   name: secrets
                   readOnly: true
+                - name: cache
+                  mountPath: /root/.cache
           restartPolicy: Never
           volumes:
             - name: secrets
               secret:
                 secretName: ynab4-to-gsheet
+            - name: cache
+              emptyDir: {}
