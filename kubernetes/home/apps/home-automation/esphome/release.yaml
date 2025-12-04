@@ -31,7 +31,7 @@ spec:
               TZ: ${TZ}
             image:
               repository: docker.io/esphome/esphome
-              tag: "2025.11.2" # {"$imagepolicy": "flux-system:esphome:tag"}
+              tag: "2025.11.3" # {"$imagepolicy": "flux-system:esphome:tag"}
               pullPolicy: IfNotPresent
             nameOverride: esphome
             ports:
