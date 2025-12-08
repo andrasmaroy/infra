@@ -26,11 +26,13 @@ spec:
         containers:
           main:
             env:
-              SGID: 997
+              AUTO_UPDATE: "false"
+              PUID: 912
+              PGID: 997
               TZ: ${TZ}
             image:
-              repository: docker.io/spritsail/jackett
-              tag: "0.22.136"  # {"$imagepolicy": "flux-system:jackett:tag"}
+              repository: docker.io/linuxserver/jackett
+              tag: "0.24.420"  # {"$imagepolicy": "flux-system:jackett:tag"}
               pullPolicy: IfNotPresent
             nameOverride: jackett
             ports:
@@ -60,9 +62,13 @@ spec:
                 drop:
                   - ALL
                 add:
+                  - CHOWN
                   - SETUID
                   - SETGID
               readOnlyRootFilesystem: true
+              runAsGroup: 997
+              runAsNonRoot: true
+              runAsUser: 912
 
     ingress:
       main:
@@ -88,6 +94,10 @@ spec:
         retain: true
         size: 1Gi
         storageClass: longhorn
+      run:
+        enabled: true
+        mountPath: /run
+        type: emptyDir
       tmp:
         enabled: true
         mountPath: /tmp

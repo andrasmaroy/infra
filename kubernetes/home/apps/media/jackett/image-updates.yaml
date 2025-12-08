@@ -5,7 +5,7 @@ metadata:
   name: jackett
   namespace: flux-system
 spec:
-  image: docker.io/spritsail/jackett
+  image: docker.io/linuxserver/jackett
   interval: 168h0m0s
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta1
