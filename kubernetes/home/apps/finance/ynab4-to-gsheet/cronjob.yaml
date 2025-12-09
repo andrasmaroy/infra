@@ -37,10 +37,10 @@ spec:
               name: ynab4-to-gsheet
               resources:
                 limits:
-                  memory: 192Mi
+                  memory: 208Mi
                 requests:
-                  cpu: 2m
-                  memory: 160Mi
+                  cpu: 6m
+                  memory: 176Mi
               securityContext:
                 capabilities:
                   drop:
