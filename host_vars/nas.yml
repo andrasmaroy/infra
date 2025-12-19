@@ -24,3 +24,99 @@ nfs_exports:
   - "/tank/Cloud      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anonuid=33,anongid=33,mountpoint=/tank/Cloud) 127.0.0.1(rw,sync,all_squash,anonuid=33,anongid=33,mountpoint=/tank/Cloud)"
   - "/tank/Downloads  {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},mountpoint=/tank/Downloads) 127.0.0.1(rw,sync,all_squash,anongid={{ media_gid }},mountpoint=/tank/Downloads)"
   - "/tank/Media      {{ ansible_facts.default_ipv4.address }}/24(rw,sync,all_squash,anongid={{ media_gid }},crossmnt,mountpoint=/tank/Media) 127.0.0.1(rw,sync,all_squash,anongid={{ media_gid }},crossmnt,mountpoint=/tank/Media)"
+
+# We're installing newer Samba from backports to get SMB3 support.
+samba_packages: []
+samba_vfs_packages: []
+
+samba_netbios_name: "{{ inventory_hostname_short | upper }}"
+samba_server_string: "{{ inventory_hostname_short | upper }}"
+samba_apple_extensions: true
+samba_load_homes: false
+samba_guest_account: nobody
+samba_server_min_protocol: SMB3_11
+samba_manage_directories: false
+samba_shares:
+  - name: Time Machine
+    path: /tank/TimeMachine
+    valid_users: +timemachine
+    vfs_objects:
+      - name: catia
+      - name: fruit
+        options:
+          - name: time machine
+            value: true
+          - name: time machine max size
+            value: 0
+          - name: veto_appledouble
+            value: "no"
+          - name: wipe_intentionally_left_blank_rfork
+            value: "yes"
+          - name: delete_empty_adfiles
+            value: "yes"
+          - name: posix_rename
+            value: "yes"
+          - name: resource
+            value: xattr
+          - name: encoding
+            value: native
+          - name: map acl inherit
+            value: "yes"
+          - name: store dos attributes
+            value: "yes"
+          - name: metadata
+            value: stream
+            # After switching to POSIX ACLs
+            # value: xattr
+      # This should be removed when switching over to POSIX ACLs
+      - name: streams_xattr
+    writeable: true
+    public: false
+    guest_ok: false
+    create_mode: "0660"
+    directory_mode: "0770"
+    force_create_mode: "0660"
+    force_directory_mode: "0770"
+  - name: Media
+    path: /tank/Media
+    group: media
+    user: nobody
+    valid_users: +media
+    writeable: true
+    public: false
+    guest_ok: false
+    create_mode: "0664"
+    directory_mode: "0775"
+    force_create_mode: "0664"
+    force_directory_mode: "0775"
+  - name: Downloads
+    path: /tank/Downloads
+    group: media
+    user: nobody
+    valid_users: +media
+    public: false
+    guest_ok: false
+    create_mode: "0664"
+    directory_mode: "0775"
+    force_create_mode: "0664"
+    force_directory_mode: "0775"
+    writeable: true
+  - name: homes
+    path: /tank/Home/%S
+    comment: Home Directories
+    browseable: false
+    writeable: true
+    valid_users: "%S"
+    create_mode: "0600"
+    directory_mode: "0700"
+    force_create_mode: "0600"
+    force_directory_mode: "0700"
+samba_users: "{{ users.values() }}"
+samba_workgroup: "{{ site | upper }}"
+samba_global_config_extras: |
+  fruit:model = RackMac
+  fruit:nfs_aces = no
+  multicast dns register = no
+  veto files = /._*/.DS_Store/
+  use sendfile = yes
+  server multi channel support = yes

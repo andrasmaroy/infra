@@ -29,3 +29,5 @@ collections:
     version: 2.3.2
   - name: https://github.com/andrasmaroy/iot_baby.git#/ansible
     type: git
+  - name: vladgh.samba
+    version: 3.5.3

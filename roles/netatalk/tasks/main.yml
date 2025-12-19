@@ -10,6 +10,11 @@
     state: present
     extra_zfs_properties:
       refquota: "2001111162552"   # 1.82TiB or 2TB
+      # Moving forward this should be used for better compatibility with MacOS
+      # clients as they expect to store xattr-based metadata and POSIX ACLs
+      # aclmode: "passthrough"
+      # acltype: "posixacl"
+      # xattr: "sa"
 
 # Create a unix group that allows access to the time machine volume, anyone in
 # this group is able to use the volume for backups.
@@ -61,6 +66,26 @@
     pkg:
       - netatalk=3.1.12*
       - avahi-daemon
+
+- name: Add backports apt source
+  ansible.builtin.apt_repository:
+    repo: deb http://archive.debian.org/debian/ {{ ansible_distribution_release }}-backports main contrib non-free
+    filename: "{{ ansible_distribution_release }}-backports"
+
+- name: Install samba
+  ansible.builtin.apt:
+    default_release: "{{ ansible_distribution_release }}-backports"
+    pkg:
+      - samba
+      - samba-vfs-modules
+      - smbclient
+
+- name: Add samba avahi service
+  ansible.builtin.copy:
+    src: samba.service
+    dest: /etc/avahi/services/samba.service
+    mode: 0644
+  notify: Restart avahi-daemon
 
 # Configure AFP shares
 # Configured users should be able to access their home folders on the pool

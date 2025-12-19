@@ -17,7 +17,9 @@
     - netatalk
     - users
     - geerlingguy.nfs
+    - vladgh.samba.server
   vars_files:
+    - vars/users.yml
     - vars/zpool_disks.yml
 
 - hosts: u59

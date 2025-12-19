@@ -4,3 +4,8 @@
   service:
     name: netatalk
     state: restarted
+
+- name: Restart avahi-daemon
+  service:
+    name: avahi-daemon
+    state: restarted
