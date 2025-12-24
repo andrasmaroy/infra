@@ -1,0 +1,58 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: lgtv-tbc
+  namespace: media
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: app-template
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 2.0.3  # {"$imagepolicy": "flux-system:app-template:tag"}
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    controllers:
+      main:
+        containers:
+          main:
+            nameOverride: lgtv-tbc
+            env:
+              TZ: ${TZ}
+            image:
+              pullPolicy: IfNotPresent
+              repository: ghcr.io/andrasmaroy/lgtv-tbc
+              tag: master
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+              runAsUser: 65534
+              runAsGroup: 65534
+            ports:
+              - containerPort: 8765
+                name: http
+                protocol: TCP
+            resources:
+              limits:
+                memory: 600Mi
+              requests:
+                cpu: 10m
+                memory: 400Mi
+
+    persistence:
+      config:
+        enabled: false
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8765

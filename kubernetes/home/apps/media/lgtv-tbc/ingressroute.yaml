@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: lgtv-tbc
+  namespace: media
+
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: HostRegexp(`{subdomain:.+}.{domain:lgtvsdp|lgappstv|lge|lgsmartad}.com`)
+
+      services:
+        - kind: Service
+          name: lgtv-tbc
+          port: 8765
+  tls: {}

@@ -1,0 +1,13 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: lgtv-tbc
+  namespace: flux-system
+spec:
+  eventSources:
+    - kind: HelmRelease
+      name: lgtv-tbc
+      namespace: media
+  providerRef:
+    name: alertmanager

@@ -35,7 +35,7 @@ metadata:
   namespace: kube-system
 spec:
   rules:
-    - host: traefik.kubi.baross.local.andrasmaroy.eu
+    - host: traefik.kubi.${DOMAIN_LOCAL}
       http:
         paths:
           - backend:

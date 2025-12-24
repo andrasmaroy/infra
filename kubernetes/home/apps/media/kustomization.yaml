@@ -9,6 +9,7 @@ resources:
   - rtorrent
   - jellyfin
   - tdarr
+  - lgtv-tbc
 
 configMapGenerator:
   - files:
