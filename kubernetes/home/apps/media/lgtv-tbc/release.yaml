@@ -19,6 +19,16 @@ spec:
     env: {}  # Necessary for the generic TZ patch to not fail
     controllers:
       main:
+        pod:
+          dnsConfig:
+            nameservers:
+              - 1.1.1.1
+              - 9.9.9.9
+            searches: []
+            options:
+              - name: ndots
+                value: "5"
+          dnsPolicy: "None"
         containers:
           main:
             nameOverride: lgtv-tbc
