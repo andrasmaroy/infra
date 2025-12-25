@@ -5,6 +5,12 @@ data:
     EMAIL_ADDRESS: ENC[AES256_GCM,data:Br333AhAOQaaIknojQL5,iv:pwSYbTLuSGhUHhCG5dt/0aONCYq/6kKtpJhb4AysyaQ=,tag:envdO8FfskRxj17SDo2LQg==,type:str]
     METALLB_ADDRESS: ENC[AES256_GCM,data:bT6oUkV1/bQ3rNM=,iv:3nUaXu6X2BkWXZQFEGiXmKMff+CroSkEvfiWXlyjQkI=,tag:fUTY6Cd8PYENiX5GXrTOng==,type:str]
     NETWORK: ENC[AES256_GCM,data:iZ68zkB/CVkZ0i+0,iv:43oPJjS6O7lSwnQQnlXsERRrxJT4DoJX5nAsfhSc7ps=,tag:KV18olpNQESHX3Agz0FnrA==,type:str]
+    NETWORK_DMZ: ENC[AES256_GCM,data:Fss7CegtIj7A4OTavA==,iv:xLjdbHTQDQx4o4ZRto/RsU65NFj10lzRWpr+ZvvrEOc=,tag:vui2RgpaBogSpQ9y/E0WBw==,type:str]
+    NETWORK_INFRA: ENC[AES256_GCM,data:Glyb/7dC80eURbcaVg==,iv:PYejzRJrniCX1aLWAE1LLYwIksXtj030ib7XJiZvoe4=,tag:5g7sdoXazUdvmw19TcWOTA==,type:str]
+    NETWORK_SERVER: ENC[AES256_GCM,data:JR0J3xxAykqB9KTp2A==,iv:xTPR0TnVjdQwRY1FIiNhPkRi5s0gLxXbyWVT8oLp/eo=,tag:hbimmkad1mGtgP0cr0g8KA==,type:str]
+    NETWORK_IOT: ENC[AES256_GCM,data:gdSfxGFRiCDgRSBEmA==,iv:Atm6xNHkBs4qMUxbK+8Uqyi6Bks2jbvK4OLbF2sAFOA=,tag:rjO4V8MTPJxQfx66WY7tDA==,type:str]
+    NETWORK_GUEST: ENC[AES256_GCM,data:5BB/4WgFGcVf2VehkBjQ,iv:q6OZwxgcZJBTGEpw7AuL5T2JfDqzGlz3hzP5bomMSRA=,tag:K7VYx6I8cmquk2HvpAC8Dg==,type:str]
+    NETWORK_USER: ENC[AES256_GCM,data:Zzla1WFOEEWLxBBsQg==,iv:M6zdZOGd4XcVTjjghM32hHvljvi1rjqfx8oY9kvPRe0=,tag:3qpvcgPBK4dRowAkqdrRCA==,type:str]
     ROUTER_IP: ENC[AES256_GCM,data:Ae90JHXmVXqCaQ==,iv:x+1KdOVIpwFlALGx7zE0t2iSI9ssCezWuJr+T3hbENE=,tag:1VWlBD9SdB42y27WWRIeeg==,type:str]
     SITE: ENC[AES256_GCM,data:r4qfz4fa,iv:iYusE1ycAOF7O6bH1oFWssEPAaqqst7vcs69zZiEH+w=,tag:az+9sxu3Kd/h0WrrT1/TaA==,type:str]
     TZ: ENC[AES256_GCM,data:jicT0NQMyTq8CBvfdMS/,iv:t08lNJvMEQ4fSSpyB/BR4/+0uDyGbQ+uZHeaWBotrZ0=,tag:ZVBmr+2pIzMDH3PM1GPy9Q==,type:str]
@@ -14,13 +20,8 @@ metadata:
     name: environment
     namespace: flux-system
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2023-02-25T18:56:06Z"
-    mac: ENC[AES256_GCM,data:auq5b9KzzziCyLUf6owjXkwvGLUpWsnMyKwrj+3lRnBOJUK27BK7EvHWfWsoDt43YwqZV9e3tWxWimjI/ir7okkN/4IdUe4fIwX9hk93oaShlVxZf6xl8ISc9PfDUNSgF//0pZwcxqvqPk0JoL0TyI5XzWXHtKWnVvQQoyi4JPE=,iv:W/T+M2esxG0qk2m27vsT9dW3pF3LbSwmlEUVWTDkBso=,tag:A5ohFpJnwsJnWyAGsRCe5A==,type:str]
+    lastmodified: "2025-12-25T14:26:59Z"
+    mac: ENC[AES256_GCM,data:vq2/O74p8r4C0kBmg7CvF1H1pSV9ptPPrMUH7ybvA4X0Oc5UKGP2Wz+hKW5SeYAWOdv3hA8PqFBdqSuWJQbvtreZA6nIdSJuLEgzH/FKF2azgrRuuYOWRYqFnVHlhFxtrnyHWACvf7U4wl/U0vsVYfTBZUdItW8hM52eVZ3ua4Y=,iv:8Mkw5624t+KMv4a3ekc8WOcV8F65kdZpn5GTAgWwW6o=,tag:ySywosnDK5Y4ily2f9Z4bg==,type:str]
     pgp:
         - created_at: "2023-01-19T20:00:32Z"
           enc: |
@@ -43,4 +44,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 976AA83A5066FFE4CF485376F76C07C5F5BB0BEB
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.10.2
