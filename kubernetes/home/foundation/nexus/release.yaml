@@ -45,6 +45,7 @@ spec:
         hajimari.io/group: foundation
         hajimari.io/appName: nexus
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
         traefik.ingress.kubernetes.io/router.tls: "true"
 
     env:

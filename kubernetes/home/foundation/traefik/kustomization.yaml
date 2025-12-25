@@ -5,6 +5,7 @@ resources:
   - repository.yaml
   - certificates.yaml
   - release.yaml
+  - middleware.yaml
   - ingress.yaml
   - alerts.yaml
   - image-updates.yaml

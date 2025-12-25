@@ -12,6 +12,9 @@ spec:
     - kind: Rule
       match: HostRegexp(`{subdomain:.+}.{domain:lgtvsdp|lgappstv|lge|lgsmartad}.com`)
 
+      middlewares:
+        - name: dmz-ipwhitelist
+          namespace: media
       services:
         - kind: Service
           name: lgtv-tbc

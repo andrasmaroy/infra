@@ -1,0 +1,13 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: trustednetworks-ipwhitelist
+  namespace: kube-system
+spec:
+  ipWhiteList:
+    sourceRange:
+      - 127.0.0.1/32
+      - ${NETWORK_INFRA}
+      - ${NETWORK_USER}
+      - ${NETWORK_SERVER}

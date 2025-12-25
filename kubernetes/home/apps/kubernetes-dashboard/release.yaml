@@ -66,6 +66,7 @@ spec:
               meta.helm.sh/release-name: kubernetes-dashboard
               meta.helm.sh/release-namespace: kubernetes-dashboard
               traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
               traefik.ingress.kubernetes.io/router.tls: "true"
             labels:
               app.kubernetes.io/instance: kubernetes-dashboard

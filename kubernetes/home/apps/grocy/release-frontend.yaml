@@ -57,6 +57,7 @@ spec:
           hajimari.io/icon: mdi:cart
           hajimari.io/appName: Grocy
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"
         enabled: true
         hosts:

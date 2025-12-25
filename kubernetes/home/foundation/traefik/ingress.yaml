@@ -26,6 +26,7 @@ metadata:
     hajimari.io/icon: mdi:arrow-decision
     hajimari.io/group: foundation
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
     traefik.ingress.kubernetes.io/router.tls: "true"
   labels:
     app.kubernetes.io/instance: traefik

@@ -109,6 +109,7 @@ spec:
           hajimari.io/icon: mdi:download-network
           hajimari.io/appName: rTorrent
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"
         enabled: true
         hosts:

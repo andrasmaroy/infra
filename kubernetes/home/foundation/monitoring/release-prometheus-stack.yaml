@@ -152,6 +152,7 @@ spec:
           hajimari.io/icon: mdi:bell-alert
           hajimari.io/appName: Alert Manager
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"
         labels:
           probe: enabled
@@ -289,6 +290,7 @@ spec:
           hajimari.io/icon: mdi:chart-bar-stacked
           hajimari.io/appName: Grafana
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"
         labels:
           probe: enabled
@@ -357,6 +359,7 @@ spec:
           hajimari.io/icon: mdi:database
           hajimari.io/appName: Prometheus
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"
         labels:
           probe: enabled

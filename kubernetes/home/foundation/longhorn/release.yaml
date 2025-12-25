@@ -29,6 +29,7 @@ spec:
         hajimari.io/group: foundation
         hajimari.io/appName: longhorn
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
         traefik.ingress.kubernetes.io/router.tls: "true"
   postRenderers:
     - kustomize:
