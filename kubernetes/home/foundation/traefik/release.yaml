@@ -55,6 +55,8 @@ spec:
         - ${METALLB_ADDRESS}
       annotations:
         metallb.universe.tf/allow-shared-ip: "metallb-shared-ip"
+      spec:
+        externalTrafficPolicy: Local
     resources:
       limits:
         memory: 128Mi
