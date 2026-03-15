@@ -91,7 +91,7 @@ spec:
       config:
         enabled: true
         retain: true
-        size: 1Gi
+        size: 2Gi
         storageClass: longhorn
       run:
         enabled: true
