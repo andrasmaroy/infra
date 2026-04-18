@@ -26,14 +26,14 @@ spec:
     controller:
       resources:
         requests:
-          cpu: 10m
+          cpu: 2m
           memory: 20Mi
         limits:
           memory: 32Mi
     speaker:
       resources:
         requests:
-          cpu: 25m
+          cpu: 10m
           memory: 32Mi
         limits:
           memory: 64Mi
