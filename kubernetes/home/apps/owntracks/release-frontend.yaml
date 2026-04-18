@@ -46,7 +46,7 @@ spec:
               limits:
                 memory: 32Mi
               requests:
-                cpu: 10m
+                cpu: 1m
                 memory: 4Mi
 
     ingress:
