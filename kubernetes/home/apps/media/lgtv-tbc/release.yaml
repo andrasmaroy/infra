@@ -52,10 +52,10 @@ spec:
                 protocol: TCP
             resources:
               limits:
-                memory: 600Mi
+                memory: 24Mi
               requests:
-                cpu: 10m
-                memory: 400Mi
+                cpu: 1m
+                memory: 20Mi
 
     persistence:
       config:
