@@ -36,6 +36,10 @@ spec:
         resources:
           limits:
             cpu: null
+            memory: 80Mi
+          requests:
+            cpu: 1m
+            memory: 70Mi
     web:
       containers:
         env:
@@ -44,6 +48,10 @@ spec:
         resources:
           limits:
             cpu: null
+            memory: 32Mi
+          requests:
+            cpu: 1m
+            memory: 25Mi
     metricsScraper:
       containers:
         env:
@@ -52,6 +60,10 @@ spec:
         resources:
           limits:
             cpu: null
+            memory: 40Mi
+          requests:
+            cpu: 1m
+            memory: 32Mi
     app:
       ingress:
         enabled: false
