@@ -296,10 +296,10 @@ spec:
           probe: enabled
       resources:
         requests:
-          cpu: 10m
-          memory: 256Mi
+          cpu: 20m
+          memory: 128Mi
         limits:
-          memory: 384Mi
+          memory: 150Mi
       sidecar:
         resources:
           requests:
