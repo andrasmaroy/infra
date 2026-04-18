@@ -59,10 +59,10 @@ spec:
 
     resources:
       limits:
-        memory: 4Gi
-      requests:
-        cpu: 150m
         memory: 3Gi
+      requests:
+        cpu: 10m
+        memory: 2Gi
 
     rootPassword:
       secret: nexus-auth
