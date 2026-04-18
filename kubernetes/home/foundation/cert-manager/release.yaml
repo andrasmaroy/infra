@@ -24,21 +24,21 @@ spec:
     dns01RecursiveNameserversOnly: true
     resources:
       requests:
-        cpu: 10m
-        memory: 128Mi
+        cpu: 1m
+        memory: 64Mi
       limits:
-        memory: 150Mi
+        memory: 80Mi
     webhook:
       resources:
         requests:
-          cpu: 10m
+          cpu: 1m
           memory: 20Mi
         limits:
           memory: 32Mi
     cainjector:
       resources:
         requests:
-          cpu: 10m
-          memory: 250Mi
+          cpu: 1m
+          memory: 100Mi
         limits:
-          memory: 300Mi
+          memory: 128Mi
