@@ -38,7 +38,7 @@ spec:
             cpu: null
             memory: 80Mi
           requests:
-            cpu: 1m
+            cpu: 20m
             memory: 70Mi
     web:
       containers:
