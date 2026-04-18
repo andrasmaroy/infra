@@ -40,10 +40,10 @@ spec:
         existingSecret: vaultwarden
     resources:
       limits:
-        memory: 256Mi
+        memory: 96Mi
       requests:
-        cpu: 10m
-        memory: 150Mi
+        cpu: 1m
+        memory: 70Mi
     ingress:
       enabled: true
       annotations:
