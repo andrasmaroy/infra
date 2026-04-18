@@ -24,7 +24,7 @@ spec:
     dns01RecursiveNameserversOnly: true
     resources:
       requests:
-        cpu: 1m
+        cpu: 2m
         memory: 64Mi
       limits:
         memory: 80Mi
