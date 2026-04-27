@@ -51,6 +51,9 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: webpublic
         traefik.ingress.kubernetes.io/router.tls: "true"
       host: vault.${DOMAIN_PUBLIC}
+    persistence:
+      enabled: true
+      storageClass: longhorn
   postRenderers:
     - kustomize:
         patchesJson6902:
