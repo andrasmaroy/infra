@@ -12,6 +12,5 @@ resources:
   - cert-manager
   - traefik
   - cnpg
-  - tf-controller
   - emqx
   - monitoring
