@@ -5,8 +5,6 @@ nameReference:
   - kind: Secret
     version: v1
     fieldSpecs:
-      - path: spec/values/database/existingSecret
-        kind: HelmRelease
       - path: spec/values/vaultwarden/admin/existingSecret
         kind: HelmRelease
       - path: spec/values/vaultwarden/smtp/existingSecret
