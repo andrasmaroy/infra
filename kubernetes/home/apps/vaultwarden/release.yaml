@@ -21,9 +21,7 @@ spec:
     image:
       tag: 1.35.4
     database:
-      type: postgresql
-      wal: false
-      existingSecret: vaultwarden-db
+      type: sqlite
     vaultwarden:
       domain: https://vault.${DOMAIN_PUBLIC}
       allowSignups: false
