@@ -1,0 +1,90 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: immich
+  namespace: media
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: immich
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: immich-helm
+        namespace: media
+      version: 0.3.0
+  values:
+    env: {}  # Necessary for the generic TZ patch to not fail
+    securityContext:
+      capabilities:
+        drop:
+          - NET_RAW
+      allowPrivilegeEscalation: false
+    priorityClassName: public
+    server:
+      image:
+        tag: "v2.7.5"  # {"$imagepolicy": "flux-system:immich:tag"}
+      env:
+        DB_PASSWORD: ""
+      extraEnv:
+        - name: TZ
+          value: ${TZ}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: immich-database-app
+              key: password
+      resources: {}
+      # limits:
+      #   cpu: 400m
+      #   memory: 800Mi
+      # requests:
+      #   cpu: 200m
+      #   memory: 400Mi
+      volumes:
+        - name: data
+          nfs:
+            server: nas
+            path: /tank/Photos
+      volumeMounts:
+        - name: data
+          mountPath: /data
+      configuration: null
+      # machineLearning:
+      #       urls:
+      #       - http://immich-machine-learning:3003
+      persistence:
+        enabled: false
+
+    machineLearning:
+      image:
+        tag: "v2.7.5"  # {"$imagepolicy": "flux-system:immich:tag"}
+    postgres:
+      persistence:
+        storageClassName: longhorn
+    extraObjects:
+      - kind: Ingress
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: immich
+          namespace: media
+          labels:
+            probe: enabled
+          annotations:
+            hajimari.io/icon: simple-icons:immich
+            traefik.ingress.kubernetes.io/router.entrypoints: webpublic
+            traefik.ingress.kubernetes.io/router.tls: 'true'
+        spec:
+          rules:
+            - host: photos.${DOMAIN_PUBLIC}
+              http:
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: immich-server
+                        port:
+                          name: http
