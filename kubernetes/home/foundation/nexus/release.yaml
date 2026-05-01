@@ -302,3 +302,20 @@ spec:
           httpClient:
             blocked: false
             autoBlock: true
+        - name: immich-helm
+          format: helm
+          type: proxy
+          online: true
+          storage:
+            blobStoreName: default
+            strictContentTypeValidation: true
+          proxy:
+            remoteUrl: https://javex.github.io/immich-helm
+            contentMaxAge: -1
+            metadataMaxAge: 1440
+          negativeCache:
+            enabled: false
+            timeToLive: 1440
+          httpClient:
+            blocked: false
+            autoBlock: true
