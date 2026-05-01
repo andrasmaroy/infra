@@ -44,7 +44,7 @@
     default: true
     etype: group
     permissions: rwx
-  when: item is match("Downloads|Media.*")
+  when: item is match("Downloads|Photos|Media.*")
   loop: "{{ zfs_vols.keys() }}"
 
 # Create a unix group that allows access to the media volumes
@@ -57,6 +57,15 @@
 - name: Export media group ID for use later
   ansible.builtin.set_fact:
     media_gid: "{{ media_group.gid }}"
+
+# These shared folders should be writeable by group, enforce ownership.
+- name: Set group for shared directories
+  ansible.builtin.file:
+    path: /tank/{{ item }}
+    state: directory
+    group: media
+  when: item is match("Downloads|Photos|Media.*")
+  loop: "{{ zfs_vols.keys() }}"
 
 # Pin netatalk to 3.1.12 to make sure the newer version is used and to avoid
 # breaking changes. Version 2 and 3 use completely different configuration

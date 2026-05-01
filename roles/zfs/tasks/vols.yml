@@ -28,6 +28,7 @@
   no_log: true
   when: zfs_vols[item].key is defined
   loop: "{{ zfs_vols.keys() }}"
+  notify: Restart zfs-load-key
 
 # Create the volumes, encryption and other properties defined in the extra
 # properties field.
