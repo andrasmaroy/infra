@@ -64,6 +64,7 @@
     path: /tank/{{ item }}
     state: directory
     group: media
+    mode: g+sw
   when: item is match("Downloads|Photos|Media.*")
   loop: "{{ zfs_vols.keys() }}"
 
