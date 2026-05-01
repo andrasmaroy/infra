@@ -22,11 +22,15 @@ spec:
       version: 0.3.0
   values:
     env: {}  # Necessary for the generic TZ patch to not fail
+    podSecurityContext:
+      fsGroup: 997
+      fsGroupChangePolicy: "OnRootMismatch"
     securityContext:
       capabilities:
         drop:
           - NET_RAW
       allowPrivilegeEscalation: false
+      runAsGroup: 997
     priorityClassName: public
     server:
       image:
