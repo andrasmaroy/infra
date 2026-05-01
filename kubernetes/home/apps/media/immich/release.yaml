@@ -6,6 +6,11 @@ metadata:
   namespace: media
 spec:
   interval: 1m0s
+  valuesFrom:
+    - kind: Secret
+      name: immich-database-app
+      valuesKey: password
+      targetPath: server.env.DB_PASSWORD
   chart:
     spec:
       chart: immich
@@ -26,16 +31,9 @@ spec:
     server:
       image:
         tag: "v2.7.5"  # {"$imagepolicy": "flux-system:immich:tag"}
-      env:
-        DB_PASSWORD: ""
       extraEnv:
         - name: TZ
           value: ${TZ}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: immich-database-app
-              key: password
       resources: {}
       # limits:
       #   cpu: 400m
