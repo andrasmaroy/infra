@@ -39,12 +39,11 @@ spec:
         - name: TZ
           value: ${TZ}
       resources: {}
-      # limits:
-      #   cpu: 400m
-      #   memory: 800Mi
-      # requests:
-      #   cpu: 200m
-      #   memory: 400Mi
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 700Mi
       volumes:
         - name: data
           nfs:
