@@ -54,7 +54,7 @@ spec:
     ingress:
       main:
         annotations:
-          hajimari.io/icon: mdi:cart
+          hajimari.io/icon: simple-icons:grocy
           hajimari.io/appName: Grocy
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd

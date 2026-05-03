@@ -79,7 +79,7 @@ spec:
     ingress:
       main:
         annotations:
-          hajimari.io/icon: mdi:router-network-wireless
+          hajimari.io/icon: simple-icons:omadacloud
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"

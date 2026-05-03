@@ -106,7 +106,7 @@ spec:
     ingress:
       main:
         annotations:
-          hajimari.io/icon: mdi:download-network
+          hajimari.io/icon: simple-icons:bittorrent
           hajimari.io/appName: rTorrent
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd

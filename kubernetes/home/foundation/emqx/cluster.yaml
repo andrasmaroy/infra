@@ -90,7 +90,7 @@ metadata:
   annotations:
     hajimari.io/appName: EMQX
     hajimari.io/group: EMQX
-    hajimari.io/icon: mdi:hub-outline
+    hajimari.io/icon: simple-icons:mqtt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
     traefik.ingress.kubernetes.io/router.tls: 'true'

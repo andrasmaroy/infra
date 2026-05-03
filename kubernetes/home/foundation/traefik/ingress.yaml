@@ -23,7 +23,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    hajimari.io/icon: mdi:arrow-decision
+    hajimari.io/icon: simple-icons:traefikproxy
     hajimari.io/group: foundation
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd

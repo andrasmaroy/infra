@@ -44,7 +44,7 @@ spec:
     ingress:
       main:
         annotations:
-          hajimari.io/icon: mdi:zigbee
+          hajimari.io/icon: simple-icons:zigbee2mqtt
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
           traefik.ingress.kubernetes.io/router.tls: "true"

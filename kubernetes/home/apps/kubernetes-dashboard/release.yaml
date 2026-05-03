@@ -73,7 +73,7 @@ spec:
           kind: Ingress
           metadata:
             annotations:
-              hajimari.io/icon: mdi:view-dashboard-edit
+              hajimari.io/icon: simple-icons:kubernetes
               hajimari.io/group: foundation
               meta.helm.sh/release-name: kubernetes-dashboard
               meta.helm.sh/release-namespace: kubernetes-dashboard
