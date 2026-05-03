@@ -11,6 +11,5 @@ resources:
   - longhorn
   - cert-manager
   - traefik
-  - cnpg
   - emqx
   - monitoring
