@@ -296,17 +296,17 @@ spec:
           probe: enabled
       resources:
         requests:
-          cpu: 20m
+          cpu: 50m
           memory: 128Mi
         limits:
           memory: 150Mi
       sidecar:
         resources:
           requests:
-            cpu: 1m
-            memory: 100Mi
+            cpu: 2m
+            memory: 50Mi
           limits:
-            memory: 128Mi
+            memory: 64Mi
 
     kubeScheduler:
       service:

@@ -31,7 +31,7 @@ spec:
     webhook:
       resources:
         requests:
-          cpu: 1m
+          cpu: 10m
           memory: 20Mi
         limits:
           memory: 32Mi
