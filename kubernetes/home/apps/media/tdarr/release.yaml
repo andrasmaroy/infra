@@ -98,7 +98,7 @@ spec:
             image:
               pullPolicy: IfNotPresent
               repository: ghcr.io/andrasmaroy/tdarr_node
-              tag: 2.15.01  # {"$imagepolicy": "flux-system:tdarr-node:tag"}
+              tag: 2.15.01@sha256:4d4ebf0c06dc89a404651a2592941cdb2d67564be6bb51f5430f0d81cb54d0cd
             resources:
               limits:
                 gpu.intel.com/i915: 1
