@@ -37,7 +37,7 @@ spec:
             image:
               pullPolicy: IfNotPresent
               repository: docker.io/spritsail/sonarr
-              tag: 4.0.1
+              tag: 4.0.20
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
