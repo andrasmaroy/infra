@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cloudflare-tunnel
+  namespace: networking
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: cloudflare-tunnel
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cloudflare
+        namespace: networking
+      version: 0.3.2
+  values:
+    replicaCount: 2
+    image:
+      tag: "2026.10.7"  # {"$imagepolicy": "flux-system:cloudflare-tunnel:tag"}
+    cloudflare:
+      tunnelName: ${SITE}
+      secretName: cloudflare-tunnel-credentials
+      ingress:
+        - hostname: "*.${DOMAIN_PUBLIC}"
+          service: https://traefik.kube-system.svc.cluster.local:8443
+          originRequest:
+            matchSNItoHost: true

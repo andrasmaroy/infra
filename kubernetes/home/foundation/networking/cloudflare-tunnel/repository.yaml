@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: cloudflare
+  namespace: networking
+spec:
+  interval: 5m0s
+  url: https://nexus.kubi.${DOMAIN_LOCAL}/repository/cloudflare/
