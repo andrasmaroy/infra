@@ -45,9 +45,10 @@ spec:
       enabled: true
       annotations:
         hajimari.io/icon: simple-icons:vaultwarden
-        traefik.ingress.kubernetes.io/router.entrypoints: webpublic
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-trustednetworks-ipwhitelist@kubernetescrd
         traefik.ingress.kubernetes.io/router.tls: "true"
-      host: vault.${DOMAIN_PUBLIC}
+      host: vault.kubi.${DOMAIN_LOCAL}
     persistence:
       enabled: true
       storageClass: longhorn

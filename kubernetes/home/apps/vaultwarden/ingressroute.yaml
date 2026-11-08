@@ -1,0 +1,17 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vaultwarden-public
+  namespace: vaultwarden
+spec:
+  entryPoints:
+    - webpublic
+  routes:
+    - kind: Rule
+      match: Host(`vault.${DOMAIN_PUBLIC}`) && !PathPrefix(`/admin`)
+      services:
+        - kind: Service
+          name: vaultwarden
+          port: http
+  tls: {}
