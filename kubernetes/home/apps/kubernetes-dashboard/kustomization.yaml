@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - admin-rbac.yaml
   - alerts.yaml
