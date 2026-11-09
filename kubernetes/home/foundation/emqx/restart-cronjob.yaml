@@ -1,0 +1,128 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: emqx-restarter
+  namespace: emqx-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: emqx-restarter
+  namespace: emqx-operator-system
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets"]
+    verbs: ["get", "list", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: emqx-restarter
+  namespace: emqx-operator-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: emqx-restarter
+subjects:
+  - kind: ServiceAccount
+    name: emqx-restarter
+    namespace: emqx-operator-system
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: emqx-restarter
+  namespace: emqx-operator-system
+spec:
+  schedule: "30 1 * * 1"  # First day of each month at midnight
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: emqx-restarter
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+          containers:
+            - name: kubectl
+              image: docker.io/alpine/k8s:1.22.6
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: HOME
+                  value: /tmp
+              resources:
+                limits:
+                  memory: 128Mi
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+              securityContext:
+                capabilities:
+                  drop:
+                    - ALL
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+
+                  echo "Finding active EMQX StatefulSet from running pods..."
+
+                  # Get all running pods matching emqx-core pattern
+                  PODS=$(kubectl get pods -n emqx-operator-system \
+                    -o name | grep 'pod/emqx-core-' || true)
+
+                  if [ -z "$PODS" ]; then
+                    echo "ERROR: No EMQX pods found matching pattern 'emqx-core-*'"
+                    exit 1
+                  fi
+
+                  echo "Found EMQX pods:"
+                  echo "$PODS"
+                  echo ""
+
+                  # Get the StatefulSet owner from the first pod
+                  FIRST_POD=$(echo "$PODS" | head -n 1)
+                  POD_NAME=$(echo "$FIRST_POD" | cut -d'/' -f2)
+
+                  echo "Checking owner of pod: $POD_NAME"
+
+                  STATEFULSET_NAME=$(kubectl get "$FIRST_POD" -n emqx-operator-system \
+                    -o jsonpath='{.metadata.ownerReferences[?(@.kind=="StatefulSet")].name}')
+
+                  if [ -z "$STATEFULSET_NAME" ]; then
+                    echo "ERROR: Could not determine StatefulSet owner for pod $POD_NAME"
+                    exit 1
+                  fi
+
+                  echo "Active StatefulSet identified: $STATEFULSET_NAME"
+                  echo ""
+
+                  # Verify the StatefulSet exists
+                  if ! kubectl get statefulset/"$STATEFULSET_NAME" -n emqx-operator-system >/dev/null 2>&1; then
+                    echo "ERROR: StatefulSet $STATEFULSET_NAME not found"
+                    exit 1
+                  fi
+
+                  echo "Restarting StatefulSet: $STATEFULSET_NAME"
+                  kubectl rollout restart statefulset/"$STATEFULSET_NAME" -n emqx-operator-system
+
+                  echo "✓ Restart triggered successfully for $STATEFULSET_NAME"
+          volumes:
+            - name: tmp
+              emptyDir: {}

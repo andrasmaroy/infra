@@ -9,6 +9,7 @@ resources:
   - certificate.yaml
   - dashboard-password.sops.yaml
   - cluster.yaml
+  - restart-cronjob.yaml
 
 secretGenerator:
   - name: monitoring-api-key
