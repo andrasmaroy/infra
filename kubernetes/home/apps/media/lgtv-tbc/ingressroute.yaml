@@ -8,6 +8,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - lgtv
   routes:
     - kind: Rule
       match: HostRegexp(`{subdomain:.+}.{domain:lgtvsdp|lgappstv|lge|lgsmartad}.com`)

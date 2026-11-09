@@ -44,6 +44,13 @@ spec:
         tls:
           enabled: true
           options: default@kubernetescrd
+      lgtv:
+        port: 8765
+        expose: true
+        exposedPort: 8765
+        protocol: TCP
+        tls:
+          enabled: true
     priorityClassName: "system-cluster-critical"
     deployment:
       kind: DaemonSet
